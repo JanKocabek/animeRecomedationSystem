@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @SpringBootApplication
-public class AnimeRecomedationSystemApplication {
+public class AnimeRecommendationApp {
 
     @RequestMapping("/")
     String home() {
@@ -15,7 +15,7 @@ public class AnimeRecomedationSystemApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(AnimeRecomedationSystemApplication.class, args);
+        SpringApplication.run(AnimeRecommendationApp.class, args);
     }
 
 }
