@@ -1,0 +1,163 @@
+Complete Anime Recommendation App Project Plan
+📋 Project Requirements
+
+Framework: Spring Boot + Thymeleaf
+Database: MySQL (containerized)
+Structure: 3+ tables, 2+ relationships
+Frontend: 5+ views with different URLs
+Forms: At least 1 POST form with validation
+Timeline: 1 month
+Goal: Portfolio-ready backend application
+
+🗃️ Database Design
+sql-- Core tables from Kaggle dataset
+Users (id, username, email, password, created_at)
+Anime (anime_id, title, genre, year, episodes, avg_rating)
+UserRatings (user_id, anime_id, rating, date_rated)
+
+-- Relationships:
+-- Users 1:N UserRatings
+-- Anime 1:N UserRatings
+📊 Data Source
+Primary: Kaggle dataset with user_id, anime_id, rating columns
+
+Enables collaborative filtering recommendations
+Real user behavior data for personalized suggestions
+
+Future Enhancement: Jikan API integration (if time allows)
+🏗️ Architecture Approach
+Phase 1: REST API Backend (Weeks 1-2)
+
+Build complete REST API endpoints
+Database integration with containerized MySQL
+User authentication & authorization
+Data validation
+Recommendation engine logic
+Test with Postman
+
+Phase 2: Frontend (Weeks 3-4)
+Option A: HTML5 + Bootstrap + Vanilla JS (recommended for portfolio)
+Option B: Thymeleaf + Bootstrap (meets requirements safely)
+🔧 Technology Stack
+Backend
+
+Spring Boot (main framework)
+Spring Security (authentication)
+Spring Data JPA (database)
+MySQL (containerized database)
+SLF4J + Logbook (logging, not System.out.println)
+Bean Validation (form validation)
+
+Frontend
+
+HTML5 + CSS3 + JavaScript (or Thymeleaf)
+Bootstrap (styling)
+Fetch API (HTTP requests)
+
+DevOps & Tools
+
+Docker (MySQL container, later full app)
+Docker Compose (orchestration)
+Maven (build tool)
+JUnit + Mockito (testing)
+
+🌐 Application Views/URLs
+
+/ - Home page with featured anime
+/anime - Browse/search anime with filters
+/anime/{id} - Individual anime details
+/register - User registration form ✓ POST
+/login - User login form ✓ POST
+/profile - User's ratings & recommendations
+/anime/{id}/rate - Rate anime form ✓ POST
+
+🎯 Core Features
+User Management
+
+User registration/login
+Profile management
+Personal anime ratings
+
+Anime System
+
+Browse anime catalog
+Search & filter functionality
+Detailed anime information
+User rating system
+
+Recommendation Engine
+
+User-based collaborative filtering
+"Users who liked X also liked Y"
+Personalized recommendations
+Popular anime suggestions
+
+📈 Development Timeline
+Week 0 (Prep - Few Days)
+
+Learn SLF4J basics (1 hour)
+Spring Boot testing fundamentals (4-6 hours)
+Docker basics (3-4 hours)
+Basic Mockito concepts (1-2 hours)
+
+Week 1-2: Backend Development
+
+Set up project structure
+Configure containerized MySQL
+Import Kaggle dataset
+Build REST API endpoints
+Implement authentication
+Create recommendation service
+Write unit tests
+Proper logging implementation
+
+Week 3: Frontend Development
+
+Create HTML pages (5+ views)
+Bootstrap styling
+JavaScript for API calls
+Form validation
+User interface polish
+
+Week 4: Integration & Deployment
+
+Full application testing
+Docker containerization of app
+Oracle Cloud deployment
+Documentation
+Optional: Jikan API integration
+
+🚀 Deployment Strategy
+Development Setup
+
+Database: MySQL in Docker container
+App: Running locally
+Config: localhost:3306 database connection
+
+Production Setup
+
+Full containerization: App + Database
+Docker Compose: Complete orchestration
+Oracle Cloud: Free tier hosting
+Config: Container-to-container communication
+
+🎯 Portfolio Highlights
+This project demonstrates:
+
+Modern backend architecture (REST API first)
+Professional practices (logging, testing, containerization)
+Real recommendation system (collaborative filtering)
+Full-stack capabilities (backend + frontend)
+Cloud deployment (Oracle Cloud + Docker)
+Enterprise tools (Spring ecosystem, Docker, proper testing)
+
+✅ Success Criteria
+
+✅ All course requirements met
+✅ Working recommendation engine
+✅ Professional code quality
+✅ Deployed and accessible online
+✅ Portfolio-ready demonstration
+✅ Modern development practices showcased
+
+This plan balances meeting academic requirements while building impressive portfolio project using industry-standard practices!
