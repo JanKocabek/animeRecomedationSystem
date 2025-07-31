@@ -49,7 +49,7 @@ public class ViewController {
     @ResponseBody
     @GetMapping("/user/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
-        UserDto user = userServices.findUserById(id);
+        UserDto user = userServices.getUserById(id);
         return ResponseEntity.ok(user);
     }
 }

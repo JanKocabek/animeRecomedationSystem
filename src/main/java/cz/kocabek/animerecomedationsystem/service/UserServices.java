@@ -48,7 +48,23 @@ public class UserServices {
         return uDTO;
     }
 
-    public UserDto findUserById(Long id) {
-        return userRepository.findUserById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+    public UserDto getUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return new UserDto(user.getId(),
+                user.getUsername(),
+                user.getGender(),
+                user.getBirthday(),
+                user.getLocation(),
+                user.getJoined(),
+                user.getDaysWatched(),
+                user.getMeanScore(),
+                user.getWatching(),
+                user.getCompleted(),
+                user.getOnHold(),
+                user.getDropped(),
+                user.getPlanToWatch(),
+                user.getTotalEntries(),
+                user.getRewatched(),
+                user.getEpisodesWatched());
     }
 }
