@@ -1,24 +1,30 @@
 package cz.kocabek.animerecomedationsystem.controller;
 
-import cz.kocabek.animerecomedationsystem.dto.UserDto;
+import cz.kocabek.animerecomedationsystem.dto.UsersAnimeScoreDto;
 import cz.kocabek.animerecomedationsystem.entity.Anime;
+import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
 import cz.kocabek.animerecomedationsystem.service.AnimeService;
 import cz.kocabek.animerecomedationsystem.service.UserServices;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 public class ViewController {
 
     AnimeService animeService;
     UserServices userServices;
+    UsersAnimeScoreRepository usersAnimeScoreRepository;
 
-    public ViewController(AnimeService animeService, UserServices userServices) {
+    public ViewController(AnimeService animeService, UserServices userServices, UsersAnimeScoreRepository usersAnimeScoreRepository) {
         this.animeService = animeService;
         this.userServices = userServices;
+        this.usersAnimeScoreRepository = usersAnimeScoreRepository;
     }
 
     @ResponseBody
@@ -36,20 +42,11 @@ public class ViewController {
     }
 
     @ResponseBody
-    @GetMapping("/anime/who/{name}")
-    public ResponseEntity<Iterable<UserDto>> getAllUsersWhoWatched(@PathVariable String name) {
+    @GetMapping("/anime/recommend/{name}")
+    public ResponseEntity<List<UsersAnimeScoreDto>> getAnimeRecommendation(@PathVariable String name) {
         Long id = animeService.getAnimeIdByName(name);
-        Iterable<UserDto> users = userServices.getAllUsersWhoRatedGiven(id);
-        if (users == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(users);
-    }
-
-    @ResponseBody
-    @GetMapping("/user/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
-        UserDto user = userServices.getUserById(id);
-        return ResponseEntity.ok(user);
+        List<Long> usersId = userServices.getUserWithAnime(id);
+        List<UsersAnimeScoreDto> data = usersAnimeScoreRepository.getUsersAnimeScoresById_UserIdInAndId_AnimeIdNotNull(usersId, PageRequest.of(1, 20));
+        return ResponseEntity.ok(data);
     }
 }

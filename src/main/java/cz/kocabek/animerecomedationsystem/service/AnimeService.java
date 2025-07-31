@@ -22,7 +22,7 @@ public class AnimeService {
     }
 
     public Long getAnimeIdByName(String name){
-        return animeRepository.getIdByName(name);
+        return animeRepository.getAnimeIdByName(name);
     }
 
 }

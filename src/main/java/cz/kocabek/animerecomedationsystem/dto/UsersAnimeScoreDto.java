@@ -1,15 +1,10 @@
 package cz.kocabek.animerecomedationsystem.dto;
 
-import cz.kocabek.animerecomedationsystem.entity.UsersAnimeScore;
-import lombok.Value;
-
 import java.io.Serializable;
 
 /**
- * DTO for {@link UsersAnimeScore}
+ * DTO for {@link cz.kocabek.animerecomedationsystem.entity.UsersAnimeScore}
  */
-@Value
-public class UsersAnimeScoreDto implements Serializable {
-    AnimeDto anime;
-    Integer rating;
+
+public record UsersAnimeScoreDto(Long userId, Long animeId, String animeName, Integer rating) implements Serializable {
 }
