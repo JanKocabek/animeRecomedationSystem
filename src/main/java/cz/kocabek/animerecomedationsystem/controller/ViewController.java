@@ -1,7 +1,7 @@
 package cz.kocabek.animerecomedationsystem.controller;
 
+import cz.kocabek.animerecomedationsystem.dto.UserDto;
 import cz.kocabek.animerecomedationsystem.entity.Anime;
-import cz.kocabek.animerecomedationsystem.entity.UserDto;
 import cz.kocabek.animerecomedationsystem.service.AnimeService;
 import cz.kocabek.animerecomedationsystem.service.UserServices;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +44,12 @@ public class ViewController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(users);
+    }
+
+    @ResponseBody
+    @GetMapping("/user/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+        UserDto user = userServices.findUserById(id);
+        return ResponseEntity.ok(user);
     }
 }
