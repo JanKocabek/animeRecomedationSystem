@@ -1,6 +1,6 @@
 package cz.kocabek.animerecomedationsystem.controller;
 
-import cz.kocabek.animerecomedationsystem.dto.UsersAnimeScoreDto;
+import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
 import cz.kocabek.animerecomedationsystem.entity.Anime;
 import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
 import cz.kocabek.animerecomedationsystem.service.AnimeService;
@@ -45,8 +45,8 @@ public class ViewController {
 
     @ResponseBody
     @GetMapping("/anime/recommend/{name}")
-    public ResponseEntity<List<UsersAnimeScoreDto>> getAnimeRecommendation(@PathVariable String name) {
-        List<UsersAnimeScoreDto> data = recommendService.getAnimeRecommendation(name);
+    public ResponseEntity<List<UserAnimeList>> getAnimeRecommendation(@PathVariable String name) {
+        List<UserAnimeList> data = recommendService.getAnimeRecommendation(name);
         return ResponseEntity.ok(data);
     }
 }
