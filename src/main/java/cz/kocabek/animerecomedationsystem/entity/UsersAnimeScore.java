@@ -24,6 +24,9 @@ public class UsersAnimeScore {
     @JoinColumn(name = "anime_id", nullable = false)
     private Anime anime;
 
+    @Column(name = "Anime Title")
+    private String animeTitle;
+
     @Column(name = "rating")
     private Integer rating;
 
