@@ -9,8 +9,9 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("""
-            select distinct u.id from User u inner join u.usersAnimeScores usersAnimeScores
-            where usersAnimeScores.id.animeId = ?1""")
-    List<Long> findUserIdDistinctByUsersAnimeScores_Id_UserId(@NonNull Long animeId);
+                        select u.id from User u join u.usersAnimeScores uas
+                        where uas.id.animeId = ?1 order by uas.rating desc
+            """)
+    List<Long> retrieveDistinctUserIdsByAnimeSorted(@NonNull Long animeId);
 
 }

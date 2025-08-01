@@ -43,7 +43,7 @@ public class UserServices {
 
 
     public List<Long> getUserWithAnime(Long aniId) {
-        return userRepository.findUserIdDistinctByUsersAnimeScores_Id_UserId(aniId);
+        return userRepository.retrieveDistinctUserIdsByAnimeSorted(aniId);
     }
 
 }
