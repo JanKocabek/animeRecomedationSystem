@@ -23,7 +23,7 @@ public class RecommendService {
     public List<UsersAnimeScoreDto> getAnimeRecommendation(String name) {
         Long id = animeService.getAnimeIdByName(name);
         List<Long> usersId = userServices.getUserWithAnime(id);
-        return usersAnimeScoreRepository.getUsersAnimeScoresById_UserIdInAndId_AnimeIdNotNull(usersId, PageRequest.of(0, 20));
+        return usersAnimeScoreRepository.getUsersListRatedAnime(usersId, PageRequest.of(0, 20)).getContent();
     }
 
 }
