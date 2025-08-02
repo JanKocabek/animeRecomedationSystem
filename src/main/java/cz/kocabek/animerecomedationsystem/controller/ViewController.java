@@ -1,6 +1,5 @@
 package cz.kocabek.animerecomedationsystem.controller;
 
-import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
 import cz.kocabek.animerecomedationsystem.entity.Anime;
 import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
 import cz.kocabek.animerecomedationsystem.service.AnimeService;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ViewController {
@@ -45,8 +44,8 @@ public class ViewController {
 
     @ResponseBody
     @GetMapping("/anime/recommend/{name}")
-    public ResponseEntity<List<UserAnimeList>> getAnimeRecommendation(@PathVariable String name) {
-        List<UserAnimeList> data = recommendService.getAnimeRecommendation(name);
+    public ResponseEntity<Map<String, Integer>> getAnimeRecommendation(@PathVariable String name) {
+        Map<String, Integer> data = recommendService.getAnimeRecommendation(name);
         return ResponseEntity.ok(data);
     }
 }
