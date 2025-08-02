@@ -15,7 +15,8 @@ import java.util.Collection;
 public interface UsersAnimeScoreRepository extends JpaRepository<UsersAnimeScore, UsersAnimeScoreId> {
     @Query("""
             select new cz.kocabek.animerecomedationsystem.dto.UsersAnimeScoreDto(u.id.userId,u.id.animeId,u.animeTitle,u.rating)  from UsersAnimeScore u
-            where u.id.userId in :userIds and u.id.animeId is not null
-            order by u.id.userId""")
-    Slice<UsersAnimeScoreDto> getUsersListRatedAnime(@Param("userIds") @NonNull Collection<Long> userIds, @Param("animeId")  Pageable pageable);
+            where u.id.userId in :userIds and u.id.animeId not in :animeId
+            order by u.id.userId, u.rating desc
+            """)
+    Slice<UsersAnimeScoreDto> getUsersListRatedAnime(@Param("userIds") @NonNull Collection<Long> userIds, @Param("animeId") Long animeId, Pageable pageable);
 }
