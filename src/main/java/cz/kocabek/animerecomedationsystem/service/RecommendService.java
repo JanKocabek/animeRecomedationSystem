@@ -16,19 +16,19 @@ public class RecommendService {
     private static final Logger logger = LoggerFactory.getLogger(RecommendService.class);
 
     AnimeService animeService;
-    UserServices userServices;
+    UserAnimeScoreService userAnimeScoreService;
     UsersAnimeScoreRepository usersAnimeScoreRepository;
 
-    public RecommendService(AnimeService animeService, UserServices userServices, UsersAnimeScoreRepository usersAnimeScoreRepository) {
+    public RecommendService(AnimeService animeService , UsersAnimeScoreRepository usersAnimeScoreRepository, UserAnimeScoreService userAnimeScoreService) {
         this.animeService = animeService;
-        this.userServices = userServices;
+        this.userAnimeScoreService = userAnimeScoreService;
         this.usersAnimeScoreRepository = usersAnimeScoreRepository;
     }
 
     public Map<String, Integer> getAnimeRecommendation(String name) {
         Long animeId = animeService.getAnimeIdByName(name);
-        List<Long> usersId = userServices.getUserWithAnime(animeId);
-        logger.info("Users with anime: {}", usersId.size());
+        List<Long> usersId = userAnimeScoreService.getUserWithAnime(animeId);
+        logger.info("Users with anime after service: {}", usersId.size());
         final var data = groupedUsersLists(usersId, animeId);
         logger.info("size of data after grouping: {}", data.size());
         final var highRankedData = sectionByRank(5, 10, data);
@@ -43,9 +43,10 @@ public class RecommendService {
      * @return a list of UserAnimeList records, where each record contains a user ID and a map of anime titles with their respective ratings
      */
     private List<UserAnimeList> groupedUsersLists(List<Long> usersId, Long animeId) {
-        final var data = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, animeId, PageRequest.of(0, 5000));
+        final var data = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, animeId, PageRequest.of(0, 20000));
+        logger.debug("size of fetch data:  {}",data.getContent().size());
         // grouping records based UserID Map<Long, List<UsersAnimeScoreDto>>
-        // making  name and rating from list -> Map.Entry<Long, Map<String, Integer>>
+        // making name and rating from list -> Map.Entry<Long, Map<String, Integer>>
         List<UserAnimeList> list = data.get()
                 .collect(Collectors.groupingBy(UsersAnimeScoreDto::userId)) // grouping records based UserID Map<Long, List<UsersAnimeScoreDto>>
                 .entrySet().stream().
@@ -74,10 +75,6 @@ public class RecommendService {
         data.forEach(
                 user -> rankedSection.add(new UserAnimeList(user.id(), cutTheTopNByRanking(sortAnimeMapByRanking(user), minRank, maxRank)))
         );
-//        data.forEach(user -> user.animeList()
-//                .forEach((_, value) -> {
-//                    if (value >= minRank && value <= maxRank) rankedSection.add(user);
-//                }));
         logger.debug("ranked section size: {}", rankedSection.size());
         return rankedSection;
     }
