@@ -4,7 +4,6 @@ import cz.kocabek.animerecomedationsystem.entity.Anime;
 import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
 import cz.kocabek.animerecomedationsystem.service.AnimeService;
 import cz.kocabek.animerecomedationsystem.service.RecommendService;
-import cz.kocabek.animerecomedationsystem.service.UserServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +16,11 @@ import java.util.Map;
 public class ViewController {
 
     AnimeService animeService;
-    UserServices userServices;
     UsersAnimeScoreRepository usersAnimeScoreRepository;
     RecommendService recommendService;
 
-    public ViewController(AnimeService animeService, UserServices userServices, UsersAnimeScoreRepository usersAnimeScoreRepository, RecommendService recommendService) {
+    public ViewController(AnimeService animeService, UsersAnimeScoreRepository usersAnimeScoreRepository, RecommendService recommendService) {
         this.animeService = animeService;
-        this.userServices = userServices;
         this.usersAnimeScoreRepository = usersAnimeScoreRepository;
         this.recommendService = recommendService;
     }
