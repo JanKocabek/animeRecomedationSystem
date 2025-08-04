@@ -40,8 +40,8 @@ public class RestPointController {
 
 
     @GetMapping("/anime/recommend/{name}")
-    public ResponseEntity<Map<String, Integer>> getAnimeRecommendation(@PathVariable String name) {
-        Map<String, Integer> data = recommendationService.getAnimeRecommendation(name);
+    public ResponseEntity<Map<Long, Integer>> getAnimeRecommendation(@PathVariable String name) {
+        Map<Long, Integer> data = recommendationService.getAnimeRecommendation(name);
         return ResponseEntity.ok(data);
     }
 }

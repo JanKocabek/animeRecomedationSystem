@@ -28,18 +28,18 @@ public class RecommendationService {
     }
 
     /* public endpoints*/
-    public Map<String, Integer> getAnimeRecommendation(String name) {
+    public Map<Long, Integer> getAnimeRecommendation(String name) {
         final var animeId = animeService.getAnimeIdByName(name); //one anime id
         return recommendAnimeBasedOnUsersIntersection(animeId);
     }
 
-    public Map<String, Integer> getAnimeRecommendation(Long animeId) {
+    public Map<Long, Integer> getAnimeRecommendation(Long animeId) {
         return recommendAnimeBasedOnUsersIntersection(animeId);
     }
     /*---*/
 
     //main process method for intersection algorithm
-    private Map<String, Integer> recommendAnimeBasedOnUsersIntersection(Long animeId) {
+    private Map<Long, Integer> recommendAnimeBasedOnUsersIntersection(Long animeId) {
         final var usersId = userAnimeScoreService.getUserWithAnime(animeId);
         logger.info("Users with anime after service: {}", usersId.size());
         final var userRatingsData = fetchRatedAnimeByUsers(usersId, animeId, Pageable.unpaged());
@@ -72,9 +72,9 @@ public class RecommendationService {
                 .collect(Collectors.groupingBy(UsersAnimeScoreDto::userId)) // grouping records based UserID Map<Long, List<UsersAnimeScoreDto>>
                 .entrySet().stream().
                 map(e -> {
-                    Map<String, Integer> map = e.getValue().stream().collect(Collectors.toMap(UsersAnimeScoreDto::animeName, UsersAnimeScoreDto::rating, (_, b) -> b));
+                    var map = e.getValue().stream().collect(Collectors.toMap(UsersAnimeScoreDto::animeId, UsersAnimeScoreDto::rating, (_, b) -> b));
                     return Map.entry(e.getKey(), map);
-                    // making  name and rating from list -> Map.Entry<Long, Map<String, Integer>>
+                    // making name and rating from list -> Map.Entry<Long, Map<String, Integer>>
                 })
                 .map(entry -> new UserAnimeList(entry.getKey(), entry.getValue()))
                 .toList();
@@ -116,7 +116,7 @@ public class RecommendationService {
     }
 
     //comparing lists which anime is common across all users
-    private Map<String, Integer> findIntersectedAnime(List<UserAnimeList> data) {
+    private Map<Long, Integer> findIntersectedAnime(List<UserAnimeList> data) {
         logger.debug("data size: {}", data.size());
         //  data.forEach(user -> logger.debug("user: {}", user.id()));
         final var initialList = new HashMap<>(data.getFirst().animeList());//copy of data to doesn't mess with the original data
@@ -142,7 +142,7 @@ public class RecommendationService {
      * @param user the {@link UserAnimeList} record containing a map of anime titles with their respective rankings
      * @return a sorted {@link Map} with anime titles as keys and their rankings as values, ordered in descending order of rankings
      */
-    private Map<String, Integer> sortAnimeMapByRanking(UserAnimeList user) {
+    private Map<Long, Integer> sortAnimeMapByRanking(UserAnimeList user) {
         final var rankedUserAnimeMap =
                 user.animeList().entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                         .collect(Collectors.toMap(
@@ -154,9 +154,9 @@ public class RecommendationService {
     }
 
     // take only anime with rating x to y
-    private Map<String, Integer> cutTheTopNByRanking(Map<String, Integer> map, int minRanking, int maxRanking) {
-        final var result = new LinkedHashMap<String, Integer>();
-        for (Map.Entry<String, Integer> e : map.entrySet()) {
+    private Map<Long, Integer> cutTheTopNByRanking(Map<Long, Integer> map, int minRanking, int maxRanking) {
+        final var result = new LinkedHashMap<Long, Integer>();
+        for (var e : map.entrySet()) {
             if (e.getValue() >= minRanking && e.getValue() <= maxRanking) {
                 result.putIfAbsent(e.getKey(), e.getValue());
             } else {
