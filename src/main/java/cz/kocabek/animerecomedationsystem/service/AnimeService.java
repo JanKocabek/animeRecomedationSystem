@@ -1,8 +1,11 @@
 package cz.kocabek.animerecomedationsystem.service;
 
+import cz.kocabek.animerecomedationsystem.dto.AnimeDto;
 import cz.kocabek.animerecomedationsystem.entity.Anime;
 import cz.kocabek.animerecomedationsystem.repository.AnimeRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AnimeService {
@@ -23,6 +26,10 @@ public class AnimeService {
 
     public Long getAnimeIdByName(String name){
         return animeRepository.getAnimeIdByName(name);
+    }
+
+    public List<AnimeDto> getListAnimeFromIds(List<Long> ids){
+        return animeRepository.getAnimeSetOrderByScore(ids);
     }
 
 }
