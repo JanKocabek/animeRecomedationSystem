@@ -27,8 +27,8 @@ public class RecommendationService {
     }
 
     public Map<String, Integer> getAnimeRecommendation(String name) {
-        Long animeId = animeService.getAnimeIdByName(name); //one anime id
-        List<Long> usersId = userAnimeScoreService.getUserWithAnime(animeId);
+        final var animeId = animeService.getAnimeIdByName(name); //one anime id
+        final var usersId = userAnimeScoreService.getUserWithAnime(animeId);
         logger.info("Users with anime after service: {}", usersId.size());
         final var userRatingsData = fetchRatedAnimeByUsers(usersId, animeId, 10000);
         final var groupedUsersLists = groupedUsersLists(userRatingsData);
@@ -49,7 +49,7 @@ public class RecommendationService {
     private List<UserAnimeList> groupedUsersLists(Slice<UsersAnimeScoreDto> data) {
         // grouping records based UserID Map<Long, List<UsersAnimeScoreDto>>
         // making name and rating from list -> Map.Entry<Long, Map<String, Integer>>
-        List<UserAnimeList> list = data.get()
+        final var list = data.get()
                 .collect(Collectors.groupingBy(UsersAnimeScoreDto::userId)) // grouping records based UserID Map<Long, List<UsersAnimeScoreDto>>
                 .entrySet().stream().
                 map(e -> {
@@ -115,7 +115,7 @@ public class RecommendationService {
      * @return a sorted {@link Map} with anime titles as keys and their rankings as values, ordered in descending order of rankings
      */
     private Map<String, Integer> sortAnimeMapByRanking(UserAnimeList user) {
-        Map<String, Integer> rankedUserAnimeMap =
+        final var rankedUserAnimeMap =
                 user.animeList().entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                         .collect(Collectors.toMap(
                                 Map.Entry::getKey,
