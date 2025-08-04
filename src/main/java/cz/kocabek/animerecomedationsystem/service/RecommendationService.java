@@ -6,6 +6,7 @@ import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,32 +20,33 @@ public class RecommendationService {
     UserAnimeScoreService userAnimeScoreService;
     UsersAnimeScoreRepository usersAnimeScoreRepository;
 
-    public RecommendationService(AnimeService animeService , UsersAnimeScoreRepository usersAnimeScoreRepository, UserAnimeScoreService userAnimeScoreService) {
+    public RecommendationService(AnimeService animeService, UsersAnimeScoreRepository usersAnimeScoreRepository, UserAnimeScoreService userAnimeScoreService) {
         this.animeService = animeService;
         this.userAnimeScoreService = userAnimeScoreService;
         this.usersAnimeScoreRepository = usersAnimeScoreRepository;
     }
 
     public Map<String, Integer> getAnimeRecommendation(String name) {
-        Long animeId = animeService.getAnimeIdByName(name);
+        Long animeId = animeService.getAnimeIdByName(name); //one anime id
         List<Long> usersId = userAnimeScoreService.getUserWithAnime(animeId);
         logger.info("Users with anime after service: {}", usersId.size());
-        final var data = groupedUsersLists(usersId, animeId);
-        logger.info("size of data after grouping: {}", data.size());
-        final var highRankedData = sectionByRank(5, 10, data);
+        final var userRatingsData = fetchRatedAnimeByUsers(usersId, animeId, 10000);
+        final var groupedUsersLists = groupedUsersLists(userRatingsData);
+        logger.info("size of data after grouping: {}", groupedUsersLists.size());
+        final var highRankedData = sectionByRank(5, 10, groupedUsersLists);
         logger.debug("size of high ranked data: {}", highRankedData.size());
         return findIntersectedAnime(highRankedData);
     }
 
+
     /**
-     * Groups a list of user IDs by their rated anime, creating a list of UserAnimeList records.
+     * Groups the provided data of anime scores by user ID and constructs a list of {@link UserAnimeList}
+     * objects containing user IDs and their respective anime ratings.
      *
-     * @param usersId a list of user IDs whose rated anime and scores should be retrieved and grouped
-     * @return a list of UserAnimeList records, where each record contains a user ID and a map of anime titles with their respective ratings
+     * @param data a {@link Slice} of {@link UsersAnimeScoreDto} objects representing user ratings for various anime
+     * @return a {@link List} of {@link UserAnimeList} containing user IDs and their mapped anime scores
      */
-    private List<UserAnimeList> groupedUsersLists(List<Long> usersId, Long animeId) {
-        final var data = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, animeId, PageRequest.of(0, 20000));
-        logger.debug("size of fetch data:  {}",data.getContent().size());
+    private List<UserAnimeList> groupedUsersLists(Slice<UsersAnimeScoreDto> data) {
         // grouping records based UserID Map<Long, List<UsersAnimeScoreDto>>
         // making name and rating from list -> Map.Entry<Long, Map<String, Integer>>
         List<UserAnimeList> list = data.get()
@@ -60,9 +62,16 @@ public class RecommendationService {
         return list;
     }
 
+    private Slice<UsersAnimeScoreDto> fetchRatedAnimeByUsers(List<Long> usersId, Long animeId, int limit) {
+        Slice<UsersAnimeScoreDto> ratedAnimeData = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, animeId, PageRequest.of(0, limit));
+        //logger.debug("size of fetch data:  {}", ratedAnimeData.getContent().size());
+        logger.debug("size of fetch Animedata: {} vs asked: {}", ratedAnimeData.getNumberOfElements(), limit);
+        return ratedAnimeData;
+    }
+
 
     /**
-     *filter anime in given rating ranks and create copy of
+     *filter anime in given rating ranks and create a copy of it
      *
      * @param minRank minimal anime rank
      * @param maxRank maximal anime rank
