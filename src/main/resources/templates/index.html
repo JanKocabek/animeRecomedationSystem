@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Anime Recommendation system</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<h1>welcome in the Anime Recommendation system</h1>
+<form role="form" action="#" th:object="${anime}" th:action="@{/submit}" method="post">
+    <fieldset>
+        <label for="animeName">name of anime:</label>
+        <input type="text" th:field="*{animeName}"/>
+        <input type="submit" value="Search"></fieldset>
+    <p th:if="${#fields.hasErrors('animeName')}">
+        <span th:errors="*{animeName}" class="text-danger"></span>
+    </p>
+</form>
+</body>
+</html>
