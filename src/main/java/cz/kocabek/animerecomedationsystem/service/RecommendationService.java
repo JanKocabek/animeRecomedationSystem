@@ -12,14 +12,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class RecommendService {
-    private static final Logger logger = LoggerFactory.getLogger(RecommendService.class);
+public class RecommendationService {
+    private static final Logger logger = LoggerFactory.getLogger(RecommendationService.class);
 
     AnimeService animeService;
     UserAnimeScoreService userAnimeScoreService;
     UsersAnimeScoreRepository usersAnimeScoreRepository;
 
-    public RecommendService(AnimeService animeService , UsersAnimeScoreRepository usersAnimeScoreRepository, UserAnimeScoreService userAnimeScoreService) {
+    public RecommendationService(AnimeService animeService , UsersAnimeScoreRepository usersAnimeScoreRepository, UserAnimeScoreService userAnimeScoreService) {
         this.animeService = animeService;
         this.userAnimeScoreService = userAnimeScoreService;
         this.usersAnimeScoreRepository = usersAnimeScoreRepository;

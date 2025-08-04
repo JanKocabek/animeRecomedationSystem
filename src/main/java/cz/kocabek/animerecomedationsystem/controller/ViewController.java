@@ -3,7 +3,7 @@ package cz.kocabek.animerecomedationsystem.controller;
 import cz.kocabek.animerecomedationsystem.entity.Anime;
 import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
 import cz.kocabek.animerecomedationsystem.service.AnimeService;
-import cz.kocabek.animerecomedationsystem.service.RecommendService;
+import cz.kocabek.animerecomedationsystem.service.RecommendationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +17,12 @@ public class ViewController {
 
     AnimeService animeService;
     UsersAnimeScoreRepository usersAnimeScoreRepository;
-    RecommendService recommendService;
+    RecommendationService recommendationService;
 
-    public ViewController(AnimeService animeService, UsersAnimeScoreRepository usersAnimeScoreRepository, RecommendService recommendService) {
+    public ViewController(AnimeService animeService, UsersAnimeScoreRepository usersAnimeScoreRepository, RecommendationService recommendationService) {
         this.animeService = animeService;
         this.usersAnimeScoreRepository = usersAnimeScoreRepository;
-        this.recommendService = recommendService;
+        this.recommendationService = recommendationService;
     }
 
     @ResponseBody
@@ -42,7 +42,7 @@ public class ViewController {
     @ResponseBody
     @GetMapping("/anime/recommend/{name}")
     public ResponseEntity<Map<String, Integer>> getAnimeRecommendation(@PathVariable String name) {
-        Map<String, Integer> data = recommendService.getAnimeRecommendation(name);
+        Map<String, Integer> data = recommendationService.getAnimeRecommendation(name);
         return ResponseEntity.ok(data);
     }
 }
