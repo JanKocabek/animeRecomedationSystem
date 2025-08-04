@@ -1,5 +1,6 @@
 package cz.kocabek.animerecomedationsystem.service;
 
+import cz.kocabek.animerecomedationsystem.dto.AnimeDto;
 import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
 import cz.kocabek.animerecomedationsystem.dto.UsersAnimeScoreDto;
 import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
@@ -28,18 +29,18 @@ public class RecommendationService {
     }
 
     /* public endpoints*/
-    public Map<Long, Integer> getAnimeRecommendation(String name) {
+    public List<AnimeDto> getAnimeRecommendation(String name) {
         final var animeId = animeService.getAnimeIdByName(name); //one anime id
         return recommendAnimeBasedOnUsersIntersection(animeId);
     }
 
-    public Map<Long, Integer> getAnimeRecommendation(Long animeId) {
+    public List<AnimeDto> getAnimeRecommendation(Long animeId) {
         return recommendAnimeBasedOnUsersIntersection(animeId);
     }
     /*---*/
 
     //main process method for intersection algorithm
-    private Map<Long, Integer> recommendAnimeBasedOnUsersIntersection(Long animeId) {
+    private List<AnimeDto> recommendAnimeBasedOnUsersIntersection(Long animeId) {
         final var usersId = userAnimeScoreService.getUserWithAnime(animeId);
         logger.info("Users with anime after service: {}", usersId.size());
         final var userRatingsData = fetchRatedAnimeByUsers(usersId, animeId, Pageable.unpaged());
@@ -47,7 +48,9 @@ public class RecommendationService {
         logger.info("size of data after grouping: {}", groupedUsersLists.size());
         final var highRankedData = sectionByRank(8, 10, groupedUsersLists);
         logger.debug("size of high ranked data: {}", highRankedData.size());
-        return findIntersectedAnime(highRankedData);
+        final var recommendedAnimeMap = findIntersectedAnime(highRankedData);
+        logger.debug("size of intersected anime: {}", recommendedAnimeMap.size());
+        return animeService.getListAnimeFromIds(recommendedAnimeMap.keySet());
     }
 
     //fetching anime ranking records from given userIdList and anime ID

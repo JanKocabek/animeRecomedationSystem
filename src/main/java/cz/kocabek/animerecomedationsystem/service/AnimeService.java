@@ -5,6 +5,7 @@ import cz.kocabek.animerecomedationsystem.entity.Anime;
 import cz.kocabek.animerecomedationsystem.repository.AnimeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -20,15 +21,15 @@ public class AnimeService {
         return animeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Anime not found"));
     }
 
-    public Iterable<Anime> getAnimeByGenre(String genre){
+    public Iterable<Anime> getAnimeByGenre(String genre) {
         return animeRepository.findTop5ByGenres_GenreNameContainsIgnoreCaseAllIgnoreCase(genre);
     }
 
-    public Long getAnimeIdByName(String name){
+    public Long getAnimeIdByName(String name) {
         return animeRepository.getAnimeIdByName(name);
     }
 
-    public List<AnimeDto> getListAnimeFromIds(List<Long> ids){
+    public List<AnimeDto> getListAnimeFromIds(Collection<Long> ids) {
         return animeRepository.getAnimeSetOrderByScore(ids);
     }
 

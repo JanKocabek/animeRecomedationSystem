@@ -46,8 +46,8 @@ public class ViewController {
 
     @GetMapping("/result")
     public String getResultPage(@RequestParam Long id, Model model) {
-        final var recommendationMap = recommendationService.getAnimeRecommendation(id);
-        model.addAttribute("recommendationMap", recommendationMap);
+        final var recommendations = recommendationService.getAnimeRecommendation(id);
+        model.addAttribute("recommendations", recommendations);
         model.addAttribute("anime", new FormData());
         return "result";
     }

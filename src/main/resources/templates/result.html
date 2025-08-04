@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
+
 <h1>welcome in the Anime Recommendation system</h1>
 <form role="form" action="#" th:object="${anime}" th:action="@{/submit}" method="post">
     <fieldset>
@@ -19,9 +20,16 @@
 <h2>result</h2>
 <table class="table table-hover">
     <tbody>
-    <tr th:each="entry : ${recommendations}" th:with="rating=${entry.value}">
-        <td th:text="${entry.key}"/>
-        <td th:text="${rating}"/>
+    <tr th:each="AnimeDTO : ${recommendations}">
+        <td th:text="${AnimeDTO.name}"></td>
+        <td th:text="${AnimeDTO.score}"></td>
+        <td>
+            <a th:with="baseUrl=${'https://myanimelist.net/anime/'}"
+               th:href="@{${baseUrl}+${AnimeDTO.id}+'/'}">
+                <img th:src="@{${AnimeDTO.imageURL}}" th:alt="${AnimeDTO.name}"/>
+            </a>
+
+        </td>
     </tr>
     </tbody>
 </table>
