@@ -6,6 +6,7 @@ import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +31,10 @@ public class RecommendationService {
         final var animeId = animeService.getAnimeIdByName(name); //one anime id
         final var usersId = userAnimeScoreService.getUserWithAnime(animeId);
         logger.info("Users with anime after service: {}", usersId.size());
-        final var userRatingsData = fetchRatedAnimeByUsers(usersId, animeId, 10000);
+        final var userRatingsData = fetchRatedAnimeByUsers(usersId, animeId, Pageable.unpaged());
         final var groupedUsersLists = groupedUsersLists(userRatingsData);
         logger.info("size of data after grouping: {}", groupedUsersLists.size());
-        final var highRankedData = sectionByRank(5, 10, groupedUsersLists);
+        final var highRankedData = sectionByRank(8, 10, groupedUsersLists);
         logger.debug("size of high ranked data: {}", highRankedData.size());
         return findIntersectedAnime(highRankedData);
     }
@@ -62,10 +63,10 @@ public class RecommendationService {
         return list;
     }
 
-    private Slice<UsersAnimeScoreDto> fetchRatedAnimeByUsers(List<Long> usersId, Long animeId, int limit) {
-        final var ratedAnimeData = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, animeId, PageRequest.of(0, limit));
-        //logger.debug("size of fetch data:  {}", ratedAnimeData.getContent().size());
-        logger.debug("size of fetch Animedata: {} vs asked: {}", ratedAnimeData.getNumberOfElements(), limit);
+    private Slice<UsersAnimeScoreDto> fetchRatedAnimeByUsers(List<Long> usersId, Long animeId, Pageable pageable) {
+        final var ratedAnimeData = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, animeId, pageable);
+        logger.debug("size of fetch data:  {}", ratedAnimeData.getContent().size());
+        //logger.debug("size of fetch Animedata: {} vs asked: {}", ratedAnimeData.getNumberOfElements(), limit);
         return ratedAnimeData;
     }
 
@@ -79,12 +80,27 @@ public class RecommendationService {
      * @return dissected data
      */
     private List<UserAnimeList> sectionByRank(int minRank, int maxRank, List<UserAnimeList> data) {
-        logger.debug("data size is correct: {}", data.size());
+       if(logger.isDebugEnabled()){
+           for (int i = 0; i < 6; i++) {
+               UserAnimeList user = data.get(i);
+               logger.debug("user: {}", user.id());
+               logger.debug("anime list: {}", user.animeList().size());
+           }
+           logger.debug("_____");
+       }
         final var rankedSection = new ArrayList<UserAnimeList>();
         data.forEach(
                 user -> rankedSection.add(new UserAnimeList(user.id(), cutTheTopNByRanking(sortAnimeMapByRanking(user), minRank, maxRank)))
         );
-        logger.debug("ranked section size: {}", rankedSection.size());
+        if(logger.isDebugEnabled()){
+            logger.debug("after section");
+            for (int i = 0; i <6; i++) {
+                UserAnimeList user = rankedSection.get(i);
+                logger.debug("user: {}", user.id());
+                logger.debug("anime list: {}", user.animeList().size());
+            }
+            logger.debug("ranked section size: {}", rankedSection.size());
+        }
         return rankedSection;
     }
 
