@@ -63,7 +63,7 @@ public class RecommendationService {
     }
 
     private Slice<UsersAnimeScoreDto> fetchRatedAnimeByUsers(List<Long> usersId, Long animeId, int limit) {
-        Slice<UsersAnimeScoreDto> ratedAnimeData = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, animeId, PageRequest.of(0, limit));
+        final var ratedAnimeData = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, animeId, PageRequest.of(0, limit));
         //logger.debug("size of fetch data:  {}", ratedAnimeData.getContent().size());
         logger.debug("size of fetch Animedata: {} vs asked: {}", ratedAnimeData.getNumberOfElements(), limit);
         return ratedAnimeData;
@@ -91,7 +91,7 @@ public class RecommendationService {
     private Map<String, Integer> findIntersectedAnime(List<UserAnimeList> data) {
         logger.debug("data size: {}", data.size());
         //  data.forEach(user -> logger.debug("user: {}", user.id()));
-        final var initialList = new HashMap<>(data.getFirst().animeList());//copy of data to not mess with
+        final var initialList = new HashMap<>(data.getFirst().animeList());//copy of data to doesn't mess with the original data
         var lastIntersectList = new HashMap<>(initialList);//for getting results earlier if the intersection goes to 0
         if (data.size() > 1) {
             for (UserAnimeList user : data.subList(1, data.size())) {
