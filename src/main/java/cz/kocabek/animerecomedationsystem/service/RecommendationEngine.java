@@ -3,6 +3,7 @@ package cz.kocabek.animerecomedationsystem.service;
 import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
 import cz.kocabek.animerecomedationsystem.dto.UsersAnimeScoreDto;
 import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
+import cz.kocabek.animerecomedationsystem.service.config.SystemConfConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Slice;

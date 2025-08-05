@@ -1,6 +1,7 @@
 package cz.kocabek.animerecomedationsystem.service;
 
 import cz.kocabek.animerecomedationsystem.dto.AnimeDto;
+import cz.kocabek.animerecomedationsystem.service.config.SystemConfConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;

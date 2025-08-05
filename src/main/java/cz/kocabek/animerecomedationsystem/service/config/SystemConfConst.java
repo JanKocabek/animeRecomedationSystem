@@ -1,4 +1,4 @@
-package cz.kocabek.animerecomedationsystem.service;
+package cz.kocabek.animerecomedationsystem.service.config;
 
 public class SystemConfConst {
     public static final int MIN_RATING_GET = 0; //min rating for the filter
