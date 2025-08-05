@@ -39,27 +39,21 @@ public class RecommendationService {
     }
     /*---*/
 
-    //main process method for intersection algorithm
+    //main process method for the output - currently intersection algorithm
     private List<AnimeDto> recommendAnimeBasedOnUsersIntersection(Long animeId) {
         final var usersId = userAnimeScoreService.getUserWithAnime(animeId);
         logger.info("Users with anime after service: {}", usersId.size());
-        final var userRatingsData = fetchRatedAnimeByUsers(usersId, animeId, Pageable.unpaged());
+        final var userRatingsData = userAnimeScoreService.fetchRatedAnimeByUsers(usersId, animeId, Pageable.unpaged());
         final var groupedUsersLists = groupedUsersLists(userRatingsData);
         logger.info("size of data after grouping: {}", groupedUsersLists.size());
-        final var highRankedData = sectionByRank(SystemConfConst.MIN_ANI_SCORE, SystemConfConst.MAX_ANI_SCORE, groupedUsersLists);
+        final var highRankedData = sectionByRank(SystemConfConst.MIN_RATING_GET, groupedUsersLists);
         logger.debug("size of high ranked data: {}", highRankedData.size());
         final var recommendedAnimeMap = findIntersectedAnime(highRankedData);
         logger.debug("size of intersected anime: {}", recommendedAnimeMap.size());
         return animeService.getListAnimeFromIds(recommendedAnimeMap.keySet());
     }
 
-    //fetching anime ranking records from given userIdList and anime ID
-    private Slice<UsersAnimeScoreDto> fetchRatedAnimeByUsers(List<Long> usersId, Long animeId, Pageable pageable) {
-        final var ratedAnimeData = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, animeId, pageable);
-        logger.debug("size of fetch data:  {}", ratedAnimeData.getContent().size());
-        //logger.debug("size of fetch Animedata: {} vs asked: {}", ratedAnimeData.getNumberOfElements(), limit);
-        return ratedAnimeData;
-    }
+
 
     /**
      * Groups the provided data of anime scores by user ID and constructs a list of {@link UserAnimeList}
@@ -116,6 +110,10 @@ public class RecommendationService {
 //            logger.debug("ranked section size: {}", rankedSection.size());
 //        }
         return rankedSection;
+    }
+
+    private List<UserAnimeList> sectionByRank(int minRank, List<UserAnimeList> data) {
+        return sectionByRank(minRank, SystemConfConst.MAX_SCORE, data);
     }
 
     //comparing lists which anime is common across all users
