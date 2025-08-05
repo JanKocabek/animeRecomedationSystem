@@ -1,13 +1,12 @@
 package cz.kocabek.animerecomedationsystem.service;
 
 import cz.kocabek.animerecomedationsystem.dto.AnimeDto;
-import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 public class RecommendationService {
@@ -15,14 +14,11 @@ public class RecommendationService {
 
     AnimeService animeService;
     UserAnimeScoreService userAnimeScoreService;
-    UsersAnimeScoreRepository usersAnimeScoreRepository;
     RecommendationEngine recommendationEngine;
 
 
-    public RecommendationService(AnimeService animeService, UsersAnimeScoreRepository usersAnimeScoreRepository, UserAnimeScoreService userAnimeScoreService, RecommendationEngine recommendationEngine) {
+    public RecommendationService(AnimeService animeService, RecommendationEngine recommendationEngine) {
         this.animeService = animeService;
-        this.userAnimeScoreService = userAnimeScoreService;
-        this.usersAnimeScoreRepository = usersAnimeScoreRepository;
         this.recommendationEngine = recommendationEngine;
     }
 
@@ -42,7 +38,7 @@ public class RecommendationService {
         final var usersId = userAnimeScoreService.getUserWithAnime(animeId);
         logger.info("Users with anime after service: {}", usersId.size());
         final var userRatingsData = userAnimeScoreService.fetchRatedAnimeByUsers(usersId, animeId, Pageable.unpaged());
-        final var userAnimeLists =  recommendationEngine.groupUserByID(userRatingsData);
+        final var userAnimeLists = recommendationEngine.groupUserByID(userRatingsData);
         logger.info("size of data after grouping: {}", userAnimeLists.size());
         final var highRankedData = recommendationEngine.filterUserListsByRank(SystemConfConst.MIN_RATING_GET, userAnimeLists);
         logger.debug("size of high ranked data: {}", highRankedData.size());
@@ -50,7 +46,6 @@ public class RecommendationService {
         logger.debug("size of intersected anime: {}", recommendedAnimeMap.size());
         return animeService.getListAnimeFromIds(recommendedAnimeMap.keySet());
     }
-
 
 
 }
