@@ -18,11 +18,9 @@ public class Anime {
     private Long id;
 
     @NotNull
-    @Lob
     @Column(name = "Name", nullable = false)
     private String name;
 
-    @Lob
     @Column(name = "`English name`")
     private String englishName;
 

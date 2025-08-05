@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface AnimeRepository extends JpaRepository<Anime, Long> {
     Iterable<Anime> findTop5ByGenres_GenreNameContainsIgnoreCaseAllIgnoreCase(@NonNull String genreName);
 
-    @Query("select a.id from Anime a where a.name = ?1")
+    @Query("select a.id from Anime a where lower( a.name) = ?1")
     Optional<Long> getAnimeIdByName(@NonNull String name);
 
     @Query("select new cz.kocabek.animerecomedationsystem.dto.AnimeDto(a.id,a.name,a.score,a.imageURL)  from Anime a where a.id  in :animeIds order by a.score DESC")

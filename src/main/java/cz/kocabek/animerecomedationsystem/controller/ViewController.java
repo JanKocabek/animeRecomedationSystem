@@ -35,7 +35,6 @@ public class ViewController {
         if (bindingResult.hasErrors()) {
             return "index";
         }
-        data.setAnimeName(data.getAnimeName().toLowerCase());
         Long id;
         try {
             id = animeService.getAnimeIdByName(data.getAnimeName());

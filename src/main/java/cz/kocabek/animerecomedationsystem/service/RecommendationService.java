@@ -17,9 +17,10 @@ public class RecommendationService {
     RecommendationEngine recommendationEngine;
 
 
-    public RecommendationService(AnimeService animeService, RecommendationEngine recommendationEngine) {
+    public RecommendationService(AnimeService animeService, RecommendationEngine recommendationEngine, UserAnimeScoreService userAnimeScoreService) {
         this.animeService = animeService;
         this.recommendationEngine = recommendationEngine;
+        this.userAnimeScoreService = userAnimeScoreService;
     }
 
     /* public endpoints*/
