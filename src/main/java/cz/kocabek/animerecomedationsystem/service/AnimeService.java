@@ -18,7 +18,7 @@ public class AnimeService {
         this.animeRepository = animeRepository;
     }
 
-    public Anime getAnimeById(Long id) throws IllegalArgumentException{
+    public Anime getAnimeById(Long id) throws IllegalArgumentException {
         return animeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Anime not found"));
     }
 
@@ -27,7 +27,10 @@ public class AnimeService {
     }
 
     public Long getAnimeIdByName(String name) throws ValidationException {
-        return animeRepository.getAnimeIdByName(name).orElseThrow(() -> new ValidationException("Anime not found"));
+        return animeRepository.getAnimeIdByName(name.toLowerCase())
+                .orElse(animeRepository.getAnimeIdByEnglishName(name)
+                        .orElseThrow(() -> new ValidationException("Anime not found")));
+
     }
 
     public List<AnimeDto> getListAnimeFromIds(Collection<Long> ids) {
