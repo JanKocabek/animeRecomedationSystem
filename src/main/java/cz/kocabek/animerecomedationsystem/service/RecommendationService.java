@@ -44,10 +44,12 @@ public class RecommendationService {
         logger.info("size of data after grouping: {}", userAnimeLists.size());
         final var highRankedData = recommendationEngine.filterUserListsByRank(SystemConfConst.MIN_RATING_GET, userAnimeLists);
         logger.debug("size of high ranked data: {}", highRankedData.size());
-        final var recommendedAnimeMap = recommendationEngine.findIntersectedAnime(highRankedData);
-        logger.debug("size of intersected anime: {}", recommendedAnimeMap.size());
-        return animeService.getListAnimeFromIds(recommendedAnimeMap.keySet());
+        final var animeOcurrencesMap = recommendationEngine.countAnimeOccurrences(highRankedData);
+        logger.debug("size of intersected anime: {}", animeOcurrencesMap.size());
+        return animeService.getListAnimeFromIds(animeOcurrencesMap.keySet());
     }
+
+
 
 
 }

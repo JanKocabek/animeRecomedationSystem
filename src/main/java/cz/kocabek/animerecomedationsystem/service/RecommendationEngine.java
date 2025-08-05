@@ -92,23 +92,33 @@ public class RecommendationEngine {
     }
 
     //comparing lists which anime is common across all users
-     Map<Long, Integer> findIntersectedAnime(List<UserAnimeList> data) {
-        logger.debug("data size: {}", data.size());
-        //  data.forEach(user -> logger.debug("user: {}", user.id()));
-        final var initialList = new HashMap<>(data.getFirst().animeList());//copy of data to doesn't mess with the original data
-        var lastIntersectList = new HashMap<>(initialList);//for getting results earlier if the intersection goes to 0
-        if (data.size() > 1) {
-            for (UserAnimeList user : data.subList(1, data.size())) {
-                boolean _ = initialList.keySet().retainAll(user.animeList().keySet());
-                if (initialList.isEmpty()) {
-                    logger.debug("initial list is empty");
-                    break;
-                }
-                lastIntersectList = new HashMap<>(initialList);
-                //logger.debug("intersected list number: {}", initialList.keySet());
-            }
+//     Map<Long, Integer> findIntersectedAnime(List<UserAnimeList> data) {
+//        logger.debug("data size: {}", data.size());
+//        //  data.forEach(user -> logger.debug("user: {}", user.id()));
+//        final var initialList = new HashMap<>(data.getFirst().animeList());//copy of data to doesn't mess with the original data
+//        var lastIntersectList = new HashMap<>(initialList);//for getting results earlier if the intersection goes to 0
+//        if (data.size() > 1) {
+//            for (UserAnimeList user : data.subList(1, data.size())) {
+//                boolean _ = initialList.keySet().retainAll(user.animeList().keySet());
+//                if (initialList.isEmpty()) {
+//                    logger.debug("initial list is empty");
+//                    break;
+//                }
+//                lastIntersectList = new HashMap<>(initialList);
+//                //logger.debug("intersected list number: {}", initialList.keySet());
+//            }
+//        }
+//        return lastIntersectList;
+//    }
+
+    Map<Long,Integer> countAnimeOccurrences(List<UserAnimeList> data) {
+         logger.debug("data size: {}", data.size());
+         final Map<Long,Integer> result = new LinkedHashMap<>();
+        for (UserAnimeList user : data) {
+            user.animeList().forEach((key, _) -> result.put(key,
+                    !result.containsKey(key) ? 1 : result.get(key) + 1));
         }
-        return lastIntersectList;
+        return result;
     }
 
     /**
