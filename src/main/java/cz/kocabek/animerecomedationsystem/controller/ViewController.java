@@ -36,8 +36,11 @@ public class ViewController {
             return "index";
         }
         data.setAnimeName(data.getAnimeName().toLowerCase());
-        final var id = animeService.getAnimeIdByName(data.getAnimeName());
-        if (id == null) {
+        Long id;
+        try {
+            id = animeService.getAnimeIdByName(data.getAnimeName());
+        } catch (Exception e) {
+            bindingResult.rejectValue("animeName", "error.anime", e.getMessage());
             return "index";
         }
         redirectAttributes.addAttribute("id", id);

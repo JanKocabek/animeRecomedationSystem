@@ -3,6 +3,7 @@ package cz.kocabek.animerecomedationsystem.service;
 import cz.kocabek.animerecomedationsystem.dto.AnimeDto;
 import cz.kocabek.animerecomedationsystem.entity.Anime;
 import cz.kocabek.animerecomedationsystem.repository.AnimeRepository;
+import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -17,7 +18,7 @@ public class AnimeService {
         this.animeRepository = animeRepository;
     }
 
-    public Anime getAnimeById(Long id) {
+    public Anime getAnimeById(Long id) throws IllegalArgumentException{
         return animeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Anime not found"));
     }
 
@@ -25,8 +26,8 @@ public class AnimeService {
         return animeRepository.findTop5ByGenres_GenreNameContainsIgnoreCaseAllIgnoreCase(genre);
     }
 
-    public Long getAnimeIdByName(String name) {
-        return animeRepository.getAnimeIdByName(name);
+    public Long getAnimeIdByName(String name) throws ValidationException {
+        return animeRepository.getAnimeIdByName(name).orElseThrow(() -> new ValidationException("Anime not found"));
     }
 
     public List<AnimeDto> getListAnimeFromIds(Collection<Long> ids) {
