@@ -46,7 +46,7 @@ public class RecommendationService {
         final var userRatingsData = fetchRatedAnimeByUsers(usersId, animeId, Pageable.unpaged());
         final var groupedUsersLists = groupedUsersLists(userRatingsData);
         logger.info("size of data after grouping: {}", groupedUsersLists.size());
-        final var highRankedData = sectionByRank(8, 10, groupedUsersLists);
+        final var highRankedData = sectionByRank(SystemConfConst.MIN_ANI_SCORE, SystemConfConst.MAX_ANI_SCORE, groupedUsersLists);
         logger.debug("size of high ranked data: {}", highRankedData.size());
         final var recommendedAnimeMap = findIntersectedAnime(highRankedData);
         logger.debug("size of intersected anime: {}", recommendedAnimeMap.size());

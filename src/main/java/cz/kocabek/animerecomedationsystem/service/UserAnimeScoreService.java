@@ -19,7 +19,7 @@ public class UserAnimeScoreService {
     }
 
     public List<Long> getUserWithAnime(Long aniId) {
-        return usersAnimeScoreRepository.retrieveDistinctUserIdsByAnimeSorted(aniId, PageRequest.of(0, 1000)).getContent();
+        return usersAnimeScoreRepository.retrieveDistinctUserIdsByAnimeSorted(aniId, PageRequest.of(0, SystemConfConst.USERIDS_SIZE_Q_PAGE)).getContent();
     }
 
 }
