@@ -1,7 +1,6 @@
 package cz.kocabek.animerecomedationsystem.service;
 
 import cz.kocabek.animerecomedationsystem.dto.AnimeDto;
-import cz.kocabek.animerecomedationsystem.service.config.SystemConfConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -42,9 +41,7 @@ public class RecommendationService {
         final var userRatingsData = userAnimeScoreService.fetchRatedAnimeByUsers(usersId, animeId, Pageable.unpaged());
         final var userAnimeLists = recommendationEngine.groupUserByID(userRatingsData);
         logger.info("size of data after grouping: {}", userAnimeLists.size());
-        final var highRankedData = recommendationEngine.filterUserListsByRank(SystemConfConst.MIN_RATING_GET, userAnimeLists);
-        logger.debug("size of high ranked data: {}", highRankedData.size());
-        final var animeOcurrencesMap = recommendationEngine.countAnimeOccurrences(highRankedData);
+        final var animeOcurrencesMap = recommendationEngine.countAnimeOccurrences(userAnimeLists);
         logger.debug("size of intersected anime: {}", animeOcurrencesMap.size());
         return animeService.getListAnimeFromIds(animeOcurrencesMap.keySet());
     }

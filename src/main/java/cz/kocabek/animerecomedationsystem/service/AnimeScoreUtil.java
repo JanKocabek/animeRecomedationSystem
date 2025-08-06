@@ -1,10 +1,9 @@
 package cz.kocabek.animerecomedationsystem.service;
 
 import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
+import cz.kocabek.animerecomedationsystem.service.config.SystemConfConst;
 
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -34,5 +33,25 @@ public class AnimeScoreUtil {
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue, (old, _) -> old, LinkedHashMap::new));
+    }
+
+    /**
+     *filter anime in given rating ranks and create a copy of it
+     *
+     * @param minRank minimal anime rank
+     * @param maxRank maximal anime rank
+     * @param data @List<{@link UserAnimeList>} data which want to section
+     * @return dissected data
+     */
+    List<UserAnimeList> filterUserListsByRank(int minRank, int maxRank, List<UserAnimeList> data) {
+        final var rankedSection = new ArrayList<UserAnimeList>();
+        data.forEach(
+                user -> rankedSection.add(new UserAnimeList(user.id(), AnimeScoreUtil.cutTheTopNByRanking(sortAnimeMapByRanking(user), minRank, maxRank)))
+        );
+        return rankedSection;
+    }
+
+    List<UserAnimeList> filterUserListsByRank(int minRank, List<UserAnimeList> data) {
+        return filterUserListsByRank(minRank, SystemConfConst.MAX_SCORE, data);
     }
 }
