@@ -36,5 +36,4 @@ public class AnimeService {
     public List<AnimeDto> getListAnimeFromIds(Collection<Long> ids) {
         return animeRepository.getAnimeSetOrderByScore(ids);
     }
-
 }

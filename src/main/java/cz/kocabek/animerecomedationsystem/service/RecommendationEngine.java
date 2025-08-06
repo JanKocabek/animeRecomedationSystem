@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static cz.kocabek.animerecomedationsystem.service.AnimeScoreUtil.sortAnimeMapByRanking;
+
 @Service
 public class RecommendationEngine {
 
@@ -73,7 +75,7 @@ public class RecommendationEngine {
 //       }
         final var rankedSection = new ArrayList<UserAnimeList>();
         data.forEach(
-                user -> rankedSection.add(new UserAnimeList(user.id(), cutTheTopNByRanking(sortAnimeMapByRanking(user), minRank, maxRank)))
+                user -> rankedSection.add(new UserAnimeList(user.id(), AnimeScoreUtil.cutTheTopNByRanking(sortAnimeMapByRanking(user), minRank, maxRank)))
         );
 //        if(logger.isDebugEnabled()){
 //            logger.debug("after section");
@@ -91,26 +93,6 @@ public class RecommendationEngine {
         return filterUserListsByRank(minRank, SystemConfConst.MAX_SCORE, data);
     }
 
-    //comparing lists which anime is common across all users
-//     Map<Long, Integer> findIntersectedAnime(List<UserAnimeList> data) {
-//        logger.debug("data size: {}", data.size());
-//        //  data.forEach(user -> logger.debug("user: {}", user.id()));
-//        final var initialList = new HashMap<>(data.getFirst().animeList());//copy of data to doesn't mess with the original data
-//        var lastIntersectList = new HashMap<>(initialList);//for getting results earlier if the intersection goes to 0
-//        if (data.size() > 1) {
-//            for (UserAnimeList user : data.subList(1, data.size())) {
-//                boolean _ = initialList.keySet().retainAll(user.animeList().keySet());
-//                if (initialList.isEmpty()) {
-//                    logger.debug("initial list is empty");
-//                    break;
-//                }
-//                lastIntersectList = new HashMap<>(initialList);
-//                //logger.debug("intersected list number: {}", initialList.keySet());
-//            }
-//        }
-//        return lastIntersectList;
-//    }
-
     Map<Long,Integer> countAnimeOccurrences(List<UserAnimeList> data) {
          logger.debug("data size: {}", data.size());
          final Map<Long,Integer> result = new LinkedHashMap<>();
@@ -121,35 +103,7 @@ public class RecommendationEngine {
         return result;
     }
 
-    /**
-     * Sorts the anime map of the given user's anime list in descending order based on their rankings.
-     * Updates the user's anime list with the sorted map and returns the sorted map.
-     *
-     * @param user the {@link UserAnimeList} record containing a map of anime titles with their respective rankings
-     * @return a sorted {@link Map} with anime titles as keys and their rankings as values, ordered in descending order of rankings
-     */
-    Map<Long, Integer> sortAnimeMapByRanking(UserAnimeList user) {
-        final var rankedUserAnimeMap =
-                user.animeList().entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                        .collect(Collectors.toMap(
-                                Map.Entry::getKey,
-                                Map.Entry::getValue, (old, _) -> old, LinkedHashMap::new));
-        user.animeList().clear();
-        user.animeList().putAll(rankedUserAnimeMap);
-        return rankedUserAnimeMap;
-    }
 
-    // take only anime with rating x to y
-    Map<Long, Integer> cutTheTopNByRanking(Map<Long, Integer> map, int minRanking, int maxRanking) {
-        final var result = new LinkedHashMap<Long, Integer>();
-        for (var e : map.entrySet()) {
-            if (e.getValue() >= minRanking && e.getValue() <= maxRanking) {
-                result.putIfAbsent(e.getKey(), e.getValue());
-            } else {
-                break;
-            }
-        }
-        return result;
-    }
+
 
 }

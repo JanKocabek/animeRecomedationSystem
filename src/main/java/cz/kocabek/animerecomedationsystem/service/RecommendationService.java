@@ -27,16 +27,16 @@ public class RecommendationService {
     /* public endpoints*/
     public List<AnimeDto> getAnimeRecommendation(String name) {
         final var animeId = animeService.getAnimeIdByName(name); //one anime id
-        return recommendAnimeBasedOnUsersIntersection(animeId);
+        return generateAnimeRecommendations(animeId);
     }
 
     public List<AnimeDto> getAnimeRecommendation(Long animeId) {
-        return recommendAnimeBasedOnUsersIntersection(animeId);
+        return generateAnimeRecommendations(animeId);
     }
     /*---*/
 
     //main process method for the output - currently intersection algorithm
-    private List<AnimeDto> recommendAnimeBasedOnUsersIntersection(Long animeId) {
+    private List<AnimeDto> generateAnimeRecommendations(Long animeId) {
         final var usersId = userAnimeScoreService.getUserWithAnime(animeId);
         logger.info("Users with anime after service: {}", usersId.size());
         final var userRatingsData = userAnimeScoreService.fetchRatedAnimeByUsers(usersId, animeId, Pageable.unpaged());
@@ -48,9 +48,5 @@ public class RecommendationService {
         logger.debug("size of intersected anime: {}", animeOcurrencesMap.size());
         return animeService.getListAnimeFromIds(animeOcurrencesMap.keySet());
     }
-
-
-
-
 }
 
