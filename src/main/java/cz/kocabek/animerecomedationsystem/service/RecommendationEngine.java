@@ -2,7 +2,6 @@ package cz.kocabek.animerecomedationsystem.service;
 
 import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
 import cz.kocabek.animerecomedationsystem.dto.UsersAnimeScoreDto;
-import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Slice;
@@ -13,20 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * A service responsible for implementing the recommendation engine logic.
+ * This service aggregates user anime ratings and analyzes patterns to aid in recommendation generation.
+ */
 @Service
 public class RecommendationEngine {
 
     private static final Logger logger = LoggerFactory.getLogger(RecommendationEngine.class);
-    AnimeService animeService;
-    UserAnimeScoreService userAnimeScoreService;
-    UsersAnimeScoreRepository usersAnimeScoreRepository;
-
-    public RecommendationEngine(AnimeService animeService, UsersAnimeScoreRepository usersAnimeScoreRepository, UserAnimeScoreService userAnimeScoreService) {
-        this.animeService = animeService;
-        this.userAnimeScoreService = userAnimeScoreService;
-        this.usersAnimeScoreRepository = usersAnimeScoreRepository;
-    }
-
 
     /**
      * Groups the provided data of anime scores by user ID and constructs a list of {@link UserAnimeList}
@@ -56,8 +49,8 @@ public class RecommendationEngine {
      *
      *  @return @Map<{@link Long}, {@link Integer}> anime ID and its occurrence across the Users
      *
-    */
-    Map <Long, Integer> countAnimeOccurrences(List<UserAnimeList> data) {
+     */
+    Map<Long, Integer> countAnimeOccurrences(List<UserAnimeList> data) {
         logger.debug("data size: {}", data.size());
         final Map<Long, Integer> result = new LinkedHashMap<>();
         for (UserAnimeList user : data) {
@@ -66,6 +59,7 @@ public class RecommendationEngine {
         }
         return result;
     }
+
 
 
 }

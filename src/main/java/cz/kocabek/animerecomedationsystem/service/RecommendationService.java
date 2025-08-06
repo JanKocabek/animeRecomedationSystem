@@ -8,6 +8,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * A service for generating anime recommendations based on user preferences and interactions.
+ * This service leverages user rating data, user-anime associations, and recommendation algorithms
+ * to provide personalized anime suggestions.
+ *
+ * The service interacts with multiple components to retrieve and process data:
+ * - {@link AnimeService} for anime-related operations such as retrieving anime details and IDs.
+ * - {@link UserAnimeScoreService} for fetching user-anime relationship data and ratings.
+ * - {@link RecommendationEngine} to execute the recommendation algorithm and derive anime suggestions.
+ */
 @Service
 public class RecommendationService {
     private static final Logger logger = LoggerFactory.getLogger(RecommendationService.class);
