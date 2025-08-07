@@ -2,7 +2,7 @@ package cz.kocabek.animerecomedationsystem.service;
 
 import cz.kocabek.animerecomedationsystem.dto.UsersAnimeScoreDto;
 import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
-import cz.kocabek.animerecomedationsystem.service.config.SystemConfConst;
+import cz.kocabek.animerecomedationsystem.service.RecommendationConfig.RecommendationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +23,7 @@ public class UserAnimeScoreService {
     }
 
     public List<Long> getUserWithAnime(Long aniId) {
-        return usersAnimeScoreRepository.retrieveDistinctUserIdsByAnimeSorted(aniId, PageRequest.of(0, SystemConfConst.USERIDS_SIZE_Q_PAGE)).getContent();
+        return usersAnimeScoreRepository.retrieveDistinctUserIdsByAnimeSorted(aniId, PageRequest.of(0, RecommendationConfig.USERIDS_SIZE_Q_PAGE)).getContent();
     }
 
     //fetching anime ranking records from a given userIdList and anime ID

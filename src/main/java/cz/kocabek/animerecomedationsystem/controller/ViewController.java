@@ -2,6 +2,7 @@ package cz.kocabek.animerecomedationsystem.controller;
 
 import cz.kocabek.animerecomedationsystem.dto.FormData;
 import cz.kocabek.animerecomedationsystem.service.AnimeService;
+import cz.kocabek.animerecomedationsystem.service.DTOResultBuilder;
 import cz.kocabek.animerecomedationsystem.service.RecommendationService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -18,10 +19,12 @@ public class ViewController {
 
     RecommendationService recommendationService;
     AnimeService animeService;
+    DTOResultBuilder recommendationOutputBuilder;
 
-    public ViewController(RecommendationService recommendationService, AnimeService animeService) {
+    public ViewController(RecommendationService recommendationService, AnimeService animeService, DTOResultBuilder recommendationOutputBuilder) {
         this.recommendationService = recommendationService;
         this.animeService = animeService;
+        this.recommendationOutputBuilder = recommendationOutputBuilder;
     }
 
     @GetMapping("/")
@@ -38,6 +41,7 @@ public class ViewController {
         Long id;
         try {
             id = animeService.getAnimeIdByName(data.getAnimeName());
+            recommendationOutputBuilder.init(data.getAnimeName());
         } catch (Exception e) {
             bindingResult.rejectValue("animeName", "error.anime", e.getMessage());
             return "index";

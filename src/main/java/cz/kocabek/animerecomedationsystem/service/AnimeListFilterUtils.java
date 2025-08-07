@@ -1,13 +1,13 @@
 package cz.kocabek.animerecomedationsystem.service;
 
 import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
-import cz.kocabek.animerecomedationsystem.service.config.SystemConfConst;
+import cz.kocabek.animerecomedationsystem.service.RecommendationConfig.RecommendationConfig;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class AnimeScoreUtil {
+public class AnimeListFilterUtils {
     // take only anime with rating x to y
     static Map<Long, Integer> cutTheTopNByRanking(Map<Long, Integer> map, int minRanking, int maxRanking) {
         final var result = new LinkedHashMap<Long, Integer>();
@@ -46,12 +46,13 @@ public class AnimeScoreUtil {
     List<UserAnimeList> filterUserListsByRank(int minRank, int maxRank, List<UserAnimeList> data) {
         final var rankedSection = new ArrayList<UserAnimeList>();
         data.forEach(
-                user -> rankedSection.add(new UserAnimeList(user.id(), AnimeScoreUtil.cutTheTopNByRanking(sortAnimeMapByRanking(user), minRank, maxRank)))
+                user -> rankedSection.add(new UserAnimeList(user.id(), AnimeListFilterUtils.cutTheTopNByRanking(sortAnimeMapByRanking(user), minRank, maxRank)))
         );
         return rankedSection;
     }
 
     List<UserAnimeList> filterUserListsByRank(int minRank, List<UserAnimeList> data) {
-        return filterUserListsByRank(minRank, SystemConfConst.MAX_SCORE, data);
+        return filterUserListsByRank(minRank, RecommendationConfig.MAX_SCORE, data);
     }
+
 }

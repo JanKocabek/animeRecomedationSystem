@@ -1,6 +1,6 @@
 package cz.kocabek.animerecomedationsystem.controller;
 
-import cz.kocabek.animerecomedationsystem.dto.AnimeDto;
+import cz.kocabek.animerecomedationsystem.dto.RecommendationDTO;
 import cz.kocabek.animerecomedationsystem.entity.Anime;
 import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
 import cz.kocabek.animerecomedationsystem.service.AnimeService;
@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class RestPointController {
@@ -41,7 +39,7 @@ public class RestPointController {
 
 
     @GetMapping("/anime/recommend/{name}")
-    public ResponseEntity<List<AnimeDto>> getAnimeRecommendation(@PathVariable String name) {
+    public ResponseEntity<RecommendationDTO> getAnimeRecommendation(@PathVariable String name) {
         final var data = recommendationService.getAnimeRecommendation(name);
         return ResponseEntity.ok(data);
     }

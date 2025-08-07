@@ -22,16 +22,23 @@
     </section>
     <div class="album py-5 bg-light">
         <div class="container">
-            <h2>Anime Recommendations</h2>
+            <h2 th:text="'Anime Recommendations for: '+${#strings.listJoin(recommendations.inputAnimeNames,',')}"/>
             <div class="row">
-                <div th:each="animeDto : ${recommendations}" class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                <div th:each="recommend : ${recommendations.getRecommendedAnime()}"
+                     class="col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="card sm-4">
-                        <a th:href="@{'https://myanimelist.net/anime/' + ${animeDto.id} + '/'}">
-                            <img th:src="${animeDto.imageURL}" th:alt="${animeDto.name}" class="card-img-top"/>
+                        <a th:href="@{'https://myanimelist.net/anime/' + ${recommend.animeId} + '/'}">
+                            <img th:src="${recommend.animeInfo.imageURL}" th:alt="${recommend.animeInfo.name()}"
+                                 class="card-img-top"/>
                         </a>
+
                         <div class="card-body d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0" th:text="${animeDto.name}"></h5>
-                            <span class="badge bg-primary" th:text="'MAL Score: ' + ${animeDto.score}"></span>
+                            <div>
+                                <h5 class="card-title mb-1" th:text="${recommend.animeInfo.name()}"></h5>
+                                <p class="mb-0 text-muted" th:text="'Occurrences: ' + ${recommend.occurrences}"></p>
+                                <p class="mb-0 text-muted" th:text="'Appears: ' + ${#numbers.formatPercent(recommend.percentageOccurrences, 1, 4)}"></p>
+                            </div>
+                            <span class="badge bg-primary" th:text="'MAL Score: ' + ${recommend.animeInfo.score()}"></span>
                         </div>
 
                     </div>
