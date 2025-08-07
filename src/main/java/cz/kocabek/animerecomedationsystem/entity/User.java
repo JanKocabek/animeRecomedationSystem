@@ -2,11 +2,9 @@ package cz.kocabek.animerecomedationsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -19,27 +17,6 @@ public class User {
     @Column(name = "`Mal ID`", columnDefinition = "int UNSIGNED not null")
     private Long id;
 
-    @Size(max = 255)
-    @Column(name = "Username")
-    private String username;
-
-    @Lob
-    @Column(name = "Gender")
-    private String gender;
-
-    @Column(name = "Birthday")
-    private Instant birthday;
-
-    @Lob
-    @Column(name = "Location")
-    private String location;
-
-    @Lob
-    @Column(name = "Joined")
-    private String joined;
-
-    @Column(name = "`Days Watched`")
-    private Double daysWatched;
 
     @Column(name = "`Mean Score`")
     private Double meanScore;
