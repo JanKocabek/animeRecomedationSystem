@@ -26,10 +26,14 @@ public class AnimeService {
         return animeRepository.findTop5ByGenres_GenreNameContainsIgnoreCaseAllIgnoreCase(genre);
     }
 
-    public Long getAnimeIdByName(String name) throws ValidationException {
-        return animeRepository.getAnimeIdByName(name.toLowerCase())
-                .orElse(animeRepository.getAnimeIdByEnglishName(name)
-                        .orElseThrow(() -> new ValidationException("Anime not found")));
+    public Long getAnimeIdByName(String animeName) throws ValidationException {
+        final var name = animeName.trim().toLowerCase();
+        if (name.isBlank() || name.equals(" ")) {
+            throw new ValidationException("Anime name cannot be blank");
+        }
+        return animeRepository.getAnimeIdByName(name)
+                .orElseGet(() -> animeRepository.getAnimeIdByEnglishName(name)
+                                .orElseThrow(() -> new ValidationException("Anime not found")));
 
     }
 
