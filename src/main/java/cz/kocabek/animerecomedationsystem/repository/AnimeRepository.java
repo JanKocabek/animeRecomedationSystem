@@ -23,4 +23,8 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
 
     @Query("select a.id from Anime a where lower(a.englishName) =?1")
     Optional<Long> getAnimeIdByEnglishName(String englishName);
+
+
+    @Query("select a.name from Anime a where a.id in :animeIds")
+    Collection<String> getAnimeNamesByIds(Collection<Long> animeIds);
 }

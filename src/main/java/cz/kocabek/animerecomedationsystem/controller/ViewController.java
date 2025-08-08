@@ -51,8 +51,11 @@ public class ViewController {
     }
 
     @GetMapping("/result")
-    public String getResultPage(@RequestParam Long id, Model model) {
-        final var recommendations = recommendationService.getAnimeRecommendation(id);
+    public String getResultPage(@RequestParam Long animeId, Model model) {
+        final var recommendations = recommendationService.getAnimeRecommendation(animeId);
+        if (recommendations.getInputAnimeNames().isEmpty())
+            recommendations.getBuilder().populateAnimeNames(animeId);
+
         model.addAttribute("recommendations", recommendations);
         model.addAttribute("anime", new FormData());
         return "result";

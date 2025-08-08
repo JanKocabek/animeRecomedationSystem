@@ -9,10 +9,16 @@ import java.util.List;
 @Service
 public class DTOResultBuilder {
 
-    private final RecommendationDTO resultDto = new RecommendationDTO();
+    AnimeService animeService;
+    private final RecommendationDTO resultDto = new RecommendationDTO(this);
+
+    public DTOResultBuilder(AnimeService animeService) {
+        this.animeService = animeService;
+    }
+
 
     public void init(String inputAnimeNames) {
-        resultDto.setInputAnimeNames(List.of(inputAnimeNames));
+        init(List.of(inputAnimeNames));
     }
 
     public void init(List<String> inputAnimeNames) {
@@ -27,6 +33,15 @@ public class DTOResultBuilder {
 
     public RecommendationDTO build() {
         return resultDto;
+    }
+
+    public void populateAnimeNames(Long animeId) {
+        populateAnimeNames(List.of(animeId));
+    }
+
+    public void populateAnimeNames(List<Long> animeIds) {
+
+        resultDto.setInputAnimeNames(animeService.getAnimeNamesByIds(animeIds).stream().toList());
     }
 
 }

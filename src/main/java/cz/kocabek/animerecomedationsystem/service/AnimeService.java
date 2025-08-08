@@ -40,4 +40,8 @@ public class AnimeService {
     public List<AnimeDto> getListAnimeFromIds(Collection<Long> ids) {
         return animeRepository.getAnimeSetOrderByScore(ids);
     }
+
+    public Collection<String> getAnimeNamesByIds(Collection<Long> animeIds) {
+        return animeRepository.getAnimeNamesByIds(animeIds);
+    }
 }
