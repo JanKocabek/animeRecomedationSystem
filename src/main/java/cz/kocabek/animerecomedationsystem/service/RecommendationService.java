@@ -25,12 +25,12 @@ public class RecommendationService {
 
     AnimeService animeService;
     UserAnimeScoreService userAnimeScoreService;
-    RecommendationEngine recommendationEngine;
+    RecommendationEngine engine;
     DTOResultBuilder resultBuilder;
 
-    public RecommendationService(AnimeService animeService, RecommendationEngine recommendationEngine, UserAnimeScoreService userAnimeScoreService, DTOResultBuilder resultBuilder) {
+    public RecommendationService(AnimeService animeService, RecommendationEngine engine, UserAnimeScoreService userAnimeScoreService, DTOResultBuilder resultBuilder) {
         this.animeService = animeService;
-        this.recommendationEngine = recommendationEngine;
+        this.engine = engine;
         this.userAnimeScoreService = userAnimeScoreService;
         this.resultBuilder = resultBuilder;
     }
@@ -46,22 +46,24 @@ public class RecommendationService {
     }
     /*---*/
 
-    //main process method for the output - currently intersection weight algorithm
+    /**
+     * Generates anime recommendations for a given anime ID using an intersection weight algorithm
+     * along with various processing and analysis steps to refine the recommendations.
+     *
+     * @param animeId the ID of the anime for which recommendations are generated
+     * @return a {@link RecommendationDTO} object containing the input anime names
+     *         and a list of recommended anime
+     */
     private RecommendationDTO generateAnimeRecommendations(Long animeId) {
         //collecting and grouping data from the database into a list of users Anime lists
         final var userAnimeData = collectUsersAnimeLists(animeId);
         logger.info("size of data after grouping: {}", userAnimeData.size());
 
-        final var animeOcurrencesMap = recommendationEngine.countAnimeOccurrences(userAnimeData);
-        logger.debug("size of all anime: {}", animeOcurrencesMap.size());
-        recommendationEngine.calculateAverageRatings(animeOcurrencesMap);
-        recommendationEngine.calculatePercentageOccurrences(animeOcurrencesMap);
-        final var sortedMap = recommendationEngine.sortAnimeMapByOccurrences(animeOcurrencesMap);
+        final var sortedMap = engine.buildAnimeOccurrencesMap(userAnimeData);
         logger.debug("size of sorted map: {}", sortedMap.size());
 
-
-        final var weightedAnime = recommendationEngine.weightAnime(sortedMap, AnimeScore.compositeScoring);
-        final var topRecommendations = recommendationEngine.cutTheTopN(weightedAnime);//current final list with id without detail yet
+        final var weightedAnime = engine.weightAnime(sortedMap, AnimeScore.compositeScoring);
+        final var topRecommendations = engine.cutTheTopN(weightedAnime);//current final list with id without detail yet
         logger.debug("size of shortened list: {}", topRecommendations.size());
         final var animeDetailsList = animeService.getListAnimeFromIds(getAnimeIDsFromDTO(topRecommendations));
         logger.debug("recommended anime: {}", animeDetailsList.size());
@@ -72,7 +74,7 @@ public class RecommendationService {
         final var usersId = userAnimeScoreService.getUserWithAnime(animeId);
         logger.info("Users with anime after service: {}", usersId.size());
         final var userRatingsData  = userAnimeScoreService.fetchRatedAnimeByUsers(usersId, animeId, Pageable.unpaged());
-        return  recommendationEngine.groupUserByID(userRatingsData);
+        return  engine.groupUserByID(userRatingsData);
 
     }
 

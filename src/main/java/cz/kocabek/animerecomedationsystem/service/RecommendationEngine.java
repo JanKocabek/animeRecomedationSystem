@@ -51,34 +51,34 @@ public class RecommendationEngine {
     }
 
     /** counting anime occurrences in the given data
-     * @param userAnimeData @List<{@link UserAnimeList>} users anime lists with anime IDs and their respective ratings
+     * @param userAnimeLists @List<{@link UserAnimeList>} users anime lists with anime IDs and their respective ratings
      *
      *
      *  @return @Map<{@link Long}, {@link Integer}> anime ID and its occurrence across the Users
      *
      */
-    Map<Long, AnimeOutDTO> countAnimeOccurrences(List<UserAnimeList> userAnimeData) {
-        logger.debug("number of users: {}", userAnimeData.size());
+    protected Map<Long, AnimeOutDTO> countAnimeOccurrences(List<UserAnimeList> userAnimeLists) {
+        logger.debug("number of users: {}", userAnimeLists.size());
         final Map<Long, AnimeOutDTO> result = new LinkedHashMap<>();
-        for (UserAnimeList user : userAnimeData) {
+        for (UserAnimeList user : userAnimeLists) {
             user.animeList().forEach((animeId, rating) -> {
                 if (!result.containsKey(animeId)) {
                     AnimeOutDTO anime = new AnimeOutDTO(rating, 1);
                     result.put(animeId, anime);
                 } else {
-                    result.get(animeId).adToRatings(rating);
-                    result.get(animeId).addToOccurrences();
+                    result.get(animeId).addToRatingSum(rating);
+                    result.get(animeId).incrementOccurrences();
                 }
             });
         }
         return result;
     }
 
-    void calculateAverageRatings(Map<Long, AnimeOutDTO> animeData) {
+    private void calculateAverageRatings(Map<Long, AnimeOutDTO> animeData) {
         animeData.forEach((_, anime) -> anime.calculateAverageRating());
     }
 
-    void calculatePercentageOccurrences(Map<Long, AnimeOutDTO> animeData) {
+   private void calculatePercentageOccurrences(Map<Long, AnimeOutDTO> animeData) {
         animeData.forEach((_, anime) -> anime.setPercentageOccurrences(anime.getOccurrences() / (double) animeData.size()));
     }
 
@@ -98,5 +98,25 @@ public class RecommendationEngine {
         return animeList.entrySet().stream()
                 .limit(Math.min(animeList.size(), RecommendationConfig.FINAL_ANIME_LIST_SIZE))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (old, _) -> old, LinkedHashMap::new));
+    }
+
+    /**
+     * Processes a list of user anime ratings to build a sorted map of anime occurrences with calculated statistics.
+     * This method performs the following operations:
+     * 1. Counts how many times each anime appears across all user lists
+     * 2. Calculates the average rating for each anime
+     * 3. Calculates the percentage of occurrence for each anime
+     * 4. Sorts the anime by their occurrence count in descending order
+     *
+     * @param animeLists a list of UserAnimeList objects containing user IDs and their anime ratings
+     * @return a sorted Map where keys are anime IDs and values are AnimeOutDTO objects containing 
+     *         occurrence statistics and rating information
+     */
+    Map<Long,AnimeOutDTO> buildAnimeOccurrencesMap (List<UserAnimeList> animeLists){
+        final var map= countAnimeOccurrences(animeLists);
+        logger.debug("size of all anime: {}", map.size());
+        calculateAverageRatings(map);
+        calculatePercentageOccurrences(map);
+        return sortAnimeMapByOccurrences(map);
     }
 }
