@@ -83,14 +83,15 @@ public class RecommendationEngine {
                                                                                anime.getOccurrences() / (double) usersCount) * 100));
     }
 
-    Map<Long, AnimeOutDTO> sortAnimeMapByOccurrences(Map<Long, AnimeOutDTO> animeData) {
+    private Map<Long, AnimeOutDTO> sortAnimeMapByOccurrences(Map<Long, AnimeOutDTO> animeData) {
         return animeData.entrySet().stream().sorted(
                         (e1, e2) -> e2.getValue().getOccurrences() - e1.getValue().getOccurrences())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (old, _) -> old, LinkedHashMap::new));
     }
 
     Map<Long, AnimeOutDTO> weightAnime(Map<Long, AnimeOutDTO> animeList, ToDoubleFunction<AnimeOutDTO> weightFunction) {
-        return animeList.entrySet().stream().sorted(Comparator.comparingDouble(
+        return animeList.entrySet().stream()
+                .sorted(Comparator.comparingDouble(
                         e -> weightFunction.applyAsDouble(e.getValue())))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (old, _) -> old, LinkedHashMap::new));
     }
@@ -113,7 +114,7 @@ public class RecommendationEngine {
      * @return a sorted Map where keys are anime IDs and values are AnimeOutDTO objects containing 
      *         occurrence statistics and rating information
      */
-    Map<Long, AnimeOutDTO> buildAnimeOccurrencesMap(List<UserAnimeList> animeLists) {
+    protected Map<Long, AnimeOutDTO> buildAnimeOccurrencesMap(List<UserAnimeList> animeLists) {
         final var map = countAnimeOccurrences(animeLists);
         logger.debug("size of all anime: {}", map.size());
         calculateAverageRatings(map);

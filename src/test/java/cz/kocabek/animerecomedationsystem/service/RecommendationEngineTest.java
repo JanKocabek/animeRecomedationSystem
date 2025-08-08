@@ -5,10 +5,12 @@ import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RecommendationEngineTest {
@@ -53,7 +55,7 @@ class RecommendationEngineTest {
         Map<Long, AnimeOutDTO> out = engine.countAnimeOccurrences(list);
         //assert
         assertNotNull(out);
-        assertEquals(list.size(), out.size());
+        assertEquals(1, out.size());
         assertEquals(2, out.get(1L).getOccurrences());
         assertEquals(20, out.get(1L).getSumOfRatings());
     }
@@ -84,6 +86,48 @@ class RecommendationEngineTest {
         assertEquals(30, out.get(1L).getSumOfRatings());
         assertEquals(2, out.get(2L).getOccurrences());
         assertEquals(18, out.get(2L).getSumOfRatings());
+
+    }
+
+    @Test
+    void buildAnimeOccurrencesMap() {
+        //arrange
+        final var list = List.of(
+                new UserAnimeList(1L, new HashMap<>() {{
+                    put(1L, 10);
+                    put(2L, 8);
+                    put(8L, 1);
+                }}),
+                new UserAnimeList(2L, new HashMap<>() {{
+                    put(1L, 10);
+                    put(3L, 7);
+                    put(8L, 1);
+                }}),
+                new UserAnimeList(3L, new HashMap<>() {{
+                    put(1L, 10);
+                    put(2L, 10);
+                    put(4L, 4);
+                    put(5L, 5);
+                    put(8L, 1);
+                }}),
+                new UserAnimeList(4L, new HashMap<>() {{
+                    put(8L, 1);
+                }})
+        );
+        //act
+        final var map = engine.buildAnimeOccurrencesMap(list);
+        List<Map.Entry<Long, AnimeOutDTO>> entries = new ArrayList<>(map.entrySet());
+        //assert
+        assertThat(map).hasSize(6);
+        assertThat(map.get(1L).getOccurrences()).isEqualTo(3);
+        assertThat(map.entrySet()).extracting(Map.Entry::getKey).containsExactlyElementsOf(List.of(8L, 1L, 2L, 3L, 4L, 5L));
+
+
+        // Verify the entries are sorted by occurrences (highest first)
+        for (int i = 0; i < entries.size() - 1; i++) {
+            assertThat(entries.get(i).getValue().getOccurrences())
+                    .isGreaterThanOrEqualTo(entries.get(i + 1).getValue().getOccurrences());
+        }
 
     }
 }

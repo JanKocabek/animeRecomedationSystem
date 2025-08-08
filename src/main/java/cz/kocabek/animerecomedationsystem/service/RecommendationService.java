@@ -60,7 +60,8 @@ public class RecommendationService {
         logger.info("size of data after grouping: {}", userAnimeData.size());
 
         final var sortedMap = engine.buildAnimeOccurrencesMap(userAnimeData);
-        logger.debug("size of sorted map: {}", sortedMap.size());
+        logger.debug("number of anime in map: {}", sortedMap.size());
+
 
         final var weightedAnime = engine.weightAnime(sortedMap, AnimeScore.compositeScoring);
         final var topRecommendations = engine.cutTheTopN(weightedAnime);//current final list with id without detail yet
