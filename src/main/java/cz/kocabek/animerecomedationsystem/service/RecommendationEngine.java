@@ -57,7 +57,7 @@ public class RecommendationEngine {
      *  @return @Map<{@link Long}, {@link Integer}> anime ID and its occurrence across the Users
      *
      */
-    protected Map<Long, AnimeOutDTO> countAnimeOccurrences(List<UserAnimeList> userAnimeLists) {
+    private Map<Long, AnimeOutDTO> countAnimeOccurrences(List<UserAnimeList> userAnimeLists) {
         logger.debug("number of users: {}", userAnimeLists.size());
         final Map<Long, AnimeOutDTO> result = new LinkedHashMap<>();
         for (UserAnimeList user : userAnimeLists) {
@@ -115,7 +115,7 @@ public class RecommendationEngine {
      * @return a sorted Map where keys are anime IDs and values are AnimeOutDTO objects containing 
      *         occurrence statistics and rating information
      */
-    protected Map<Long, AnimeOutDTO> buildAnimeOccurrencesMap(List<UserAnimeList> animeLists) {
+    Map<Long, AnimeOutDTO> buildAnimeOccurrencesMap(List<UserAnimeList> animeLists) {
         final var map = countAnimeOccurrences(animeLists);
         logger.debug("size of all anime: {}", map.size());
         calculateAverageRatings(map);
