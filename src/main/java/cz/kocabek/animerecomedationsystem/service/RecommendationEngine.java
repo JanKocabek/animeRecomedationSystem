@@ -79,8 +79,8 @@ public class RecommendationEngine {
     }
 
     private void calculatePercentageOccurrencesAmongUsers(Map<Long, AnimeOutDTO> animeData, int usersCount) {
-        animeData.forEach((_, anime) -> anime.setPercentageOccurrences((
-                                                                               anime.getOccurrences() / (double) usersCount) * 100));
+        animeData.forEach((_, anime) ->
+                anime.setPercentageOccurrences((anime.getOccurrences() / (double) usersCount) * 100));
     }
 
     private Map<Long, AnimeOutDTO> sortAnimeMapByOccurrences(Map<Long, AnimeOutDTO> animeData) {
@@ -91,8 +91,9 @@ public class RecommendationEngine {
 
     Map<Long, AnimeOutDTO> weightAnime(Map<Long, AnimeOutDTO> animeList, ToDoubleFunction<AnimeOutDTO> weightFunction) {
         return animeList.entrySet().stream()
-                .sorted(Comparator.comparingDouble(
-                        e -> weightFunction.applyAsDouble(e.getValue())))
+                .sorted(Comparator.<Map.Entry<Long, AnimeOutDTO>>comparingDouble(
+                        e -> weightFunction.applyAsDouble(e.getValue())).reversed()
+                )
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (old, _) -> old, LinkedHashMap::new));
     }
 
