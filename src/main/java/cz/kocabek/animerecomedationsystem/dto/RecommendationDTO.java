@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class RecommendationDTO {
-    List<String> inputAnimeNames;
-    List<AnimeOutDTO> recommendedAnime;
+    private List<String> inputAnimeNames;
+    private List<AnimeOutDTO> recommendedAnime;
 }
 
