@@ -17,11 +17,11 @@ public class AnimeOutDTO {
         this.averageRating = null;
     }
 
-    public void addToOccurrences() {
+    public void incrementOccurrences() {
         this.occurrences++;
     }
 
-    public void adToRatings(double rating) {
+    public void addToRatingSum(double rating) {
         this.sumOfRatings += rating;
     }
 
