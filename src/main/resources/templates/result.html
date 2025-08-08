@@ -36,7 +36,7 @@
                             <div>
                                 <h5 class="card-title mb-1" th:text="${recommend.animeInfo.name()}"></h5>
                                 <p class="mb-0 text-muted" th:text="'Occurrences: ' + ${recommend.occurrences}"></p>
-                                <p class="mb-0 text-muted" th:text="'Appears: ' + ${#numbers.formatPercent(recommend.percentageOccurrences, 1, 4)}"></p>
+                                <p class="mb-0 text-muted" th:text="'Appears: ' + ${#numbers.formatDecimal(recommend.percentageOccurrences,1,2)}+'%'"></p>
                             </div>
                             <span class="badge bg-primary" th:text="'MAL Score: ' + ${recommend.animeInfo.score()}"></span>
                         </div>

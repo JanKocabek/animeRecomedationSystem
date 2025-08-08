@@ -78,8 +78,9 @@ public class RecommendationEngine {
         animeData.forEach((_, anime) -> anime.calculateAverageRating());
     }
 
-   private void calculatePercentageOccurrences(Map<Long, AnimeOutDTO> animeData) {
-        animeData.forEach((_, anime) -> anime.setPercentageOccurrences(anime.getOccurrences() / (double) animeData.size()));
+    private void calculatePercentageOccurrencesAmongUsers(Map<Long, AnimeOutDTO> animeData, int usersCount) {
+        animeData.forEach((_, anime) -> anime.setPercentageOccurrences((
+                                                                               anime.getOccurrences() / (double) usersCount) * 100));
     }
 
     Map<Long, AnimeOutDTO> sortAnimeMapByOccurrences(Map<Long, AnimeOutDTO> animeData) {
@@ -112,11 +113,11 @@ public class RecommendationEngine {
      * @return a sorted Map where keys are anime IDs and values are AnimeOutDTO objects containing 
      *         occurrence statistics and rating information
      */
-    Map<Long,AnimeOutDTO> buildAnimeOccurrencesMap (List<UserAnimeList> animeLists){
-        final var map= countAnimeOccurrences(animeLists);
+    Map<Long, AnimeOutDTO> buildAnimeOccurrencesMap(List<UserAnimeList> animeLists) {
+        final var map = countAnimeOccurrences(animeLists);
         logger.debug("size of all anime: {}", map.size());
         calculateAverageRatings(map);
-        calculatePercentageOccurrences(map);
+        calculatePercentageOccurrencesAmongUsers(map, animeLists.size());
         return sortAnimeMapByOccurrences(map);
     }
 }

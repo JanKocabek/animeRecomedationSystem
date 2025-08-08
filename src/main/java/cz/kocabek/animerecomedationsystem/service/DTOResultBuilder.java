@@ -11,7 +11,6 @@ import java.util.List;
 @SessionScope
 public class DTOResultBuilder {
     private final RecommendationDTO resultDto;
-
     private List<String> animeNames;
 
     public DTOResultBuilder() {
