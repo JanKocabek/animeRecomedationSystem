@@ -19,12 +19,12 @@ public class ViewController {
 
     RecommendationService recommendationService;
     AnimeService animeService;
-    DTOResultBuilder recommendationOutputBuilder;
+    DTOResultBuilder resultBuilder;
 
-    public ViewController(RecommendationService recommendationService, AnimeService animeService, DTOResultBuilder recommendationOutputBuilder) {
+    public ViewController(RecommendationService recommendationService, AnimeService animeService, DTOResultBuilder resultBuilder) {
         this.recommendationService = recommendationService;
         this.animeService = animeService;
-        this.recommendationOutputBuilder = recommendationOutputBuilder;
+        this.resultBuilder = resultBuilder;
     }
 
     @GetMapping("/")
@@ -41,7 +41,7 @@ public class ViewController {
         Long id;
         try {
             id = animeService.getAnimeIdByName(data.getAnimeName());
-            recommendationOutputBuilder.init(data.getAnimeName());
+            resultBuilder.init(data.getAnimeName());
         } catch (Exception e) {
             bindingResult.rejectValue("animeName", "error.anime", e.getMessage());
             return "index";
@@ -53,9 +53,6 @@ public class ViewController {
     @GetMapping("/result")
     public String getResultPage(@RequestParam("id") Long animeId, Model model) {
         final var recommendations = recommendationService.getAnimeRecommendation(animeId);
-        if (recommendations.getInputAnimeNames() == null || recommendations.getInputAnimeNames().isEmpty())
-            recommendations.getBuilder().populateAnimeNames(animeId);
-
         model.addAttribute("recommendations", recommendations);
         model.addAttribute("anime", new FormData());
         return "result";

@@ -10,12 +10,12 @@ import java.util.List;
 @Service
 @SessionScope
 public class DTOResultBuilder {
-    private final AnimeService animeService;
     private final RecommendationDTO resultDto;
 
-    public DTOResultBuilder(AnimeService animeService) {
-        this.animeService = animeService;
-        resultDto = new RecommendationDTO(this);
+    private List<String> animeNames;
+
+    public DTOResultBuilder() {
+        resultDto = new RecommendationDTO();
     }
 
     public DTOResultBuilder init(String inputAnimeNames) {
@@ -24,6 +24,7 @@ public class DTOResultBuilder {
 
     public DTOResultBuilder init(List<String> inputAnimeNames) {
         resultDto.setInputAnimeNames(inputAnimeNames);
+        this.animeNames = inputAnimeNames;
         return this;
     }
 
@@ -33,15 +34,8 @@ public class DTOResultBuilder {
     }
 
     public RecommendationDTO build() {
+        if (resultDto.getInputAnimeNames() == null || resultDto.getInputAnimeNames().isEmpty())
+            resultDto.setInputAnimeNames(animeNames);
         return resultDto;
-    }
-
-    public DTOResultBuilder populateAnimeNames(Long animeId) {
-        return populateAnimeNames(List.of(animeId));
-    }
-
-    public DTOResultBuilder populateAnimeNames(List<Long> animeIds) {
-        resultDto.setInputAnimeNames(animeService.getAnimeNamesByIds(animeIds).stream().toList());
-        return this;
     }
 }
