@@ -20,9 +20,9 @@ public interface UsersAnimeScoreRepository extends JpaRepository<UsersAnimeScore
             """)
     Slice<UsersAnimeScoreDto> getUsersListRatedAnime(@Param("userIds") @NonNull Collection<Long> userIds, @Param("animeId") Long animeId, Pageable pageable);
 
-@Query("""
-        select uas.id.userId from UsersAnimeScore uas
-                where uas.id.animeId =?1 order by uas.rating desc
-        """)
-    Slice<Long> retrieveDistinctUserIdsByAnimeSorted(@NonNull Long animeId, Pageable pageable);
+    @Query("""
+            select uas.id.userId from UsersAnimeScore uas
+                    where uas.id.animeId =?1 AND uas.rating between :minrating and :maxrating order by uas.rating desc
+            """)
+    Slice<Long> findUsersByAnimeIdAndRatingRange(@NonNull Long animeId, @Param("minrating") int minrating, @Param("maxrating") int maxrating, Pageable pageable);
 }

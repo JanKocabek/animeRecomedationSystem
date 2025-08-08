@@ -18,12 +18,16 @@ public class UserAnimeScoreService {
     private static final Logger logger = LoggerFactory.getLogger(UserAnimeScoreService.class);
 
     UsersAnimeScoreRepository usersAnimeScoreRepository;
+
     public UserAnimeScoreService(UsersAnimeScoreRepository usersAnimeScoreRepository) {
         this.usersAnimeScoreRepository = usersAnimeScoreRepository;
     }
 
     public List<Long> getUserWithAnime(Long aniId) {
-        return usersAnimeScoreRepository.retrieveDistinctUserIdsByAnimeSorted(aniId, PageRequest.of(0, RecommendationConfig.USERIDS_SIZE_Q_PAGE)).getContent();
+        return usersAnimeScoreRepository.findUsersByAnimeIdAndRatingRange(aniId,
+                RecommendationConfig.MIN_INPUT_SCORE,
+                RecommendationConfig.MAX_INPUT_SCORE,
+                PageRequest.of(0, RecommendationConfig.MAX_USERS_PER_PAGE)).getContent();
     }
 
     //fetching anime ranking records from a given userIdList and anime ID
