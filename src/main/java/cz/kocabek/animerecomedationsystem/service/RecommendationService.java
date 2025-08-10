@@ -1,6 +1,9 @@
 package cz.kocabek.animerecomedationsystem.service;
 
-import cz.kocabek.animerecomedationsystem.dto.*;
+import cz.kocabek.animerecomedationsystem.dto.AnimeDto;
+import cz.kocabek.animerecomedationsystem.dto.AnimeOutDTO;
+import cz.kocabek.animerecomedationsystem.dto.RecommendationDTO;
+import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -56,27 +59,41 @@ public class RecommendationService {
      */
     private RecommendationDTO generateAnimeRecommendations(Long animeId) {
         //collecting and grouping data from the database into a list of users Anime lists
+        long step1Start = System.nanoTime();
         final var userAnimeData = collectUsersAnimeLists(animeId);
+        long step1Duration = (System.nanoTime() - step1Start) / 1_000_000;
+        logger.warn("Step 1 (collect users data) took: {} ms", step1Duration);
         logger.info("size of data after grouping: {}", userAnimeData.size());
-
+        long step2Start = System.nanoTime();
         final var sortedMap = engine.buildAnimeOccurrencesMap(userAnimeData);
+        long step2Duration = (System.nanoTime() - step2Start) / 1_000_000;
+        logger.warn("Step 2 (build anime occurrences map) took: {} ms", step2Duration);
         logger.debug("number of anime in map: {}", sortedMap.size());
-
-
+        long step3Start = System.nanoTime();
         final var weightedAnime = engine.weightAnime(sortedMap, AnimeScore.compositeScoring);
-        final var topRecommendations = engine.cutTheTopN(weightedAnime);//current final list with id without detail yet
+        final var topRecommendations = engine.cutTheTopN(weightedAnime);//current final map with ids without detail yet
+        long step3Duration = (System.nanoTime() - step3Start) / 1_000_000;
+        logger.warn("Step 3 (weight anime) took: {} ms", step3Duration);
         logger.debug("size of shortened list: {}", topRecommendations.size());
+        long step4Start = System.nanoTime();
         final var animeDetailsList = animeService.getListAnimeFromIds(getAnimeIDsFromDTO(topRecommendations));
+        long step4Duration = (System.nanoTime() - step4Start) / 1_000_000;
+        logger.warn("Step 4 (get anime details) took: {} ms", step4Duration);
         logger.debug("recommended anime: {}", animeDetailsList.size());
         return buildOutputList(animeDetailsList, topRecommendations);
     }
 
     private List<UserAnimeList> collectUsersAnimeLists(Long animeId) {
+        long step1_1Start = System.nanoTime();
         final var usersId = userAnimeScoreService.getUserWithAnime(animeId);
+        long step1_1Duration = (System.nanoTime() - step1_1Start) / 1_000_000;
+        logger.warn("Step 1.1 (collect users with anime) took: {} ms", step1_1Duration);
         logger.info("Users with anime after service: {}", usersId.size());
-        final var userRatingsData  = userAnimeScoreService.fetchRatedAnimeByUsers(usersId, animeId, Pageable.unpaged());
-        return  engine.groupUserByID(userRatingsData);
-
+        long step1_2Start = System.nanoTime();
+        final var userRatingsData = userAnimeScoreService.fetchRatedAnimeByUsers(usersId, animeId, Pageable.unpaged());
+        long step1_2Duration = (System.nanoTime() - step1_2Start) / 1_000_000;
+        logger.warn("Step 1.2 (fetch user ratings) took: {} ms", step1_2Duration);
+        return engine.groupUserByID(userRatingsData);
     }
 
     private Collection<Long> getAnimeIDsFromDTO(Map<Long, AnimeOutDTO> animeMap) {
