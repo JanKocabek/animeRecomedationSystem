@@ -57,4 +57,24 @@ public class ViewController {
         model.addAttribute("anime", new FormData());
         return "result";
     }
+
+    @PostMapping("/result/submit")
+    public String postResultPage(@Valid @ModelAttribute("anime") FormData data, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        final var previousAnime = resultBuilder.getResultDto();
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("recommendations", previousAnime);
+            return "result";
+        }
+        Long fetchedAnimeId;
+        try {
+            fetchedAnimeId = animeService.getAnimeIdByName(data.getAnimeName());
+            resultBuilder.init(data.getAnimeName());
+        } catch (Exception e) {
+            bindingResult.rejectValue("animeName", "error.anime", e.getMessage());
+            model.addAttribute("recommendations", previousAnime);
+            return "result";
+        }
+        redirectAttributes.addAttribute("id", fetchedAnimeId);
+        return "redirect:/result";
+    }
 }

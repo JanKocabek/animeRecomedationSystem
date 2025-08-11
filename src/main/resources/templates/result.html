@@ -21,6 +21,7 @@
 <main>
     <!-- Hero Section -->
     <section class="py-5 text-white text-center position-relative overflow-hidden">
+        <!--        header picture-->
         <div class="position-absolute top-0 start-0 w-100 h-100" style="
         background-image: url('/assets/image/ian-valerio-road-header-unsplash.jpg');
         background-size: cover;
@@ -34,7 +35,8 @@
 
             <p class="lead mt-3">Explore your next obsession from other users' obsession.</p>
 
-            <form class="mt-4" role="search" th:object="${anime}" th:action="@{/submit}" method="post">
+            <!--           search form-->
+            <form class="mt-4" role="search" th:object="${anime}" th:action="@{/result/submit}" method="post">
                 <div class="row justify-content-center align-items-end g-2">
                     <div class="col-md-5">
                         <div class="form-group mb-0 position-relative">
@@ -44,16 +46,19 @@
                                    th:field="*{animeName}"
                                    class="form-control bg-light text-white border-0 shadow-sm ps-4 py-3 rounded-pill"
                                    placeholder="Search for a different anime..."
-                                   aria-describedby="animeNameError"/>
+                                   aria-describedby="animeNameError" />
                             <div id="animeNameError"
                                  th:if="${#fields.hasErrors('animeName')}"
-                                 class="text-danger small mt-1 text-start">
+                                 class="bg-danger text-white small p-1 mt-1 text-center rounded position-absolute top-100 start-0 w-100"
+                                 style="z-index: 10;">
                                 <span th:errors="*{animeName}"></span>
                             </div>
                         </div>
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-lg btn-success fw-bold mb-0 text-dark rounded-pill shadow-sm">Search</button>
+                        <button type="submit"
+                                class="btn btn-lg btn-success fw-bold mb-0 text-dark rounded-pill shadow-sm">Search
+                        </button>
                     </div>
                 </div>
             </form>
@@ -104,7 +109,11 @@
 <footer class="bg-dark text-white py-4 text-center">
     <div class="container">
         <p class="mb-1">
-            Photo by <a href="https://unsplash.com/@iangvalerio?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" class="text-white text-decoration-none">Ian Valerio</a> on <a href="https://unsplash.com/photos/aerial-view-photography-of-road-between-highrise-building-CAFq0pv9HjY?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" class="text-white text-decoration-none">Unsplash</a>
+            Photo by <a
+                href="https://unsplash.com/@iangvalerio?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+                class="text-white text-decoration-none">Ian Valerio</a> on <a
+                href="https://unsplash.com/photos/aerial-view-photography-of-road-between-highrise-building-CAFq0pv9HjY?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+                class="text-white text-decoration-none">Unsplash</a>
             | Made with Bootstrap & Material Kit | Jan Kocábek &copy; 2025
         </p>
     </div>

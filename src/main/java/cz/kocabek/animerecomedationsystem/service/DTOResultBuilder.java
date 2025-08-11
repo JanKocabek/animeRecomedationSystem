@@ -2,6 +2,7 @@ package cz.kocabek.animerecomedationsystem.service;
 
 import cz.kocabek.animerecomedationsystem.dto.AnimeOutDTO;
 import cz.kocabek.animerecomedationsystem.dto.RecommendationDTO;
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Service
 @SessionScope
+@Getter
 public class DTOResultBuilder {
     private final RecommendationDTO resultDto;
     private List<String> animeNames;
