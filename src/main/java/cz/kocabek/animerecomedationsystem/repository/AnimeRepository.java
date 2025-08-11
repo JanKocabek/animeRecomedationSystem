@@ -18,8 +18,12 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
     @Query("select a.id from Anime a where lower( a.name) = ?1")
     Optional<Long> getAnimeIdByName(@NonNull String name);
 
-    @Query("select new cz.kocabek.animerecomedationsystem.dto.AnimeDto(a.id,a.name,a.score,a.imageURL)  from Anime a where a.id  in :animeIds order by a.score DESC")
-    List<AnimeDto> getAnimeSetOrderByScore(@Param("animeIds") @NonNull Collection<Long> animeIds);
+    @Query("""
+            select new cz.kocabek.animerecomedationsystem.dto.AnimeDto(a.id,a.name,a.score,a.imageURL)
+                        from Anime a
+                        where a.id  in :animeIds
+                        order by a.score DESC""")
+    List<AnimeDto> getAnimeListOrderByScore(@Param("animeIds") @NonNull Collection<Long> animeIds);
 
     @Query("select a.id from Anime a where lower(a.englishName) =?1")
     Optional<Long> getAnimeIdByEnglishName(String englishName);

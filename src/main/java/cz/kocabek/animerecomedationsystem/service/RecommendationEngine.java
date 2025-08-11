@@ -50,7 +50,9 @@ public class RecommendationEngine {
                 .toList();
     }
 
-    /** counting anime occurrences in the given data
+    /** counting anime occurrences in the given users anime lists
+     * automatically transfers dta from list to map
+     *
      * @param userAnimeLists @List<{@link UserAnimeList>} users anime lists with anime IDs and their respective ratings
      *
      *
@@ -120,6 +122,7 @@ public class RecommendationEngine {
         logger.debug("size of all anime: {}", map.size());
         calculateAverageRatings(map);
         calculatePercentageOccurrencesAmongUsers(map, animeLists.size());
+
         return sortAnimeMapByOccurrences(map);
     }
 }
