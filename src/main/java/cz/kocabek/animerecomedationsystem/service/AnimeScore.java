@@ -5,14 +5,12 @@ import cz.kocabek.animerecomedationsystem.service.RecommendationConfig.Recommend
 
 import java.util.function.ToDoubleFunction;
 
-public class AnimeScore {
+class AnimeScore {
 
-    public static ToDoubleFunction<AnimeOutDTO> compositeScoring = (anime) -> {
-        double normalizedOccurrences = anime.getPercentageOccurrences() / 100;
-        double normalizedRating = anime.getAverageRating() / 10;
+    static ToDoubleFunction<AnimeOutDTO> compositeScoring = (anime) -> {
+        final double normalizedOccurrences = anime.getPercentageOccurrences() / 100;
+        final double normalizedRating = anime.getAverageRating() / 10;
         return (normalizedOccurrences * RecommendationConfig.OCCURRENCE_WEIGHT) + (normalizedRating * RecommendationConfig.SCORE_WEIGHT);
     };
-
-
 }
 

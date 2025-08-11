@@ -34,7 +34,6 @@ public class AnimeService {
         return animeRepository.getAnimeIdByName(name)
                 .orElseGet(() -> animeRepository.getAnimeIdByEnglishName(name)
                                 .orElseThrow(() -> new ValidationException("Anime not found")));
-
     }
 
     public List<AnimeDto> getListAnimeFromIds(Collection<Long> ids) {
