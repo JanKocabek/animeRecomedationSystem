@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>Anime Recommendations</title>
     <!-- Theme CSS -->
-    <link  th:href="@{/assets/css/material-kit.min.css}" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/assets/css/material-kit.min.css}" rel="stylesheet">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
 
@@ -19,21 +20,41 @@
 
 <main>
     <!-- Hero Section -->
-    <section class="py-5 bg-primary text-white text-center">
-        <div class="container">
-            <h1 class="fw-bold">Welcome to the Anime Recommendation System</h1>
-            <form class="row justify-content-center mt-4" role="form"
-                  th:object="${anime}" th:action="@{/submit}" method="post">
-                <div class="col-md-4 col-sm-6">
-                    <label for="animeName" class="form-label">Name of Anime:</label>
-                    <input type="text" id="animeName" th:field="*{animeName}" class="form-control mb-2"
-                           placeholder="e.g. Naruto"/>
-                    <div th:if="${#fields.hasErrors('animeName')}" class="text-warning small">
-                        <span th:errors="*{animeName}"></span>
+    <section class="py-5 text-white text-center position-relative overflow-hidden">
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="
+        background-image: url('/assets/image/ian-valerio-road-header-unsplash.jpg');
+        background-size: cover;
+        background-position: center;
+        filter: brightness(1); /* Adjust brightness to make text pop */
+        z-index: 1;
+    "></div>
+
+        <div class="container position-relative z-index-2">
+            <h1 class="fw-bold fs-1 text-light">Anime Recommendation sytsem</h1>
+
+            <p class="lead mt-3">Explore your next obsession from other users' obsession.</p>
+
+            <form class="mt-4" role="search" th:object="${anime}" th:action="@{/submit}" method="post">
+                <div class="row justify-content-center align-items-end g-2">
+                    <div class="col-md-5">
+                        <div class="form-group mb-0 position-relative">
+                            <label for="animeName" class="form-label text-white visually-hidden">Search again:</label>
+                            <input type="text"
+                                   id="animeName"
+                                   th:field="*{animeName}"
+                                   class="form-control bg-light text-white border-0 shadow-sm ps-4 py-3 rounded-pill"
+                                   placeholder="Search for a different anime..."
+                                   aria-describedby="animeNameError"/>
+                            <div id="animeNameError"
+                                 th:if="${#fields.hasErrors('animeName')}"
+                                 class="text-danger small mt-1 text-start">
+                                <span th:errors="*{animeName}"></span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-auto align-self-end">
-                    <button type="submit" class="btn btn-light fw-bold">Search</button>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-lg btn-success fw-bold mb-0 text-dark rounded-pill shadow-sm">Search</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -80,7 +101,14 @@
         </div>
     </section>
 </main>
-
+<footer class="bg-dark text-white py-4 text-center">
+    <div class="container">
+        <p class="mb-1">
+            Photo by <a href="https://unsplash.com/@iangvalerio?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" class="text-white text-decoration-none">Ian Valerio</a> on <a href="https://unsplash.com/photos/aerial-view-photography-of-road-between-highrise-building-CAFq0pv9HjY?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" class="text-white text-decoration-none">Unsplash</a>
+            | Made with Bootstrap & Material Kit | Jan Kocábek &copy; 2025
+        </p>
+    </div>
+</footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/assets/js/core/popper.min.js"></script>
 <script src="/assets/js/core/bootstrap.min.js"></script>
