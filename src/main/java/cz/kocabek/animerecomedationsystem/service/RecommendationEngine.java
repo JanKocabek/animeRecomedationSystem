@@ -2,11 +2,9 @@ package cz.kocabek.animerecomedationsystem.service;
 
 import cz.kocabek.animerecomedationsystem.dto.AnimeOutDTO;
 import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
-import cz.kocabek.animerecomedationsystem.dto.UsersAnimeScoreDto;
 import cz.kocabek.animerecomedationsystem.service.RecommendationConfig.RecommendationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -28,27 +26,7 @@ public class RecommendationEngine {
     public RecommendationEngine() {
     }
 
-    /**
-     * Groups the provided data of anime scores by user ID and constructs a list of {@link UserAnimeList}
-     * objects containing user IDs and their respective anime ratings.
-     *
-     * @param data a {@link Slice} of {@link UsersAnimeScoreDto} objects representing user ratings for various anime
-     * @return a {@link List} of {@link UserAnimeList} containing user IDs and their mapped anime scores
-     */
-    List<UserAnimeList> groupUserByID(Slice<UsersAnimeScoreDto> data) {
-        // grouping records based UserID Map<Long, List<UsersAnimeScoreDto>>
-        // making name and rating from list -> Map.Entry<Long, Map<String, Integer>>
-        return data.get()
-                .collect(Collectors.groupingBy(UsersAnimeScoreDto::userId)) // grouping records based UserID Map<Long, List<UsersAnimeScoreDto>>
-                .entrySet().stream().
-                map(e -> {
-                    final var map = e.getValue().stream().collect(Collectors.toMap(UsersAnimeScoreDto::animeId, UsersAnimeScoreDto::rating, (_, b) -> b));
-                    return Map.entry(e.getKey(), map);
-                    // making name and rating from list -> Map.Entry<Long, Map<String, Integer>>
-                })
-                .map(entry -> new UserAnimeList(entry.getKey(), entry.getValue()))
-                .toList();
-    }
+
 
     /** counting anime occurrences in the given users anime lists
      * automatically transfers dta from list to map

@@ -3,11 +3,9 @@ package cz.kocabek.animerecomedationsystem.service;
 import cz.kocabek.animerecomedationsystem.dto.AnimeDto;
 import cz.kocabek.animerecomedationsystem.dto.AnimeOutDTO;
 import cz.kocabek.animerecomedationsystem.dto.RecommendationDTO;
-import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -57,13 +55,13 @@ public class RecommendationService {
     private RecommendationDTO generateAnimeRecommendations(Long animeId) {
         //collecting and grouping data from the database into a list of users Anime lists
         long step1Start = System.nanoTime();
-        final var userAnimeData = collectUsersAnimeLists(animeId);
+        final var usersAnimeLists = userAnimeScoreService.getUsersAnimeLists(animeId);
         long step1Duration = (System.nanoTime() - step1Start) / 1_000_000;
         logger.warn("Step 1 (collect users data) took: {} ms", step1Duration);
-        logger.info("size of data after grouping: {}", userAnimeData.size());
+        logger.info("size of data after grouping: {}", usersAnimeLists.size());
 
         long step2Start = System.nanoTime();
-        final var sortedMap = engine.buildAnimeOccurrencesMap(userAnimeData);
+        final var sortedMap = engine.buildAnimeOccurrencesMap(usersAnimeLists);
         long step2Duration = (System.nanoTime() - step2Start) / 1_000_000;
         logger.warn("Step 2 (build anime occurrences map) took: {} ms", step2Duration);
         logger.debug("number of anime in map: {}", sortedMap.size());
@@ -83,20 +81,6 @@ public class RecommendationService {
         return buildOutputList(animeDetailsList, topRecommendations);
     }
 
-    private List<UserAnimeList> collectUsersAnimeLists(Long animeId) {
-        long step1_1Start = System.nanoTime();
-        final var usersId = userAnimeScoreService.getUserWithAnime(animeId);
-        long step1_1Duration = (System.nanoTime() - step1_1Start) / 1_000_000;
-        logger.warn("Step 1.1 (collect users with anime) took: {} ms", step1_1Duration);
-        logger.info("Users with anime after service: {}", usersId.size());
-
-        long step1_2Start = System.nanoTime();
-        final var userRatingsData = userAnimeScoreService.fetchRatedAnimeByUsers(usersId, animeId, Pageable.unpaged());
-        long step1_2Duration = (System.nanoTime() - step1_2Start) / 1_000_000;
-        logger.warn("Step 1.2 (fetch user ratings) took: {} ms", step1_2Duration);
-
-        return engine.groupUserByID(userRatingsData);
-    }
 
     private Collection<Long> getAnimeIDsFromDTO(Map<Long, AnimeOutDTO> animeMap) {
         return animeMap.keySet().stream().toList();

@@ -25,5 +25,5 @@ public interface UsersAnimeScoreRepository extends JpaRepository<UsersAnimeScore
                     where uas.id.animeId =:animeid
                                 AND uas.rating between :minrating and :maxrating
             """)
-    Slice<Long> findUsersByAnimeIdAndRatingRange(@NonNull @Param("animeid") Long animeId, @Param("minrating") int minrating, @Param("maxrating") int maxrating, Pageable pageable);
+    Slice<Long> findUsersIdByAnimeIdAndRatingRange(@NonNull @Param("animeid") Long animeId, @Param("minrating") int minrating, @Param("maxrating") int maxrating, Pageable pageable);
 }
