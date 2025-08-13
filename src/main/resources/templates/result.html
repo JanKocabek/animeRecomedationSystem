@@ -47,12 +47,6 @@
                                    class="form-control bg-light text-white border-0 shadow-sm ps-4 py-3 rounded-pill"
                                    placeholder="Search for a different anime..."
                                    aria-describedby="animeNameError"/>
-                            <div id="animeNameError"
-                                 th:if="${#fields.hasErrors('animeName')}"
-                                 class="bg-danger text-white small p-1 mt-1 text-center rounded position-absolute top-100 start-0 w-100"
-                                 style="z-index: 10;">
-                                <span th:errors="*{animeName}"></span>
-                            </div>
                         </div>
                     </div>
                     <div class="col-auto">
@@ -60,20 +54,26 @@
                                 class="btn btn-lg btn-success fw-bold mb-0 text-dark rounded-pill shadow-sm">Search
                         </button>
                     </div>
-                </div>
+                    <div id="animeNameError"
+                         th:if="${#fields.hasErrors('animeName')}"
+                         class="bg-danger text-white small p-1 mt-1 text-center rounded position-absolute top-100 start-0 w-100"
+                         style="z-index: 10;">
+                        <span th:errors="*{animeName}"></span>
+                    </div>
 
-                <!-- Advanced Options Toggle -->
-                <div class="mt-4 text-center">
-                    <div class="form-check form-switch d-inline-flex align-items-center">
-                        <input class="form-check-input me-2" type="checkbox" id="toggleAdvanced"
-                               style="transform: scale(1.2); accent-color: #28a745;">
-                        <label class="form-check-label text-white fw-500" for="toggleAdvanced">
-                            <i class="ti ti-settings me-1"></i>
-                            Show Advanced Options
-                        </label>
+
+                    <!-- Advanced Options Toggle -->
+                    <div class="mt-4 text-center">
+                        <div class="form-check form-switch d-inline-flex align-items-center">
+                            <input class="form-check-input me-2" type="checkbox" id="toggleAdvanced"
+                                   style="transform: scale(1.2); accent-color: #28a745;">
+                            <label class="form-check-label text-white fw-500" for="toggleAdvanced">
+                                <i class="ti ti-settings me-1"></i>
+                                Show Advanced Options
+                            </label>
+                        </div>
                     </div>
                 </div>
-
                 <!-- Collapsible Advanced Options -->
                 <div class="collapse mt-4" id="advancedOptions">
                     <div class="card bg-light bg-opacity-90 border-0 shadow-lg rounded-4 p-4 mx-auto"
