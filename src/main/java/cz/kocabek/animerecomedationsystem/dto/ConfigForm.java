@@ -2,12 +2,11 @@ package cz.kocabek.animerecomedationsystem.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-public final class FormData {
-
+public final class ConfigForm {
     @NotEmpty(message = "enter at least one character")
     private String animeName;
+    private int minRating = 7;
+    private int maxUsers = 750;
 }
