@@ -3,7 +3,8 @@ package cz.kocabek.animerecomedationsystem.service;
 import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
 import cz.kocabek.animerecomedationsystem.dto.UsersAnimeScoreDto;
 import cz.kocabek.animerecomedationsystem.repository.UsersAnimeScoreRepository;
-import cz.kocabek.animerecomedationsystem.service.RecommendationConfig.RecommendationConfig;
+import cz.kocabek.animerecomedationsystem.service.RecommendationConfig.Config;
+import cz.kocabek.animerecomedationsystem.service.RecommendationConfig.ConfigConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -19,9 +20,11 @@ import java.util.stream.Collectors;
 public class UserAnimeScoreService {
     private static final Logger logger = LoggerFactory.getLogger(UserAnimeScoreService.class);
     UsersAnimeScoreRepository usersAnimeScoreRepository;
+    Config config;
 
-    public UserAnimeScoreService(UsersAnimeScoreRepository usersAnimeScoreRepository) {
+    public UserAnimeScoreService(UsersAnimeScoreRepository usersAnimeScoreRepository, Config config) {
         this.usersAnimeScoreRepository = usersAnimeScoreRepository;
+        this.config = config;
     }
 
     public List<UserAnimeList> getUsersAnimeLists(Long animeId) {
@@ -39,10 +42,9 @@ public class UserAnimeScoreService {
     }
 
     private List<Long> getUsersIdWhoRatedGivenAnime(Long aniId) {
-        return usersAnimeScoreRepository.findUsersIdByAnimeIdAndRatingRange(aniId,
-                RecommendationConfig.MIN_INPUT_SCORE,
-                RecommendationConfig.MAX_INPUT_SCORE,
-                PageRequest.of(0, RecommendationConfig.MAX_USERS_PER_PAGE)).getContent();
+        return usersAnimeScoreRepository.findUsersIdByAnimeIdAndRatingRange(aniId, config.getMinScore(),
+                ConfigConstant.MAX_INPUT_SCORE,
+                PageRequest.of(0, config.getMaxUsers())).getContent();
     }
 
     //fetching anime ranking records from a given userIdList and anime ID
