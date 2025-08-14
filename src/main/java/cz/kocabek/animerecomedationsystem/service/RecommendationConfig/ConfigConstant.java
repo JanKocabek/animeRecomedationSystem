@@ -1,6 +1,6 @@
 package cz.kocabek.animerecomedationsystem.service.RecommendationConfig;
 
-public class RecommendationConfig {
+public class ConfigConstant {
     public static final int LOWEST_ACCEPTABLE_RATING = 0; //min rating for the filter
     public static final int MAX_ACCEPTABLE_RATING = 10;//max rating for the filter
     public static final int MAX_USERS_PER_PAGE = 2000;//number of users id fetch in one page

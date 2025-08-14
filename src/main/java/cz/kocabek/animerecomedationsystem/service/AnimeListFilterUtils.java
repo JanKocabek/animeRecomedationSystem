@@ -1,7 +1,7 @@
 package cz.kocabek.animerecomedationsystem.service;
 
 import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
-import cz.kocabek.animerecomedationsystem.service.RecommendationConfig.RecommendationConfig;
+import cz.kocabek.animerecomedationsystem.service.RecommendationConfig.ConfigConstant;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -52,7 +52,7 @@ public class AnimeListFilterUtils {
     }
 
     List<UserAnimeList> filterUserListsByRank(int minRank, List<UserAnimeList> data) {
-        return filterUserListsByRank(minRank, RecommendationConfig.MAX_SCORE, data);
+        return filterUserListsByRank(minRank, ConfigConstant.MAX_SCORE, data);
     }
 
 }

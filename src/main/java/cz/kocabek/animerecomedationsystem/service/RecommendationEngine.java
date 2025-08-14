@@ -2,7 +2,7 @@ package cz.kocabek.animerecomedationsystem.service;
 
 import cz.kocabek.animerecomedationsystem.dto.AnimeOutDTO;
 import cz.kocabek.animerecomedationsystem.dto.UserAnimeList;
-import cz.kocabek.animerecomedationsystem.service.RecommendationConfig.RecommendationConfig;
+import cz.kocabek.animerecomedationsystem.service.RecommendationConfig.ConfigConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -79,7 +79,7 @@ public class RecommendationEngine {
 
     Map<Long, AnimeOutDTO> cutTheTopN(Map<Long, AnimeOutDTO> animeList) {
         return animeList.entrySet().stream()
-                .limit(Math.min(animeList.size(), RecommendationConfig.FINAL_ANIME_LIST_SIZE))
+                .limit(Math.min(animeList.size(), ConfigConstant.FINAL_ANIME_LIST_SIZE))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (old, _) -> old, LinkedHashMap::new));
     }
 
