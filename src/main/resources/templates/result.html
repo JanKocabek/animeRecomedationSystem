@@ -254,11 +254,21 @@
                             <div class="d-flex flex-column justify-content-center flex-grow-1">
                                 <div class="card-text d-flex flex-row justify-content-between align-items-start ">
                                     <!-- Left side: Recommendation text -->
-                                    <div class="align-self-center">
-                                        <p class="text-muted small mb-0"
-                                           th:text="'Recommended because rated by: ' + ${#numbers.formatDecimal(recommend.percentageOccurrences, 1, 2)} + '%'">
-                                        </p>
+                                    <div class="d-flex flex-column align-items-center me-3">
+                                        <small class="text-muted mb-2" style="font-style: italic;">Rated by</small>
+                                        <div class="vertical-progress" style="height: 100px; width: 50px;">
+                                            <div class="vertical-progress-bar"
+                                                 th:style="'height: calc(' + ${recommend.percentageOccurrences} + '% + 15px); background-color:' +
+                       (${recommend.percentageOccurrences} >= 70 ? '#28a745' :
+                        (${recommend.percentageOccurrences} >= 40 ? '#ffc107' : '#dc3545'))">
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <span th:text="${#numbers.formatDecimal(recommend.percentageOccurrences, 1, 2)} + '%'"></span>
+                                                    <small>users</small>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+
 
                                     <!-- Right side: Genre pills aligned to right -->
                                     <div class="d-flex flex-column align-items-end ms-auto">

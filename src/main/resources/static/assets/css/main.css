@@ -31,6 +31,27 @@
     opacity: 1;
 }
 
+.vertical-progress {
+    display: flex;
+    align-items: flex-end;
+    background-color: #e9ecef;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.vertical-progress-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.85rem;
+    min-height: 20px; /* ensures text fits even for tiny values */
+}
+
+
+
 
 
 
