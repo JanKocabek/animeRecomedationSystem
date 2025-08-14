@@ -83,55 +83,80 @@
                                 <i class="ti ti-adjustments-horizontal me-2"></i>
                                 Fine-tune Your Recommendations
                             </h6>
-
-                            <!-- Minimum Rating Slider -->
-                            <div class="mb-4">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <label for="minRatingRange" class="form-label text-dark mb-0 fw-500">
-                                        <i class="ti ti-star-filled text-warning me-1"></i>
-                                        Minimum Input Anime User Rating
-                                    </label>
-                                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
+                            <!--sliders-->
+                            <div class=" row mb-4">
+                                <!-- Minimum Rating Slider -->
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label for="minRatingRange" class="form-label text-dark mb-0 fw-500">
+                                            <i class="ti ti-star-filled text-warning me-1"></i>
+                                            Minimum Input Anime User Rating
+                                        </label>
+                                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
                             <span id="minRatingValue" th:text="${anime.getMinRating()}"></span>/10
                         </span>
+                                    </div>
+                                    <input type="range"
+                                           class="form-range"
+                                           min="1"
+                                           max="10"
+                                           th:field="*{minRating}"
+                                           id="minRatingRange"
+                                           name="minRating"
+                                           style="accent-color: #ffc107;">
+                                    <div class="d-flex justify-content-between text-muted small mt-1">
+                                        <span>1 (Include all)</span>
+                                        <span>10 (Only perfect scores)</span>
+                                    </div>
                                 </div>
-                                <input type="range"
-                                       class="form-range"
-                                       min="1"
-                                       max="10"
-                                       th:field="*{minRating}"
-                                       id="minRatingRange"
-                                       name="minRating"
-                                       style="accent-color: #ffc107;">
-                                <div class="d-flex justify-content-between text-muted small mt-1">
-                                    <span>1 (Include all)</span>
-                                    <span>10 (Only perfect scores)</span>
-                                </div>
-                            </div>
-
-                            <!-- Max Users Slider -->
-                            <div class="mb-4">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <label for="maxUsersRange" class="form-label text-dark mb-0 fw-500">
-                                        <i class="ti ti-users me-1"></i>
-                                        Max Users to Analyze
-                                    </label>
-                                    <span class="badge bg-info px-3 py-2 rounded-pill">
+                                <!-- Max Users Slider -->
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <label for="maxUsersRange" class="form-label text-dark mb-0 fw-500">
+                                            <i class="ti ti-users me-1"></i>
+                                            Max Users to Analyze
+                                        </label>
+                                        <span class="badge bg-info px-3 py-2 rounded-pill">
                             <span id="maxUsersValue" th:text="${anime.getMaxUsers()}"></span> users
                         </span>
+                                    </div>
+                                    <input type="range"
+                                           class="form-range"
+                                           min="100"
+                                           max="2000"
+                                           th:field="*{maxUsers}"
+                                           step="50"
+                                           id="maxUsersRange"
+                                           name="maxUsers"
+                                           style="accent-color: #17a2b8;">
+                                    <div class="d-flex justify-content-between text-muted small mt-1">
+                                        <span>100 (Faster)</span>
+                                        <span>2000 (More comprehensive)</span>
+                                    </div>
                                 </div>
-                                <input type="range"
-                                       class="form-range"
-                                       min="100"
-                                       max="2000"
-                                       th:field="*{maxUsers}"
-                                       step="50"
-                                       id="maxUsersRange"
-                                       name="maxUsers"
-                                       style="accent-color: #17a2b8;">
-                                <div class="d-flex justify-content-between text-muted small mt-1">
-                                    <span>100 (Faster)</span>
-                                    <span>2000 (More comprehensive)</span>
+                            </div>
+                            <!--genre / type filter -->
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-500 text-dark">Genres</label>
+                                    <select class="form-select" multiple name="genres">
+                                        <option>Action</option>
+                                        <option>Adventure</option>
+                                        <option>Romance</option>
+                                        <option>Comedy</option>
+                                        <option>Drama</option>
+                                        <!-- ... -->
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-500 text-dark">Type</label>
+                                    <select class="form-select" multiple name="type">
+                                        <option value="">Any</option>
+                                        <option>TV</option>
+                                        <option>Movie</option>
+                                        <option>OVA</option>
+                                        <option>ONA</option>
+                                    </select>
                                 </div>
                             </div>
 
