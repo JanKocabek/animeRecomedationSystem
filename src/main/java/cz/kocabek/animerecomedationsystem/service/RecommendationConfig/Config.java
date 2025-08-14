@@ -10,7 +10,7 @@ import org.springframework.web.context.annotation.SessionScope;
 @Data
 public class Config {
     private String animeName = "";
-    private int minRating;
+    private int minScore;
     private int maxUsers;
     private ConfigForm configForm = new ConfigForm();
 
@@ -18,7 +18,7 @@ public class Config {
     public void updateConfig(ConfigForm formData) {
         this.configForm = formData;
         this.animeName = formData.getAnimeName();
-        this.minRating = formData.getMinRating();
+        this.minScore = formData.getMinRating();
         this.maxUsers = formData.getMaxUsers();
     }
 
