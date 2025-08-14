@@ -73,7 +73,6 @@ public class ViewController {
         }
         try {
             Long id = processForm(form);
-            resultBuilder.init(form.getAnimeName());
             redirectAttributes.addAttribute("id", id);
             return "redirect:/result";
         } catch (Exception e) {
