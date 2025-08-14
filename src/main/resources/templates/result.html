@@ -89,7 +89,7 @@
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <label for="minRatingRange" class="form-label text-dark mb-0 fw-500">
                                         <i class="ti ti-star-filled text-warning me-1"></i>
-                                        Minimum User Rating
+                                        Minimum Input Anime User Rating
                                     </label>
                                     <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
                             <span id="minRatingValue" th:text="${anime.getMinRating()}"></span>/10
@@ -117,7 +117,7 @@
                                         Max Users to Analyze
                                     </label>
                                     <span class="badge bg-info px-3 py-2 rounded-pill">
-                            <span id="maxUsersValue">750</span> users
+                            <span id="maxUsersValue" th:text="${anime.getMaxUsers()}"></span> users
                         </span>
                                 </div>
                                 <input type="range"
