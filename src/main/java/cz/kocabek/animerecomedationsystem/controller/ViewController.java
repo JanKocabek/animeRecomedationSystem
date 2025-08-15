@@ -13,10 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @AllArgsConstructor
@@ -43,18 +40,10 @@ public class ViewController {
             redirectAttributes.addAttribute("id", id);
             return "redirect:/result";
         } catch (ValidationException e) {
-            bindingResult.rejectValue("animeName", "error.anime", e.getMessage());
+            bindingResult.rejectValue("animeName", "error.detail", e.getMessage());
             return "index";
         }
     }
-
-    private Long processForm(ConfigForm form) throws ValidationException {
-        config.updateConfig(form);
-        Long id = animeService.getAnimeIdByName(config.getAnimeName());
-        resultBuilder.init(config.getAnimeName());
-        return id;
-    }
-
 
     @GetMapping("/result")
     public String getResultPage(@RequestParam("id") Long animeId, Model model) {
@@ -76,10 +65,24 @@ public class ViewController {
             redirectAttributes.addAttribute("id", id);
             return "redirect:/result";
         } catch (Exception e) {
-            bindingResult.rejectValue("animeName", "error.anime", e.getMessage());
+            bindingResult.rejectValue("animeName", "error.detail", e.getMessage());
             model.addAttribute("recommendations", previousAnime);
             return "result";
         }
+    }
 
+    @GetMapping("/anime/{id}")
+    public String getAnimePage(@PathVariable Long id, Model model) {
+        final var detail = animeService.getAnimeById(id);
+        model.addAttribute("detail", detail);
+        model.addAttribute("anime", config.getConfigForm());
+        return "detail";
+    }
+
+    private Long processForm(ConfigForm form) throws ValidationException {
+        config.updateConfig(form);
+        Long id = animeService.getAnimeIdByName(config.getAnimeName());
+        resultBuilder.init(config.getAnimeName());
+        return id;
     }
 }
