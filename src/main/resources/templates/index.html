@@ -13,18 +13,12 @@
     <!--my main css-->
     <link th:href="@{/assets/css/main.css}" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body class="bg-light d-flex flex-column min-vh-100">
 <header th:insert="fragments/header :: header"></header>
-<!--<h1>welcome in the Anime Recommendation system</h1>-->
-<!--<form role="form" action="#" th:object="${anime}" th:action="@{/submit}" method="post">-->
-<!--    <fieldset>-->
-<!--        <label for="animeName">name of anime:</label>-->
-<!--        <input type="text" th:field="*{animeName}"/>-->
-<!--        <input type="submit" value="Search"></fieldset>-->
-<!--    <p th:if="${#fields.hasErrors('animeName')}">-->
-<!--        <span th:errors="*{animeName}" class="text-danger"></span>-->
-<!--    </p>-->
-<!--</form>-->
+<main class="flex-grow-1">
+
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Toggle functionality
