@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+</head>
+<body>
+<section th:fragment="header" class="py-5 text-white text-center position-relative overflow-hidden">
+    <!--        header picture-->
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="
+        background-image: url('/assets/image/ian-valerio-road-header-unsplash.jpg');
+        background-size: cover;
+        background-position: center;
+        filter: brightness(1); /* Adjust brightness to make text pop */
+        z-index: 1;"></div>
+
+    <div class="container position-relative z-index-2">
+        <h1 class="fw-bold fs-1 text-light">Anime Recommendation system</h1>
+
+        <p class="lead mt-3">Explore your next obsession from other users' obsession.</p>
+
+        <!--           search form-->
+        <form class="mt-4" role="search" th:object="${anime}" th:action="@{/result/submit}" method="post">
+            <div class="row justify-content-center align-items-end g-2">
+                <div class="col-md-5">
+                    <div class="form-group mb-0 position-relative">
+                        <label for="animeName" class="form-label text-white visually-hidden">Search again:</label>
+                        <input type="text"
+                               id="animeName"
+                               th:field="*{animeName}"
+                               class="form-control bg-light text-white border-0 shadow-sm ps-4 py-3 rounded-pill"
+                               placeholder="Search for a different anime..."
+                               aria-describedby="animeNameError"/>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button type="submit"
+                            class="btn btn-lg btn-success fw-bold mb-0 text-dark rounded-pill shadow-sm">Search
+                    </button>
+                </div>
+                <div id="animeNameError"
+                     th:if="${#fields.hasErrors('animeName')}"
+                     class="bg-danger text-white small p-1 mt-1 text-center rounded position-absolute top-100 start-0 w-100"
+                     style="z-index: 10;">
+                    <span th:errors="*{animeName}"></span>
+                </div>
+
+
+                <!-- Advanced Options Toggle -->
+                <div class="mt-4 text-center">
+                    <div class="form-check form-switch d-inline-flex align-items-center">
+                        <input class="form-check-input me-2" type="checkbox" id="toggleAdvanced"
+                               style="transform: scale(1.2); accent-color: #28a745;">
+                        <label class="form-check-label text-white fw-500" for="toggleAdvanced">
+                            <i class="ti ti-settings me-1"></i>
+                            Show Advanced Options
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!-- Collapsible Advanced Options -->
+            <div class="collapse mt-4" id="advancedOptions">
+                <div class="card bg-light bg-opacity-90 border-0 shadow-lg rounded-4 p-4 mx-auto"
+                     style="max-width: 600px; backdrop-filter: blur(10px);">
+                    <div class="card-body">
+                        <h6 class="text-dark fw-bold mb-3 text-center">
+                            <i class="ti ti-adjustments-horizontal me-2"></i>
+                            Fine-tune Your Recommendations
+                        </h6>
+                        <!--sliders-->
+                        <div class=" row mb-4">
+                            <!-- Minimum Rating Slider -->
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label for="minRatingRange" class="form-label text-dark mb-0 fw-500">
+                                        <i class="ti ti-star-filled text-warning me-1"></i>
+                                        Minimum Input Anime User Rating
+                                    </label>
+                                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
+                            <span id="minRatingValue" th:text="${anime.getMinRating()}"></span>/10
+                        </span>
+                                </div>
+                                <input type="range"
+                                       class="form-range"
+                                       min="1"
+                                       max="10"
+                                       th:field="*{minRating}"
+                                       id="minRatingRange"
+                                       name="minRating"
+                                       style="accent-color: #ffc107;">
+                                <div class="d-flex justify-content-between text-muted small mt-1">
+                                    <span>1 (Include all)</span>
+                                    <span>10 (Only perfect scores)</span>
+                                </div>
+                            </div>
+                            <!-- Max Users Slider -->
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label for="maxUsersRange" class="form-label text-dark mb-0 fw-500">
+                                        <i class="ti ti-users me-1"></i>
+                                        Max Users to Analyze
+                                    </label>
+                                    <span class="badge bg-info px-3 py-2 rounded-pill">
+                            <span id="maxUsersValue" th:text="${anime.getMaxUsers()}"></span> users
+                        </span>
+                                </div>
+                                <input type="range"
+                                       class="form-range"
+                                       min="100"
+                                       max="2000"
+                                       th:field="*{maxUsers}"
+                                       step="50"
+                                       id="maxUsersRange"
+                                       name="maxUsers"
+                                       style="accent-color: #17a2b8;">
+                                <div class="d-flex justify-content-between text-muted small mt-1">
+                                    <span>100 (Faster)</span>
+                                    <span>2000 (More comprehensive)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--genre / type filter -->
+                        <h6 class="text-dark fw-bold mb-3">
+                            <i class="ti ti-tag me-2"></i>
+                            Genre & Type Filters
+                        </h6>
+                        <div class="form-check p-2 rounded" style="background: rgba(40, 167, 69, 0.1);">
+                            <input class="form-check-input me-2" type="checkbox" id="sameGenres" name="sameGenres"
+                                   style="accent-color: #28a745; ">
+                            <label class="form-check-label text-dark fw-500 fst-italic" for="sameGenres">
+                                Only same genres as input anime
+                            </label>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-500 text-dark">Genres</label>
+                                <select class="form-select" multiple name="genres">
+                                    <option>Action</option>
+                                    <option>Adventure</option>
+                                    <option>Romance</option>
+                                    <option>Comedy</option>
+                                    <option>Drama</option>
+                                    <!-- ... -->
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-500 text-dark">Type</label>
+                                <select class="form-select" multiple name="type">
+                                    <option value="">Any</option>
+                                    <option>TV</option>
+                                    <option>Movie</option>
+                                    <option>OVA</option>
+                                    <option>ONA</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Content Filters -->
+                        <div class="mb-3">
+                            <label class="form-label text-dark mb-3 fw-500">
+                                <i class="ti ti-shield-check me-1"></i>
+                                Content Filters
+                            </label>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <div class="form-check p-3 border rounded-3 h-100"
+                                         style="background: rgba(40, 167, 69, 0.1); border-color: #28a745 !important;">
+                                        <input class="form-check-input" type="checkbox" id="excludeAdult"
+                                               name="excludeAdult" checked style="accent-color: #28a745;">
+                                        <label class="form-check-label text-dark fw-500" for="excludeAdult">
+                                            <i class="ti ti-shield-x text-success me-1"></i>
+                                            Exclude Adult Content
+                                        </label>
+                                        <small class="text-muted d-block mt-1">Hide mature/adult anime</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check p-3 border rounded-3 h-100"
+                                         style="background: rgba(255, 193, 7, 0.1); border-color: #ffc107 !important;">
+                                        <input class="form-check-input" type="checkbox" id="excludeEcchi"
+                                               name="excludeEcchi" style="accent-color: #ffc107;">
+                                        <label class="form-check-label text-dark fw-500" for="excludeEcchi">
+                                            <i class="ti ti-eye-off text-warning me-1"></i>
+                                            Exclude Ecchi
+                                        </label>
+                                        <small class="text-muted d-block mt-1">Hide suggestive content</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Presets -->
+                        <div class="text-center">
+                            <small class="text-muted mb-2 d-block">Quick Presets:</small>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-success btn-sm rounded-pill me-2"
+                                        onclick="setPreset('fast')">
+                                    <i class="ti ti-bolt me-1"></i>Fast
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-sm rounded-pill me-2"
+                                        onclick="setPreset('balanced')">
+                                    <i class="ti ti-balance me-1"></i>Balanced
+                                </button>
+                                <button type="button" class="btn btn-outline-info btn-sm rounded-pill"
+                                        onclick="setPreset('comprehensive')">
+                                    <i class="ti ti-search me-1"></i>Comprehensive
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>
