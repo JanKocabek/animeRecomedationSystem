@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const minRatingId = "minRating";
+    const maxUsersId = "maxUsers";
     // Toggle functionality
     const toggleInput = document.getElementById('toggleAdvanced');
     const advancedOptions = document.getElementById('advancedOptions');
@@ -15,18 +17,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Range slider updates
-    document.getElementById('minRatingRange').addEventListener('input', function () {
+    document.getElementById(minRatingId).addEventListener('input', function () {
         document.getElementById('minRatingValue').textContent = this.value;
     });
 
-    document.getElementById('maxUsersRange').addEventListener('input', function () {
+    document.getElementById(maxUsersId).addEventListener('input', function () {
         document.getElementById('maxUsersValue').textContent = this.value;
     });
 
     // Preset functions
     window.setPreset = function (preset) {
-        const minRating = document.getElementById('minRatingRange');
-        const maxUsers = document.getElementById('maxUsersRange');
+        const minRating = document.getElementById(minRatingId);
+        const maxUsers = document.getElementById(maxUsersId);
         const minRatingValue = document.getElementById('minRatingValue');
         const maxUsersValue = document.getElementById('maxUsersValue');
 
