@@ -29,6 +29,7 @@ public class ViewController {
     @GetMapping("/")
     public String getHomePage(Model model) {
         model.addAttribute("anime", config.getConfigForm());
+        model.addAttribute("action", "/submit");
         return "index";
     }
 
@@ -50,6 +51,7 @@ public class ViewController {
         final var recommendations = recommendationService.getAnimeRecommendation(animeId);
         model.addAttribute("recommendations", recommendations);
         model.addAttribute("anime", config.getConfigForm());
+        model.addAttribute("action", "/result/submit");
         return "result";
     }
 

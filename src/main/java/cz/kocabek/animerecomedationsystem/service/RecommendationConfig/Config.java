@@ -13,7 +13,7 @@ public class Config {
     private int minScore = ConfigConstant.MIN_INPUT_SCORE;
     private int maxUsers = ConfigConstant.MAX_USERS_PER_PAGE;
     private boolean onlyInAnimeGenres = false;
-    private ConfigForm configForm = new ConfigForm();
+    private ConfigForm configForm = new ConfigForm(this.animeName, this.minScore, this.maxUsers, this.onlyInAnimeGenres);
 
 
     public void updateConfig(ConfigForm formData) {
@@ -25,7 +25,7 @@ public class Config {
     }
 
     public void resetConfigForm() {
-        this.configForm = new ConfigForm();
+        this.configForm = new ConfigForm(null,ConfigConstant.MIN_INPUT_SCORE,ConfigConstant.MAX_USERS_PER_PAGE, false);
     }
 }
 

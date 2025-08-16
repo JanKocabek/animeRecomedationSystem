@@ -20,7 +20,7 @@
         <p class="lead mt-3">Explore your next obsession from other users' obsession.</p>
 
         <!--           search form-->
-        <form class="mt-4" role="search" th:object="${anime}" th:action="@{/result/submit}" method="post">
+        <form class="mt-4" role="search" th:object="${anime}" th:action="@{${action}}" method="post">
             <div class="row justify-content-center align-items-end g-2">
                 <div class="col-md-5">
                     <div class="form-group mb-0 position-relative">
@@ -85,8 +85,6 @@
                                        min="1"
                                        max="10"
                                        th:field="*{minRating}"
-                                       id="minRatingRange"
-                                       name="minRating"
                                        style="accent-color: #ffc107;">
                                 <div class="d-flex justify-content-between text-muted small mt-1">
                                     <span>1 (Include all)</span>
@@ -125,9 +123,11 @@
                             Genre & Type Filters
                         </h6>
                         <div class="form-check p-2 rounded" style="background: rgba(40, 167, 69, 0.1);">
-                            <input class="form-check-input me-2" type="checkbox" id="sameGenres" name="sameGenres"
+                            <input class="form-check-input me-2"
+                                   type="checkbox"
+                                   th:field="*{onlyInAnimeGenres}"
                                    style="accent-color: #28a745; ">
-                            <label class="form-check-label text-dark fw-500 fst-italic" for="sameGenres">
+                            <label class="form-check-label text-dark fw-500 fst-italic" for="onlyInAnimeGenres">
                                 Only same genres as input anime
                             </label>
                         </div>
