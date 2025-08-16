@@ -48,6 +48,11 @@ public class ViewController {
 
     @GetMapping("/result")
     public String getResultPage(@RequestParam("id") Long animeId, Model model) {
+        try {
+            checkAnimeId(animeId);
+        } catch (ValidationException e) {
+            return "redirect:/";
+        }
         final var recommendations = recommendationService.getAnimeRecommendation(animeId);
         model.addAttribute("recommendations", recommendations);
         model.addAttribute("anime", config.getConfigForm());
@@ -84,7 +89,16 @@ public class ViewController {
     private Long processForm(ConfigForm form) throws ValidationException {
         config.updateConfig(form);
         Long id = animeService.getAnimeIdByName(config.getAnimeName());
+        config.setAnimeId(id);
         resultBuilder.init(config.getAnimeName());
         return id;
+    }
+
+    private void checkAnimeId(Long id) throws ValidationException {
+        if (config.getAnimeId() != null && config.getAnimeId().equals(id)) return;
+        final var name = animeService.getAnimeNameById(id);
+        config.setAnimeName(name);
+        config.setAnimeId(id);
+        resultBuilder.init(name);
     }
 }

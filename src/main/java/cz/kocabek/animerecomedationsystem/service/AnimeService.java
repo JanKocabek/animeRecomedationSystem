@@ -43,4 +43,7 @@ public class AnimeService {
     public Collection<String> getAnimeNamesByIds(Collection<Long> animeIds) {
         return animeRepository.getAnimeNamesByIds(animeIds);
     }
+    public String getAnimeNameById(Long id) {
+        return animeRepository.getAnimeNameById(id);
+    }
 }

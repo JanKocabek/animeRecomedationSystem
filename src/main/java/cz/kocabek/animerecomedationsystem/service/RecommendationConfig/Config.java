@@ -10,6 +10,7 @@ import org.springframework.web.context.annotation.SessionScope;
 @Data
 public class Config {
     private String animeName;
+    private Long animeId;
     private int minScore = ConfigConstant.MIN_INPUT_SCORE;
     private int maxUsers = ConfigConstant.MAX_USERS_PER_PAGE;
     private boolean onlyInAnimeGenres = false;
