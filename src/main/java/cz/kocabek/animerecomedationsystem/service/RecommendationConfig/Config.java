@@ -9,9 +9,10 @@ import org.springframework.web.context.annotation.SessionScope;
 @SessionScope
 @Data
 public class Config {
-    private String animeName = "";
-    private int minScore;
-    private int maxUsers;
+    private String animeName;
+    private int minScore = ConfigConstant.MIN_INPUT_SCORE;
+    private int maxUsers = ConfigConstant.MAX_USERS_PER_PAGE;
+    private boolean onlyInAnimeGenres = false;
     private ConfigForm configForm = new ConfigForm();
 
 
@@ -20,6 +21,7 @@ public class Config {
         this.animeName = formData.getAnimeName();
         this.minScore = formData.getMinRating();
         this.maxUsers = formData.getMaxUsers();
+        this.onlyInAnimeGenres = formData.isOnlyInAnimeGenres();
     }
 
     public void resetConfigForm() {
