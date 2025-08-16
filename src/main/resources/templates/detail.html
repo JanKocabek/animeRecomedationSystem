@@ -16,52 +16,86 @@
 <body class="bg-light d-flex flex-column min-vh-100">
 <header th:insert="fragments/header :: header"></header>
 <main class="flex-grow-1">
-    <div class="container py-4">
+    <div class="container ">
         <h2 class="mb-4">Anime Details</h2>
-        <table class="table table-striped table-hover table-bordered">
-            <thead class="table-dark">
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">English Name</th>
-                <th scope="col">Image</th>
-                <th scope="col">Genres</th>
-                <th scope="col">Score</th>
-                <th scope="col">Type</th>
-                <th scope="col">Episodes</th>
-                <th scope="col">Status</th>
-                <th scope="col">Source</th>
-                <th scope="col">Rating</th>
-                <th scope="col">Rank</th>
-                <th scope="col">Popularity</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td th:text="${detail.getName() ?: 'N/A'}">N/A</td>
-                <td th:text="${detail.getEnglishName() ?: 'N/A'}">N/A</td>
-                <td>
-                    <img th:src="${detail.getImageURL() ?: '/assets/placeholder.jpg'}"
-                         alt="Anime Image"
-                         class="img-fluid rounded"
-                         style="max-width: 100px; height: auto;">
-                </td>
-                <td>
-                    <span th:each="genre, iterStat : ${detail.getGenres()}"
-                          th:text="${genre.getGenreName()}"
-                          class="badge bg-primary me-1"></span>
-                    <span th:if="${#lists.isEmpty(detail.getGenres())}">N/A</span>
-                </td>
-                <td th:text="${detail.getScore() != null ? detail.getScore() : 'N/A'}">N/A</td>
-                <td th:text="${detail.getType() ?: 'N/A'}">N/A</td>
-                <td th:text="${detail.getEpisodes() != null ? detail.getEpisodes() : 'N/A'}">N/A</td>
-                <td th:text="${detail.getStatus() ?: 'N/A'}">N/A</td>
-                <td th:text="${detail.getSource() ?: 'N/A'}">N/A</td>
-                <td th:text="${detail.getRating() ?: 'N/A'}">N/A</td>
-                <td th:text="${detail.getRank() != null ? detail.getRank() : 'N/A'}">N/A</td>
-                <td th:text="${detail.getPopularity() != null ? detail.getPopularity() : 'N/A'}">N/A</td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="row align-items-start">
+            <div class="col-md-auto mb-3 mb-md-0 pl">
+                <img th:src="${detail.getImageURL() ?: '/assets/placeholder.jpg'}"
+                     alt="Anime Image"
+                     class="img-fluid rounded"
+                     style="max-width: 100%; "
+                >
+            </div>
+            <div class="col-md">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead class="table-dark">
+                        <tr>
+                            <th scope="col" class="text-center" style="width: 1%; ">Name</th>
+                            <th scope="col" class="text-center text-wrap" style="width: 1%; white-space: normal;">
+                                English<br>Name
+                            </th>
+                            <th scope="col" class="text-center" style="width: 1%; ">Genres</th>
+                            <th scope="col" class="text-center" style="width: 1%; ">Score</th>
+                            <th scope="col" class="text-center" style="width: 1%; ">Type</th>
+                            <th scope="col" class="text-center" style="width: 1%; ">Episodes</th>
+                            <th scope="col" class="text-center" style="width: 1%; ">Status</th>
+                            <th scope="col" class="text-center" style="width: 1%; ">Source</th>
+                            <th scope="col" class="text-center" style="width: 1%; ">Rating</th>
+                            <th scope="col" class="text-center" style="width: 1%; ">Rank</th>
+                            <th scope="col" class="text-center" style="width: 1%; ">Popularity</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="p-1 text-center" th:text="${detail.getName() ?: 'N/A'}">N/A</td>
+                            <td class="p-1 text-center" th:text="${detail.getEnglishName() ?: 'N/A'}">N/A</td>
+                            <td class="p-1 text-center">
+                                <div th:if="${#lists.isEmpty(detail.getGenres())}">N/A</div>
+                                <div th:unless="${#lists.isEmpty(detail.getGenres())}">
+                                    <span th:each="genre : ${detail.getGenres()}"
+                                          th:text="${genre.getGenreName()}"
+                                          class="badge bg-primary d-block mb-1"></span>
+                                </div>
+                            </td>
+                            <td class="p-1 text-center"
+                                th:text="${detail.getScore() != null ? detail.getScore() : 'N/A'}">
+                                N/A
+                            </td>
+                            <td class="p-1 text-center" th:text="${detail.getType() ?: 'N/A'}">N/A</td>
+                            <td class="p-1 text-center"
+                                th:text="${detail.getEpisodes() != null ? detail.getEpisodes() : 'N/A'}">N/A
+                            </td>
+                            <td class="p-1 text-center" th:text="${detail.getStatus() ?: 'N/A'}">N/A</td>
+                            <td class="p-1 text-center" th:text="${detail.getSource() ?: 'N/A'}">N/A</td>
+                            <td class="p-1 text-center">
+                                <div th:if="${detail.getRating() == null}">N/A</div>
+                                <div th:unless="${detail.getRating() == null}">
+                                    <span th:with="ratingParts=${#strings.arraySplit(detail.getRating(), '-')}">
+                                        <span th:text="${ratingParts[0]}"
+                                              th:remove="${#arrays.length(ratingParts) > 2 ?  'none' :'tag' }"></span>
+                                        <span th:if="${#arrays.length(ratingParts) > 1}"
+                                              th:text="'-' + ${ratingParts[1]}"
+                                              th:remove="${#arrays.length(ratingParts) > 2 ? 'none' :'tag'}"></span>
+                                        <br th:if="${#arrays.length(ratingParts) > 2}">
+                                        <span th:if="${#arrays.length(ratingParts) > 2}"
+                                              th:text="${ratingParts[2].trim()}"></span>
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="p-1 text-center"
+                                th:text="${detail.getRank() != null ? detail.getRank() : 'N/A'}">
+                                N/A
+                            </td>
+                            <td class="p-1 text-center"
+                                th:text="${detail.getPopularity() != null ? detail.getPopularity() : 'N/A'}">N/A
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>

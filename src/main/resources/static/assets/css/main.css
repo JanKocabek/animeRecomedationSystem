@@ -50,6 +50,24 @@
     min-height: 20px; /* ensures text fits even for tiny values */
 }
 
+.table thead th {
+    padding: 0.1rem 0.2rem !important;
+}
+
+.table.table-bordered.table-dark thead th {
+    padding: 0.1rem 0.4rem !important;
+    width: auto !important;
+    min-width: 0 !important;
+}
+
+.table.table-bordered tbody td {
+    padding: 0.1rem 0.4rem !important;
+}
+
+.table.table-bordered td.genres-column {
+    max-width: 80px !important;
+}
+
 
 
 
