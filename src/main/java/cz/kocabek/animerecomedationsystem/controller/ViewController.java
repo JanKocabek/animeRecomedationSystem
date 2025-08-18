@@ -42,9 +42,13 @@ public class ViewController {
             return "redirect:/result";
         } catch (ValidationException e) {
             bindingResult.rejectValue("animeName", "error.detail", e.getMessage());
-            return "index";
+            return "main";
         }
     }
+@GetMapping("/sign")
+public String getSignPage(Model model) {
+        return "index";
+}
 
     @GetMapping("/result")
     public String getResultPage(@RequestParam("id") Long animeId, Model model) {
