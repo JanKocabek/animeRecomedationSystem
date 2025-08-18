@@ -6,13 +6,13 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public final class ConfigForm {
+public final class InputDTO {
     @NotEmpty(message = "enter at least one character")
     private String animeName;
     private int minRating;
     private int maxUsers;
     private boolean onlyInAnimeGenres;
 
-    private ConfigForm() {
+    private InputDTO() {
     }
 }

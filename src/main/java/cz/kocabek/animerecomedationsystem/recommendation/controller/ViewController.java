@@ -1,9 +1,9 @@
 package cz.kocabek.animerecomedationsystem.recommendation.controller;
 
-import cz.kocabek.animerecomedationsystem.recommendation.dto.ConfigForm;
+import cz.kocabek.animerecomedationsystem.recommendation.dto.InputDTO;
 import cz.kocabek.animerecomedationsystem.recommendation.service.AnimeService;
 import cz.kocabek.animerecomedationsystem.recommendation.service.DTOResultBuilder;
-import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.Config;
+import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
@@ -24,17 +24,17 @@ public class ViewController {
     RecommendationService recommendationService;
     AnimeService animeService;
     DTOResultBuilder resultBuilder;
-    Config config;
+    RecommendationConfig config;
 
-    @GetMapping("/")
+    @GetMapping("/main")
     public String getHomePage(Model model) {
         model.addAttribute("anime", config.getConfigForm());
         model.addAttribute("action", "/submit");
-        return "index";
+        return "main";
     }
 
     @PostMapping("/submit")
-    public String postHomePage(@Valid @ModelAttribute("anime") ConfigForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String postHomePage(@Valid @ModelAttribute("anime") InputDTO form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) return "index";
         try {
             Long id = processForm(form);
@@ -61,7 +61,7 @@ public class ViewController {
     }
 
     @PostMapping("/result/submit")
-    public String postResultPage(@Valid @ModelAttribute("anime") ConfigForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    public String postResultPage(@Valid @ModelAttribute("anime") InputDTO form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         final var previousAnime = resultBuilder.getResultDto();
         if (bindingResult.hasErrors()) {
             model.addAttribute("recommendations", previousAnime);
@@ -86,7 +86,7 @@ public class ViewController {
         return "detail";
     }
 
-    private Long processForm(ConfigForm form) throws ValidationException {
+    private Long processForm(InputDTO form) throws ValidationException {
         config.updateConfig(form);
         Long id = animeService.getAnimeIdByName(config.getAnimeName());
         config.setAnimeId(id);
