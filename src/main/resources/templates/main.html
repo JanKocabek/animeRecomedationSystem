@@ -14,12 +14,12 @@
     <link th:href="@{/assets/css/main.css}" rel="stylesheet">
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 <main class="flex-grow-1">
 
 </main>
-<footer th:replace="fragments/footer :: footer"></footer>
-<script src="/assets/js/formUI.js"></script>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script th:src="@{/assets/js/formUI.js}"></script>
 <script src="/assets/js/core/bootstrap.bundle.min.js"></script>
 <script src="/assets/js/core/bootstrap.min.js"></script>
 <script src="/assets/js/core/popper.min.js"></script>
