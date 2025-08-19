@@ -30,7 +30,6 @@ public class AppAccount {
     @Column(name = "username", nullable = false)
     private String username;
 
-
     @Column(name = "password_hash", nullable = false)
     @NotNull
     private String passwordHash;
@@ -39,7 +38,6 @@ public class AppAccount {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @Size(max = 200)
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 200)
