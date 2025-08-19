@@ -10,6 +10,8 @@ import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,7 +29,7 @@ public class ViewController {
     RecommendationConfig config;
 
     @GetMapping("/main")
-    public String getHomePage(Model model) {
+    public String getHomePage(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("anime", config.getConfigForm());
         model.addAttribute("action", "/submit");
         return "main";
