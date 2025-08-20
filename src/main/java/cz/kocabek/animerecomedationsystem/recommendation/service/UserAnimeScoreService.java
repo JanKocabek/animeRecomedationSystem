@@ -3,7 +3,7 @@ package cz.kocabek.animerecomedationsystem.recommendation.service;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.UserAnimeList;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto;
 import cz.kocabek.animerecomedationsystem.recommendation.repository.UsersAnimeScoreRepository;
-import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.Config;
+import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.ConfigConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 public class UserAnimeScoreService {
     private static final Logger logger = LoggerFactory.getLogger(UserAnimeScoreService.class);
     UsersAnimeScoreRepository usersAnimeScoreRepository;
-    Config config;
+    RecommendationConfig config;
 
-    public UserAnimeScoreService(UsersAnimeScoreRepository usersAnimeScoreRepository, Config config) {
+    public UserAnimeScoreService(UsersAnimeScoreRepository usersAnimeScoreRepository, RecommendationConfig config) {
         this.usersAnimeScoreRepository = usersAnimeScoreRepository;
         this.config = config;
     }
