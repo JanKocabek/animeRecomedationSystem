@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Header</title>
@@ -14,31 +14,33 @@
                 <!-- Menu next to title -->
                 <ul class="navbar-nav navbar-nav-hover flex-row gap-4 mb-0">
                     <li class="nav-item dropdown dropdown-hover">
-                        <a class="nav-link dropdown-toggle text-white" id="dropdownMenuPages1" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-white" id="dropdownMenuPages1" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="ti ti-menu-2 nav-icon"></i>
                             Menu
                             <i class="ti ti-chevron-down nav-icon "></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-lg mt-0 mt-lg-3" aria-labelledby="dropdownMenuPages1 " >
+                        <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-lg mt-0 mt-lg-3"
+                             aria-labelledby="dropdownMenuPages1 ">
                             <div class="d-none d-lg-block">
-                                <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
-                                    Landing Pages
-                                </h6>
-                                <a href="../pages/about-us.html" class="dropdown-item border-radius-md">
-                                    <span>About Us</span>
-                                </a>
-                                <a href="../pages/contact-us.html" class="dropdown-item border-radius-md">
-                                    <span>Contact Us</span>
-                                </a>
-                                <a href="../pages/author.html" class="dropdown-item border-radius-md">
-                                    <span>Author</span>
-                                </a>
-                                <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 mt-3">
+                                <div th:if="${#authorization.expression('isAuthenticated()')}">
+                                    <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
+                                        Dashboard
+                                    </h6>
+                                    <a href="../pages/about-us.html" class="dropdown-item border-radius-md">
+                                        <span>Settings</span>
+                                    </a>
+                                    <a href="../pages/contact-us.html" class="dropdown-item border-radius-md">
+                                        <span>Watchlist</span>
+                                    </a>
+                                </div>
+                                <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 ">
                                     Account
                                 </h6>
-                                <a href="../pages/sign-in.html" class="dropdown-item border-radius-md">
+                                <a href="../pages/sign-in.html" class="dropdown-item border-radius-sm">
                                     <span>Sign In</span>
                                 </a>
+                                <span sec:authentication="name"></span>
                             </div>
                             <div class="d-lg-none">
                                 <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
@@ -51,7 +53,7 @@
                                     <span>Contact Us</span>
                                 </a>
                                 <a href="../pages/author.html" class="dropdown-item border-radius-md">
-                                    <span>Author</span>
+                                    <span sec:authentication="name"></span>
                                 </a>
                                 <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 mt-3">
                                     Account
