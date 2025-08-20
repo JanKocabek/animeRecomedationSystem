@@ -9,7 +9,7 @@ import org.springframework.web.context.annotation.SessionScope;
 @SessionScope
 @Data
 public class RecommendationConfig {
-    private String animeName;
+    private String animeName="";
     private Long animeId;
     private int minScore = ConfigConstant.MIN_INPUT_SCORE;
     private int maxUsers = ConfigConstant.MAX_USERS_PER_PAGE;
@@ -19,10 +19,10 @@ public class RecommendationConfig {
 
     public void updateConfig(InputDTO formData) {
         this.configForm = formData;
-        this.animeName = formData.getAnimeName();
-        this.minScore = formData.getMinRating();
-        this.maxUsers = formData.getMaxUsers();
-        this.onlyInAnimeGenres = formData.isOnlyInAnimeGenres();
+        this.animeName = formData.animeName();
+        this.minScore = formData.minRating();
+        this.maxUsers = formData.maxUsers();
+        this.onlyInAnimeGenres = formData.onlyInAnimeGenres();
     }
 
     public void resetConfigForm() {
