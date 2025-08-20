@@ -23,7 +23,16 @@
                         <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-lg mt-0 mt-lg-3"
                              aria-labelledby="dropdownMenuPages1 ">
                             <div class="d-none d-lg-block">
-                                <div th:if="${#authorization.expression('isAuthenticated()')}">
+                                <!-- welcome message -->
+                                <h6 class="text-primary fw-bold px-3 py-2 mb-0 d-flex align-items-center"
+                                    style="font-size: 1rem; background-color: #f8f9fa; border-radius: 0.5rem;">
+                                    👋 Welcome
+                                    <span sec:authorize="isAuthenticated()" class="ms-1 text-dark fw-semibold"
+                                          th:text="${#authentication.name}"></span>
+                                    <span sec:authorize="isAnonymous()" class="ms-1 text-muted fw-semibold">Guest</span>
+                                </h6>
+                                <!--user menu-->
+                                <div sec:authorize="isAuthenticated()">
                                     <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
                                         Dashboard
                                     </h6>
@@ -33,14 +42,25 @@
                                     <a href="../pages/contact-us.html" class="dropdown-item border-radius-md">
                                         <span>Watchlist</span>
                                     </a>
+                                    <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 ">
+                                        Account
+                                    </h6>
+                                    <form th:action="@{/logout}" method="post">
+                                        <button type="submit" class="dropdown-item border-radius-sm">
+                                            <span>Sign Out</span>
+                                        </button>
+                                    </form>
                                 </div>
-                                <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 ">
-                                    Account
-                                </h6>
-                                <a href="../pages/sign-in.html" class="dropdown-item border-radius-sm">
-                                    <span>Sign In</span>
-                                </a>
-                                <span sec:authentication="name"></span>
+                                <!--guest menu-->
+                                <div sec:authorize="isAnonymous()">
+                                    <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 ">
+                                        Account
+                                    </h6>
+                                    <a th:href="@{/}" class="dropdown-item border-radius-sm">
+                                        <span>Sign In</span>
+                                    </a>
+                                </div>
+                                <--! end of menu-->
                             </div>
                             <div class="d-lg-none">
                                 <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
