@@ -1,4 +1,4 @@
-package cz.kocabek.animerecomedationsystem.recommendation.service;
+package cz.kocabek.animerecomedationsystem.recommendation.service.db;
 
 import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeDto;
 import cz.kocabek.animerecomedationsystem.recommendation.entity.Anime;

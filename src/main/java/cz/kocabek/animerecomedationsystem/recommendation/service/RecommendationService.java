@@ -3,6 +3,9 @@ package cz.kocabek.animerecomedationsystem.recommendation.service;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeDto;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeOutDTO;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.RecommendationDTO;
+import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeGenreService;
+import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
+import cz.kocabek.animerecomedationsystem.recommendation.service.db.UserAnimeScoreService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +35,6 @@ public class RecommendationService {
     DTOResultBuilder resultBuilder;
     AnimeGenreService animeGenreService;
 
-
     /* public endpoints*/
     public RecommendationDTO getAnimeRecommendation(String name) {
         final var animeId = animeService.getAnimeIdByName(name); //one detail id
@@ -42,9 +44,7 @@ public class RecommendationService {
     public RecommendationDTO getAnimeRecommendation(Long animeId) {
         return generateAnimeRecommendations(animeId);
     }
-
     /*---*/
-
 
     /**
      * Generates detail recommendations for a given detail ID using an intersection weight algorithm
@@ -69,7 +69,7 @@ public class RecommendationService {
         logger.debug("number of detail in map: {}", sortedMap.size());
 
         long step3Start = System.nanoTime();
-        final var weightedAnime = engine.weightAnime(sortedMap, AnimeScore.compositeScoring);
+        final var weightedAnime = engine.weightAnime(sortedMap, AnimeScoreCalculator.compositeScoring);
         final var topRecommendations = engine.cutTheTopN(weightedAnime);//current final map with ids without detail yet
         long step3Duration = (System.nanoTime() - step3Start) / 1_000_000;
         logger.warn("Step 3 (weight detail) took: {} ms", step3Duration);
@@ -82,7 +82,6 @@ public class RecommendationService {
         logger.debug("recommended detail: {}", animeDetailsList.size());
         return buildOutputList(animeDetailsList, topRecommendations);
     }
-
 
     private Collection<Long> getAnimeIDsFromDTO(Map<Long, AnimeOutDTO> animeMap) {
         return animeMap.keySet().stream().toList();
@@ -102,7 +101,7 @@ public class RecommendationService {
 
     private List<AnimeDto> getAnimeDetails(Map<Long, AnimeOutDTO> topRecommendations) {
         final var details = animeService.getListAnimeFromIds(getAnimeIDsFromDTO(topRecommendations));
-        final var genresDetail = animeGenreService.getGenreForAnime(topRecommendations.keySet());
+        final var genresDetail = animeGenreService.getGenresForAnime(topRecommendations.keySet());
         for (AnimeDto detail : details) {
             detail.getGenres().addAll(genresDetail.get(detail.getId()));
         }

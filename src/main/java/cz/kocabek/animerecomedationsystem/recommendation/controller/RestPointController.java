@@ -4,7 +4,7 @@ package cz.kocabek.animerecomedationsystem.recommendation.controller;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.RecommendationDTO;
 import cz.kocabek.animerecomedationsystem.recommendation.entity.Anime;
 import cz.kocabek.animerecomedationsystem.recommendation.repository.UsersAnimeScoreRepository;
-import cz.kocabek.animerecomedationsystem.recommendation.service.AnimeService;
+import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

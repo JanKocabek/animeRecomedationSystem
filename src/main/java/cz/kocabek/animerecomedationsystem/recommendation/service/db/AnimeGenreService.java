@@ -1,4 +1,4 @@
-package cz.kocabek.animerecomedationsystem.recommendation.service;
+package cz.kocabek.animerecomedationsystem.recommendation.service.db;
 
 import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeGenreInfo;
 import cz.kocabek.animerecomedationsystem.recommendation.repository.AnimeGenreRepository;
@@ -18,7 +18,7 @@ public class AnimeGenreService {
         this.repository = repository;
     }
 
-    public Map<Long, List<String>> getGenreForAnime(Collection<Long> animeIds) {
+    public Map<Long, List<String>> getGenresForAnime(Collection<Long> animeIds) {
         final var animeGenreInfos = repository.getById_AnimeIdIn(animeIds);
         return groupGenrePerAnime(animeGenreInfos);
     }

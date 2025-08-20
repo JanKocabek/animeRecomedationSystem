@@ -1,7 +1,7 @@
 package cz.kocabek.animerecomedationsystem.recommendation.controller;
 
 import cz.kocabek.animerecomedationsystem.recommendation.dto.InputDTO;
-import cz.kocabek.animerecomedationsystem.recommendation.service.AnimeService;
+import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
 import cz.kocabek.animerecomedationsystem.recommendation.service.DTOResultBuilder;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationService;

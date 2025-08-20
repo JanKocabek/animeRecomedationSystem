@@ -5,7 +5,7 @@ import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationC
 
 import java.util.function.ToDoubleFunction;
 
- class AnimeScore {
+ class AnimeScoreCalculator {
 
     static ToDoubleFunction<AnimeOutDTO> compositeScoring = (anime) -> {
         final double normalizedOccurrences = anime.getPercentageOccurrences() / 100;
