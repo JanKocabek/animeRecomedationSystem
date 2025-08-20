@@ -35,7 +35,7 @@ public class ViewController {
 
     @PostMapping("/submit")
     public String postHomePage(@Valid @ModelAttribute("anime") InputDTO form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) return "index";
+        if (bindingResult.hasErrors()) return "main";
         try {
             Long id = processForm(form);
             redirectAttributes.addAttribute("id", id);
