@@ -28,12 +28,11 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </span>
                         </button>
-
                         <div class="collapse navbar-collapse" id="navigation">
                             <!-- Menu next to title -->
                             <ul class="navbar-nav navbar-nav-hover flex-row gap-4 mb-0 ms-4">
                                 <li class="nav-item dropdown dropdown-hover">
-                                    <a class="nav-link dropdown-toggle text-white" id="dropdownMenuPages1" href="#"
+                                    <a class="nav-link dropdown-toggle" id="dropdownMenuPages1" href="#"
                                        role="button"
                                        data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="ti ti-menu-2 nav-icon"></i>
@@ -47,7 +46,8 @@
                                             <h6 class="text-primary fw-bold px-3 py-2 mb-0 d-flex align-items-center"
                                                 style="font-size: 1rem; background-color: #f8f9fa; border-radius: 0.5rem;">
                                                 👋 Welcome
-                                                <span sec:authorize="isAuthenticated()" class="ms-1 text-dark fw-semibold"
+                                                <span sec:authorize="isAuthenticated()"
+                                                      class="ms-1 text-dark fw-semibold"
                                                       th:text="${#authentication.name}"></span>
                                                 <span sec:authorize="isAnonymous()"
                                                       class="ms-1 text-muted fw-semibold">Guest</span>
@@ -60,7 +60,8 @@
                                                 <a href="../pages/about-us.html" class="dropdown-item border-radius-md">
                                                     <span>Settings</span>
                                                 </a>
-                                                <a href="../pages/contact-us.html" class="dropdown-item border-radius-md">
+                                                <a href="../pages/contact-us.html"
+                                                   class="dropdown-item border-radius-md">
                                                     <span>Watchlist</span>
                                                 </a>
                                                 <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 ">
@@ -84,24 +85,47 @@
                                             <!-- end of the menu-->
                                         </div>
                                         <div class="d-lg-none">
-                                            <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
-                                                Landing Pages
+                                            <!-- welcome message -->
+                                            <h6 class="text-primary fw-bold px-3 py-2 mb-0 d-flex align-items-center"
+                                                style="font-size: 1rem; background-color: #f8f9fa; border-radius: 0.5rem;">
+                                                👋 Welcome
+                                                <span sec:authorize="isAuthenticated()"
+                                                      class="ms-1 text-dark fw-semibold"
+                                                      th:text="${#authentication.name}"></span>
+                                                <span sec:authorize="isAnonymous()"
+                                                      class="ms-1 text-muted fw-semibold">Guest</span>
                                             </h6>
-                                            <a href="../pages/about-us.html" class="dropdown-item border-radius-md">
-                                                <span>About Us</span>
-                                            </a>
-                                            <a href="../pages/contact-us.html" class="dropdown-item border-radius-md">
-                                                <span>Contact Us</span>
-                                            </a>
-                                            <a href="../pages/author.html" class="dropdown-item border-radius-md">
-                                                <span sec:authentication="name"></span>
-                                            </a>
-                                            <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 mt-3">
-                                                Account
-                                            </h6>
-                                            <a href="../pages/sign-in.html" class="dropdown-item border-radius-md">
-                                                <span>Sign In</span>
-                                            </a>
+                                            <!--user menu-->
+                                            <div sec:authorize="isAuthenticated()">
+                                                <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
+                                                    Dashboard
+                                                </h6>
+                                                <a href="../pages/about-us.html" class="dropdown-item border-radius-md">
+                                                    <span>Settings</span>
+                                                </a>
+                                                <a href="../pages/contact-us.html"
+                                                   class="dropdown-item border-radius-md">
+                                                    <span>Watchlist</span>
+                                                </a>
+                                                <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 ">
+                                                    Account
+                                                </h6>
+                                                <form th:action="@{/logout}" method="post">
+                                                    <button type="submit" class="dropdown-item border-radius-sm">
+                                                        <span>Sign Out</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <!--guest menu-->
+                                            <div sec:authorize="isAnonymous()">
+                                                <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 ">
+                                                    Account
+                                                </h6>
+                                                <a th:href="@{/}" class="dropdown-item border-radius-sm">
+                                                    <span>Sign In</span>
+                                                </a>
+                                            </div>
+                                            <!-- end of the menu-->
                                         </div>
                                     </div>
                                 </li>
@@ -146,8 +170,11 @@
                          style="z-index: 10;">
                         <span th:errors="*{animeName}"></span>
                     </div>
-
-
+                    <div th:if="${#fields.hasAnyErrors()}">
+                        <ul>
+                            <li th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
+                        </ul>
+                    </div>
                     <!-- Advanced Options Toggle -->
                     <div class="mt-4 text-center">
                         <div class="form-check form-switch d-inline-flex align-items-center">
@@ -179,7 +206,7 @@
                                             Minimum Input Anime User Rating
                                         </label>
                                         <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
-                            <span id="minRatingValue" th:text="${anime.getMinRating()}"></span>/10
+                            <span id="minRatingValue" th:text="${anime.minRating()}"></span>/10
                         </span>
                                     </div>
                                     <input type="range"
@@ -201,7 +228,7 @@
                                             Max Users to Analyze
                                         </label>
                                         <span class="badge bg-info px-3 py-2 rounded-pill">
-                            <span id="maxUsersValue" th:text="${anime.getMaxUsers()}"></span> users
+                            <span id="maxUsersValue" th:text="${anime.maxUsers()}"></span> users
                         </span>
                                     </div>
                                     <input type="range"
