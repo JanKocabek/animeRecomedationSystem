@@ -8,11 +8,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RegistrationService {
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     AppAccRepository appAccRepository;
-    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public RegistrationService(AppAccRepository appAccRepository) {
         this.appAccRepository = appAccRepository;
+        bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
     public void registerNewUser(RegistrationDTO registrationDTO) {
