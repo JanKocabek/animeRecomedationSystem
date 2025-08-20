@@ -45,7 +45,7 @@
 <!-- End Header -->
 <div class="page-header align-items-start min-vh-100"
      th:style="|background-image: url('@{/assets/image/ian-valerio-road-header-unsplash.jpg}')|">
-    <!--main page/form-->
+    <!--main part of the page-->
     <div class="container my-auto">
         <div class="row">
             <div class="col-lg-4 col-md-8 col-12 mx-auto">
@@ -72,7 +72,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body"> <!--the form -->
                         <form role="form" class="text-start" method="post" th:action="@{/login}">
                             <input type="hidden" sec:csrf="true"/>
                             <div class="input-group input-group-outline my-3">
@@ -88,22 +88,27 @@
                                 <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
                             </div>
                             <div class="row">
-                                <div class="text-center col-6">
-                                    <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign In</button>
+                                <div class="text-center col-6"><!--login button-->
+                                    <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">
+                                        Sign In
+                                    </button>
                                 </div>
-                                <div class="text-center col-6">
-                                    <button type="button" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
+                                <div class="text-center col-6"><!--register button-->
+                                    <button type="submit" th:formaction="@{/register}" class="btn bg-gradient-dark w-100 my-4 mb-2">
+                                        Sign up
+                                    </button>
                                 </div>
                             </div>
-                            <button type="button" class="btn bg-gradient-dark w-100 my-4 mb-2 text-center">
-                                Continue as Guest
-                            </button>
                             <div th:if="${param.error}" class="text-danger ">
                                 <p>Invalid username or password.</p>
                             </div>
                         </form>
-                    </div>
-                </div>
+                        <a  th:href="@{/main}" class="btn bg-gradient-dark w-100 my-4 mb-2 text-center">
+                            Continue as Guest
+                        </a>
+                    </div> <!--end form -->
+                </div><!--end card -->
+
             </div>
         </div>
     </div>
