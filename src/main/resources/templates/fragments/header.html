@@ -5,86 +5,110 @@
     <title>Header</title>
 </head>
 <body>
+
 <header th:fragment="header">
     <section class="py-3 text-white text-center position-relative ">
-        <nav class="navbar navbar-transparent py-1" style="z-index: 1030;">
-            <div class="container-fluid d-flex justify-content-center align-items-center gap-4">
-                <!-- Title -->
-                <h1 class="fw-bold fs-1 text-light mb-0">Anime Recommendation system</h1>
-                <!-- Menu next to title -->
-                <ul class="navbar-nav navbar-nav-hover flex-row gap-4 mb-0">
-                    <li class="nav-item dropdown dropdown-hover">
-                        <a class="nav-link dropdown-toggle text-white" id="dropdownMenuPages1" href="#" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="ti ti-menu-2 nav-icon"></i>
-                            Menu
-                            <i class="ti ti-chevron-down nav-icon "></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-lg mt-0 mt-lg-3"
-                             aria-labelledby="dropdownMenuPages1 ">
-                            <div class="d-none d-lg-block">
-                                <!-- welcome message -->
-                                <h6 class="text-primary fw-bold px-3 py-2 mb-0 d-flex align-items-center"
-                                    style="font-size: 1rem; background-color: #f8f9fa; border-radius: 0.5rem;">
-                                    👋 Welcome
-                                    <span sec:authorize="isAuthenticated()" class="ms-1 text-dark fw-semibold"
-                                          th:text="${#authentication.name}"></span>
-                                    <span sec:authorize="isAnonymous()" class="ms-1 text-muted fw-semibold">Guest</span>
-                                </h6>
-                                <!--user menu-->
-                                <div sec:authorize="isAuthenticated()">
-                                    <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
-                                        Dashboard
-                                    </h6>
-                                    <a href="../pages/about-us.html" class="dropdown-item border-radius-md">
-                                        <span>Settings</span>
+        <nav class="navbar navbar-expand-lg navbar-transparent py-1 z-index-3 ">
+            <div class="container">
+                <div class="d-flex align-items-center justify-content-between w-100">
+                    <!-- Empty space for balance -->
+                    <div class="flex-grow-1"></div>
+
+                    <!-- Title - centered -->
+                    <h1 class="fw-bold fs-1 text-light mb-0">Anime Recommendation system</h1>
+
+                    <!-- Menu and toggler section -->
+                    <div class="flex-grow-1 d-flex justify-content-end align-items-center">
+                        <button class="navbar-toggler shadow-none d-lg-none" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon mt-2">
+                                <span class="navbar-toggler-bar bar1"></span>
+                                <span class="navbar-toggler-bar bar2"></span>
+                                <span class="navbar-toggler-bar bar3"></span>
+                            </span>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="navigation">
+                            <!-- Menu next to title -->
+                            <ul class="navbar-nav navbar-nav-hover flex-row gap-4 mb-0 ms-4">
+                                <li class="nav-item dropdown dropdown-hover">
+                                    <a class="nav-link dropdown-toggle text-white" id="dropdownMenuPages1" href="#"
+                                       role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="ti ti-menu-2 nav-icon"></i>
+                                        Menu
+                                        <i class="ti ti-chevron-down nav-icon "></i>
                                     </a>
-                                    <a href="../pages/contact-us.html" class="dropdown-item border-radius-md">
-                                        <span>Watchlist</span>
-                                    </a>
-                                    <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 ">
-                                        Account
-                                    </h6>
-                                    <form th:action="@{/logout}" method="post">
-                                        <button type="submit" class="dropdown-item border-radius-sm">
-                                            <span>Sign Out</span>
-                                        </button>
-                                    </form>
-                                </div>
-                                <!--guest menu-->
-                                <div sec:authorize="isAnonymous()">
-                                    <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 ">
-                                        Account
-                                    </h6>
-                                    <a th:href="@{/}" class="dropdown-item border-radius-sm">
-                                        <span>Sign In</span>
-                                    </a>
-                                </div>
-                                <--! end of menu-->
-                            </div>
-                            <div class="d-lg-none">
-                                <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
-                                    Landing Pages
-                                </h6>
-                                <a href="../pages/about-us.html" class="dropdown-item border-radius-md">
-                                    <span>About Us</span>
-                                </a>
-                                <a href="../pages/contact-us.html" class="dropdown-item border-radius-md">
-                                    <span>Contact Us</span>
-                                </a>
-                                <a href="../pages/author.html" class="dropdown-item border-radius-md">
-                                    <span sec:authentication="name"></span>
-                                </a>
-                                <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 mt-3">
-                                    Account
-                                </h6>
-                                <a href="../pages/sign-in.html" class="dropdown-item border-radius-md">
-                                    <span>Sign In</span>
-                                </a>
-                            </div>
+                                    <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-lg mt-0 mt-lg-3"
+                                         aria-labelledby="dropdownMenuPages1 ">
+                                        <div class="d-none d-lg-block">
+                                            <!-- welcome message -->
+                                            <h6 class="text-primary fw-bold px-3 py-2 mb-0 d-flex align-items-center"
+                                                style="font-size: 1rem; background-color: #f8f9fa; border-radius: 0.5rem;">
+                                                👋 Welcome
+                                                <span sec:authorize="isAuthenticated()" class="ms-1 text-dark fw-semibold"
+                                                      th:text="${#authentication.name}"></span>
+                                                <span sec:authorize="isAnonymous()"
+                                                      class="ms-1 text-muted fw-semibold">Guest</span>
+                                            </h6>
+                                            <!--user menu-->
+                                            <div sec:authorize="isAuthenticated()">
+                                                <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
+                                                    Dashboard
+                                                </h6>
+                                                <a href="../pages/about-us.html" class="dropdown-item border-radius-md">
+                                                    <span>Settings</span>
+                                                </a>
+                                                <a href="../pages/contact-us.html" class="dropdown-item border-radius-md">
+                                                    <span>Watchlist</span>
+                                                </a>
+                                                <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 ">
+                                                    Account
+                                                </h6>
+                                                <form th:action="@{/logout}" method="post">
+                                                    <button type="submit" class="dropdown-item border-radius-sm">
+                                                        <span>Sign Out</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <!--guest menu-->
+                                            <div sec:authorize="isAnonymous()">
+                                                <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 ">
+                                                    Account
+                                                </h6>
+                                                <a th:href="@{/}" class="dropdown-item border-radius-sm">
+                                                    <span>Sign In</span>
+                                                </a>
+                                            </div>
+                                            <!-- end of the menu-->
+                                        </div>
+                                        <div class="d-lg-none">
+                                            <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
+                                                Landing Pages
+                                            </h6>
+                                            <a href="../pages/about-us.html" class="dropdown-item border-radius-md">
+                                                <span>About Us</span>
+                                            </a>
+                                            <a href="../pages/contact-us.html" class="dropdown-item border-radius-md">
+                                                <span>Contact Us</span>
+                                            </a>
+                                            <a href="../pages/author.html" class="dropdown-item border-radius-md">
+                                                <span sec:authentication="name"></span>
+                                            </a>
+                                            <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 mt-3">
+                                                Account
+                                            </h6>
+                                            <a href="../pages/sign-in.html" class="dropdown-item border-radius-md">
+                                                <span>Sign In</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </div>
         </nav>
         <!--        header picture-->
