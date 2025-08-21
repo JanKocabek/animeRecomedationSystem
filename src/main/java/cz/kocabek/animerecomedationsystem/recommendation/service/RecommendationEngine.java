@@ -22,8 +22,10 @@ import java.util.stream.Collectors;
 public class RecommendationEngine {
 
     private static final Logger logger = LoggerFactory.getLogger(RecommendationEngine.class);
+    AnimePreprocessingService animePreprocessingService;
 
-    public RecommendationEngine() {
+    public RecommendationEngine(AnimePreprocessingService animePreprocessingService) {
+        this.animePreprocessingService = animePreprocessingService;
     }
 
 
@@ -95,11 +97,17 @@ public class RecommendationEngine {
      * @return a sorted Map where keys are anime IDs and values are AnimeOutDTO objects containing
      *         occurrence statistics and rating information about the anime
      */
-    Map<Long, AnimeOutDTO> buildAnimeOccurrencesMap(List<UserAnimeList> animeLists) {
-        final var map = countAnimeOccurrences(animeLists);
-        logger.debug("size of all detail: {}", map.size());
-        calculateAverageRatings(map);
-        calculatePercentageOccurrencesAmongUsers(map, animeLists.size());
-        return sortAnimeMapByOccurrences(map);
+    Map<Long, AnimeOutDTO> buildAnimeMap(List<UserAnimeList> animeLists) {
+        return transformUsersListsToAnimeMap(animeLists);
+
+        //return generateAnimeRecommendations(animeLists, map);
+    }
+
+    Map<Long, AnimeOutDTO> filteredAndSortAnimeMap(List<UserAnimeList> animeLists, Map<Long, AnimeOutDTO> map) {
+        final var filteredMap = animePreprocessingService.filterAnime(map);
+        logger.debug("size of all anime: {}", filteredMap.size());
+        calculateAverageRatings(filteredMap);
+        calculatePercentageOccurrencesAmongUsers(filteredMap, animeLists.size());
+        return sortAnimeMapByOccurrences(filteredMap);
     }
 }

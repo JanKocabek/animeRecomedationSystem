@@ -37,7 +37,6 @@ public class RecommendationService {
     RecommendationEngine engine;
     //service for building output DTO
     DTOResultBuilder resultBuilder;
-    AnimeGenreService animeGenreService;
 
     /* public endpoints*/
     public RecommendationDTO getAnimeRecommendation(String name) {
