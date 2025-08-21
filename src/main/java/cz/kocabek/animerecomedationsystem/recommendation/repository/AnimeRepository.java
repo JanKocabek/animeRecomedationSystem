@@ -23,7 +23,9 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
                         from Anime a
                         where a.id  in :animeIds
                         order by a.score DESC""")
-    List<AnimeDto> getAnimeListOrderByScore(@Param("animeIds") @NonNull Collection<Long> animeIds);
+    List<AnimeDto> getAnimeInfoListOrderByScore(@Param("animeIds") @NonNull Collection<Long> animeIds);
+
+
 
     @Query("select a.id from Anime a where lower(a.englishName) =?1")
     Optional<Long> getAnimeIdByEnglishName(String englishName);

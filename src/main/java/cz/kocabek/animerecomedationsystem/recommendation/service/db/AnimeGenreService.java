@@ -18,9 +18,14 @@ public class AnimeGenreService {
         this.repository = repository;
     }
 
-    public Map<Long, List<String>> getGenresForAnime(Collection<Long> animeIds) {
+    public Map<Long, List<String>> getGenresByAnimeIds(Collection<Long> animeIds) {
         final var animeGenreInfos = repository.getById_AnimeIdIn(animeIds);
         return groupGenrePerAnime(animeGenreInfos);
+    }
+
+    public List<String> getGenresForAnime(Long animeId) {
+        final var genres = repository.getAnimeGenresByAnimeId(animeId);
+        return genres.stream().map(info -> info.getGenre().getGenreName()).toList();
     }
 
     private Map<Long, List<String>> groupGenrePerAnime(List<AnimeGenreInfo> genreInfos) {
@@ -28,6 +33,6 @@ public class AnimeGenreService {
                 Collectors.groupingBy(info -> info.getAnime().getId(),
                         Collectors.mapping(info -> info.getGenre().getGenreName(),
                                 Collectors.toList())
-               ));
+                ));
     }
 }
