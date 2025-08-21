@@ -11,4 +11,6 @@ import java.util.List;
 
 public interface AnimeGenreRepository extends Repository<AnimeGenre, AnimeGenreId> {
     List<AnimeGenreInfo> getById_AnimeIdIn(@NonNull Collection<Long> animeId);
+
+    List<AnimeGenreInfo> getAnimeGenresByAnimeId(Long animeId);
 }

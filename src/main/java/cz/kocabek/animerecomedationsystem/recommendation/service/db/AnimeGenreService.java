@@ -23,6 +23,11 @@ public class AnimeGenreService {
         return groupGenrePerAnime(animeGenreInfos);
     }
 
+    public List<String> getGenresForAnime(Long animeId) {
+        final var genres = repository.getAnimeGenresByAnimeId(animeId);
+        return genres.stream().map(info -> info.getGenre().getGenreName()).toList();
+    }
+
     private Map<Long, List<String>> groupGenrePerAnime(List<AnimeGenreInfo> genreInfos) {
         return genreInfos.stream().collect(
                 Collectors.groupingBy(info -> info.getAnime().getId(),
