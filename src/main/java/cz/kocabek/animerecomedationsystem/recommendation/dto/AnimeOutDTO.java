@@ -57,6 +57,7 @@ public class AnimeOutDTO {
         this.sumOfRatings = sumOfRatings;
         this.occurrences = occurrences;
         this.averageRating = null;
+        this.genres = new ArrayList<>();
     }
 
     /**
