@@ -66,11 +66,12 @@ public class RecommendationService {
         logger.info("size of data after grouping: {}", usersAnimeLists.size());
 
         long step2Start = System.nanoTime();
-        final var sortedMap = engine.buildAnimeOccurrencesMap(usersAnimeLists);
+        final var animeMap = engine.buildAnimeMap(usersAnimeLists);
         long step2Duration = (System.nanoTime() - step2Start) / 1_000_000;
-        logger.warn("Step 2 (build detail occurrences map) took: {} ms", step2Duration);
-        logger.debug("number of detail in map: {}", sortedMap.size());
-
+        logger.warn("Step 2 (build anime occurrences map) took: {} ms", step2Duration);
+        logger.debug("number of anime in map: {}", animeMap.size());
+        final var mapWithDetails = enrichedMapByDetails(animeMap);
+        final var processedMap = engine.filteredAndSortAnimeMap(usersAnimeLists, mapWithDetails);
         long step3Start = System.nanoTime();
         final var weightedAnime = engine.weightAnime(sortedMap, AnimeScoreCalculator.compositeScoring);
         final var topRecommendations = engine.cutTheTopN(weightedAnime);//current final map with ids without detail yet
@@ -78,12 +79,13 @@ public class RecommendationService {
         logger.warn("Step 3 (weight detail) took: {} ms", step3Duration);
         logger.debug("size of shortened list: {}", topRecommendations.size());
         long step4Start = System.nanoTime();
-        final var animeDetailsList = getAnimeDetails(topRecommendations);
+        //get anime details separately
+        final var animesInfo = getAnimeInfos(topRecommendations);
 
         long step4Duration = (System.nanoTime() - step4Start) / 1_000_000;
-        logger.warn("Step 4 (get detail details) took: {} ms", step4Duration);
-        logger.debug("recommended detail: {}", animeDetailsList.size());
-        return buildOutputList(animeDetailsList, topRecommendations);
+        logger.warn("Step 4 (get anime details) took: {} ms", step4Duration);
+        logger.debug("recommended anime's: {}", animesInfo.size());
+        return buildOutputList(animesInfo, topRecommendations);
     }
 
     private Collection<Long> getAnimeIDsFromDTO(Map<Long, AnimeOutDTO> animeMap) {
@@ -102,13 +104,19 @@ public class RecommendationService {
         return animeData.values().stream().toList();
     }
 
-    private List<AnimeDto> getAnimeDetails(Map<Long, AnimeOutDTO> topRecommendations) {
-        final var details = animeService.getListAnimeFromIds(getAnimeIDsFromDTO(topRecommendations));
-        final var genresDetail = animeGenreService.getGenresForAnime(topRecommendations.keySet());
-        for (AnimeDto detail : details) {
-            detail.getGenres().addAll(genresDetail.get(detail.getId()));
-        }
-        return details;
+    private Map<Long, AnimeOutDTO> enrichedMapByDetails(Map<Long, AnimeOutDTO> map) {
+        final var genresDetail = animeGenreService.getGenresByAnimeIds(map.keySet());
+        genresDetail.forEach((animeId, genres) -> map.get(animeId).setGenres(genres));
+        return map;
+    }
+
+    private List<AnimeDto> getAnimeInfos(Map<Long, AnimeOutDTO> topRecommendations) {
+        return animeService.retrieveAnimeByIdsSortedByScore(getAnimeIDsFromDTO(topRecommendations));
+//        final var genresDetail = animeGenreService.getGenresForAnime(topRecommendations.keySet());
+//        for (AnimeDto detail : details) {
+//            detail.getGenres().addAll(genresDetail.get(detail.getId()));
+//        }
+//        return details;
     }
 }
 
