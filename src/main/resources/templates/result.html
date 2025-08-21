@@ -63,7 +63,7 @@
                                     <!-- Right side: Genre pills aligned to right -->
                                     <div class="d-flex flex-column align-items-end ms-auto">
                                         <span class="badge bg-secondary mb-2">Genres:</span>
-                                        <span th:each="genre : ${recommend.animeInfo.genres}"
+                                        <span th:each="genre : ${recommend.genres}"
                                               class="badge rounded-pill bg-secondary mb-1"
                                               th:text="${genre}"></span>
                                     </div>
