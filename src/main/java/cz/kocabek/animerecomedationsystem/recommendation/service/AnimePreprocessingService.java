@@ -5,32 +5,38 @@ import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationC
 import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeGenreService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AnimePreprocessingService {
 
-    AnimeGenreService animeGenreService;
-    RecommendationConfig config;
+    final AnimeGenreService animeGenreService;
+    final RecommendationConfig config;
+    private final List<AnimePredicate> activeFilterList = new ArrayList<>();
 
-    AnimePreprocessingService(AnimeGenreService animeGenreService, RecommendationConfig config) {
+    public AnimePreprocessingService(AnimeGenreService animeGenreService, RecommendationConfig config) {
         this.animeGenreService = animeGenreService;
         this.config = config;
     }
 
-    public Map<Long, AnimeOutDTO> filterAnime(Map<Long, AnimeOutDTO> animeMap) {
-        final var map = new HashMap<>(animeMap);
-        if (config.isOnlyInAnimeGenres()) {
-            final var genres = animeGenreService.getGenresForAnime(config.getAnimeId());
-            filterOutByInputGenres(map, genres);
-        }
-        return map;
+    public Map<Long, AnimeOutDTO> filterAnimeMap(Map<Long, AnimeOutDTO> animeMap) {
+        selectFilters();
+        return animeMap.entrySet().stream().filter(combineFilters())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (_, b) -> b));
     }
 
-    private void filterOutByInputGenres(Map<Long, AnimeOutDTO> map, List<String> genres) {
-        map.entrySet().removeIf(entry ->
-                entry.getValue().getGenres().stream().noneMatch(genres::contains));
+    private void selectFilters() {
+        activeFilterList.clear();
+        if (config.isOnlyInAnimeGenres()) {
+            final var genres = animeGenreService.getGenresForAnime(config.getAnimeId());
+            activeFilterList.add(entry -> entry.getValue().getGenres().stream().anyMatch(genres::contains));
+        }
+    }
+
+    private AnimePredicate combineFilters() {
+        return activeFilterList.stream().reduce(_ -> true, (f1, f2) -> entry -> f1.test(entry) && f2.test(entry), (f1, _) -> f1);
     }
 }

@@ -104,7 +104,7 @@ public class RecommendationEngine {
     }
 
     Map<Long, AnimeOutDTO> filteredAndSortAnimeMap(List<UserAnimeList> animeLists, Map<Long, AnimeOutDTO> map) {
-        final var filteredMap = animePreprocessingService.filterAnime(map);
+        final var filteredMap = animePreprocessingService.filterAnimeMap(map);
         logger.debug("size of all anime: {}", filteredMap.size());
         calculateAverageRatings(filteredMap);
         calculatePercentageOccurrencesAmongUsers(filteredMap, animeLists.size());
