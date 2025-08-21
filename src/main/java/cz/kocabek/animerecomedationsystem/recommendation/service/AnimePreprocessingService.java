@@ -15,7 +15,7 @@ public class AnimePreprocessingService {
 
     final AnimeGenreService animeGenreService;
     final RecommendationConfig config;
-    private final List<AnimePredicate> activeFilterList = new ArrayList<>();
+
 
     public AnimePreprocessingService(AnimeGenreService animeGenreService, RecommendationConfig config) {
         this.animeGenreService = animeGenreService;
@@ -23,20 +23,23 @@ public class AnimePreprocessingService {
     }
 
     public Map<Long, AnimeOutDTO> filterAnimeMap(Map<Long, AnimeOutDTO> animeMap) {
-        selectFilters();
-        return animeMap.entrySet().stream().filter(combineFilters())
+        final List<AnimePredicate> selectedFilters = selectFilters();
+        return animeMap.entrySet().stream().filter(combineFilters(selectedFilters))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (_, b) -> b));
     }
 
-    private void selectFilters() {
-        activeFilterList.clear();
+    private List<AnimePredicate> selectFilters() {
+        final var filters = new ArrayList<AnimePredicate>();
         if (config.isOnlyInAnimeGenres()) {
             final var genres = animeGenreService.getGenresForAnime(config.getAnimeId());
-            activeFilterList.add(entry -> entry.getValue().getGenres().stream().anyMatch(genres::contains));
+            filters.add(entry -> entry.getValue().getGenres().stream().anyMatch(genres::contains));
         }
+        return filters;
     }
 
-    private AnimePredicate combineFilters() {
-        return activeFilterList.stream().reduce(_ -> true, (f1, f2) -> entry -> f1.test(entry) && f2.test(entry), (f1, _) -> f1);
+    private AnimePredicate combineFilters(List<AnimePredicate> activeFilterList) {
+        return activeFilterList.stream().reduce(_ -> true,
+                (f1, f2) -> entry -> f1.test(entry) && f2.test(entry),
+                (f1, _) -> f1);
     }
 }
