@@ -73,10 +73,10 @@ public class RecommendationService {
         final var mapWithDetails = enrichedMapByDetails(animeMap);
         final var processedMap = engine.filteredAndSortAnimeMap(usersAnimeLists, mapWithDetails);
         long step3Start = System.nanoTime();
-        final var weightedAnime = engine.weightAnime(sortedMap, AnimeScoreCalculator.compositeScoring);
-        final var topRecommendations = engine.cutTheTopN(weightedAnime);//current final map with ids without detail yet
+        final var weightedAnime = engine.weightAnime(processedMap, AnimeScoreCalculator.compositeScoring);
+        final var topRecommendations = engine.cutTheTopN(weightedAnime);//current final anime map with ids without detail yet
         long step3Duration = (System.nanoTime() - step3Start) / 1_000_000;
-        logger.warn("Step 3 (weight detail) took: {} ms", step3Duration);
+        logger.warn("Step 3 (weighted anime's) took: {} ms", step3Duration);
         logger.debug("size of shortened list: {}", topRecommendations.size());
         long step4Start = System.nanoTime();
         //get anime details separately
@@ -94,7 +94,7 @@ public class RecommendationService {
 
     private RecommendationDTO buildOutputList(List<AnimeDto> animeDetails, Map<Long, AnimeOutDTO> outDTO) {
         for (AnimeDto detail : animeDetails) {
-            outDTO.get(detail.getId()).setAnimeInfo(detail);
+            outDTO.get(detail.id()).setAnimeInfo(detail);
         }
         return resultBuilder.addRecommendation(convertToAnimeList(outDTO)).build();
     }

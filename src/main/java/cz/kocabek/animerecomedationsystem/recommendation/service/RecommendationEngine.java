@@ -39,7 +39,7 @@ public class RecommendationEngine {
      *  @return @Map<{@link Long} ID of anime, {@link AnimeOutDTO} DTO with all information about that anime>
      *
      */
-    private Map<Long, AnimeOutDTO> countAnimeOccurrences(List<UserAnimeList> userAnimeLists) {
+    private Map<Long, AnimeOutDTO> transformUsersListsToAnimeMap(List<UserAnimeList> userAnimeLists) {
         logger.debug("number of users: {}", userAnimeLists.size());
         final Map<Long, AnimeOutDTO> result = new LinkedHashMap<>();
         for (UserAnimeList user : userAnimeLists) {

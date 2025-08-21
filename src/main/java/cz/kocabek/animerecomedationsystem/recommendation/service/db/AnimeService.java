@@ -36,8 +36,8 @@ public class AnimeService {
                         .orElseThrow(() -> new ValidationException("This anime was not found.%nTry again with different name".formatted())));
     }
 
-    public List<AnimeDto> getListAnimeFromIds(Collection<Long> ids) {
-        return animeRepository.getAnimeListOrderByScore(ids);
+    public List<AnimeDto> retrieveAnimeByIdsSortedByScore(Collection<Long> ids) {
+        return animeRepository.getAnimeInfoListOrderByScore(ids);
     }
 
     public Collection<String> getAnimeNamesByIds(Collection<Long> animeIds) {
