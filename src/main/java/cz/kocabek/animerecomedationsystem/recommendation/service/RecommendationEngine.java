@@ -39,7 +39,7 @@ public class RecommendationEngine {
      *  @return @Map<{@link Long} ID of anime, {@link AnimeOutDTO} DTO with all information about that anime>
      *
      */
-    private Map<Long, AnimeOutDTO> transformUsersListsToAnimeMap(List<UserAnimeList> userAnimeLists) {
+     Map<Long, AnimeOutDTO> buildAnimeMap(List<UserAnimeList> userAnimeLists) {
         logger.debug("number of users: {}", userAnimeLists.size());
         final Map<Long, AnimeOutDTO> result = new LinkedHashMap<>();
         for (UserAnimeList user : userAnimeLists) {
@@ -97,11 +97,7 @@ public class RecommendationEngine {
      * @return a sorted Map where keys are anime IDs and values are AnimeOutDTO objects containing
      *         occurrence statistics and rating information about the anime
      */
-    Map<Long, AnimeOutDTO> buildAnimeMap(List<UserAnimeList> animeLists) {
-        return transformUsersListsToAnimeMap(animeLists);
 
-        //return generateAnimeRecommendations(animeLists, map);
-    }
 
     Map<Long, AnimeOutDTO> filteredAndSortAnimeMap(List<UserAnimeList> animeLists, Map<Long, AnimeOutDTO> map) {
         final var filteredMap = animePreprocessingService.filterAnimeMap(map);
