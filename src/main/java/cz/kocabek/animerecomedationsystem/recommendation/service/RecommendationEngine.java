@@ -27,13 +27,14 @@ public class RecommendationEngine {
     }
 
 
-    /** counting detail occurrences in the given users detail lists
-     * automatically transfers dta from list to map
+    /**
+     *transform List of UsersAnimeLists to a Map of anime's
+     * and count basic data about each anime for future calculation in the recommendation engine
      *
-     * @param userAnimeLists @List<{@link UserAnimeList>} users detail lists with detail IDs and their respective ratings
+     * @param userAnimeLists @List<{@link UserAnimeList} users anime lists with anime IDs and their respective ratings>
      *
      *
-     *  @return @Map<{@link Long}, {@link Integer}> detail ID and its occurrence across the Users
+     *  @return @Map<{@link Long} ID of anime, {@link AnimeOutDTO} DTO with all information about that anime>
      *
      */
     private Map<Long, AnimeOutDTO> countAnimeOccurrences(List<UserAnimeList> userAnimeLists) {
@@ -83,16 +84,16 @@ public class RecommendationEngine {
     }
 
     /**
-     * Processes a list of user detail ratings to build a sorted map of detail occurrences with calculated statistics.
+     * Processes a List of users list of rated anime to build a map of anime occurrences with calculated statistics.
      * This method performs the following operations:
-     * 1. Counts how many times each detail appears across all user lists
-     * 2. Calculates the average rating for each detail
-     * 3. Calculates the percentage of occurrence for each detail
-     * 4. Sorts the detail by their occurrence count in descending order
+     * 1. Counts how many times each anime appears across all user lists
+     * 2. Calculates the average rating for each anime
+     * 3. Calculates the percentage of occurrence for each anime
+     * 4. Sorts the anime by their occurrence count in descending order
      *
      * @param animeLists a list of UserAnimeList objects containing user IDs and their detail ratings
-     * @return a sorted Map where keys are detail IDs and values are AnimeOutDTO objects containing
-     *         occurrence statistics and rating information
+     * @return a sorted Map where keys are anime IDs and values are AnimeOutDTO objects containing
+     *         occurrence statistics and rating information about the anime
      */
     Map<Long, AnimeOutDTO> buildAnimeOccurrencesMap(List<UserAnimeList> animeLists) {
         final var map = countAnimeOccurrences(animeLists);

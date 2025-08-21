@@ -29,9 +29,13 @@ import java.util.Map;
 public class RecommendationService {
     private static final Logger logger = LoggerFactory.getLogger(RecommendationService.class);
 
+    /* db services */
     AnimeService animeService;
     UserAnimeScoreService userAnimeScoreService;
+    AnimeGenreService animeGenreService;
+    //    algorithm service
     RecommendationEngine engine;
+    //service for building output DTO
     DTOResultBuilder resultBuilder;
     AnimeGenreService animeGenreService;
 
@@ -47,12 +51,12 @@ public class RecommendationService {
     /*---*/
 
     /**
-     * Generates detail recommendations for a given detail ID using an intersection weight algorithm
+     * Generates anime recommendations for a given anime ID using an intersection weight algorithm
      * along with various processing and analysis steps to refine the recommendations.
      *
-     * @param animeId the ID of the detail for which recommendations are generated
-     * @return a {@link RecommendationDTO} object containing the input detail names
-     *         and a list of recommended detail
+     * @param animeId the ID of the anime for which recommendations are generated
+     * @return a {@link RecommendationDTO} object containing the input anime names
+     *         and a list of recommended anime's
      */
     private RecommendationDTO generateAnimeRecommendations(Long animeId) {
         //collecting and grouping data from the database into a list of users Anime lists
