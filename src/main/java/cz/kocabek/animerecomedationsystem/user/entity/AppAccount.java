@@ -52,6 +52,10 @@ public class AppAccount {
     }
 
     public AppAccount() {
+    }
 
+    @PrePersist
+    public void setCreatedAt() {
+        this.createdAt = Instant.now();
     }
 }
