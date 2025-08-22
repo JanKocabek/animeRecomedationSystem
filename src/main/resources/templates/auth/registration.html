@@ -56,7 +56,8 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form role="form" class="text-start" method="post" th:action="@{/register}" th:object="${account}">
+                        <form role="form" class="text-start" method="post" th:action="@{/register}"
+                              th:object="${account}">
                             <input type="hidden" sec:csrf="true"/>
                             <div class="input-group input-group-outline my-3">
                                 <label class="form-label" for="username">User Name</label>
@@ -64,7 +65,7 @@
                             </div>
                             <div class="input-group input-group-outline mb-3">
                                 <label class="form-label" for="password">Password</label>
-                                <input type="password" class="form-control" th:field="*{passwordHash}">
+                                <input type="password" class="form-control" th:field="*{password}">
                             </div>
                             <div class="row">
                                 <div class="text-center col-12">
@@ -74,21 +75,21 @@
                                 </div>
                             </div>
                             <div th:if="${param.error}" class="text-danger">
-                                <p>Invalid username or password.</p>
+                                <ul>
+                                    <li th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
+                                </ul>
                             </div>
                         </form>
                         <div class="row text-center mt-3">
                             <div class="col-12 mt-3">
                                 <a th:href="@{/}" class="btn bg-gradient-dark w-75 my-2 mb-2">
-                                   Back to Sign In
-                                </a>
+                                    Back to Sign In</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
     <!--footer-->
     <footer class="footer position-absolute bottom-2 py-2 w-100">
