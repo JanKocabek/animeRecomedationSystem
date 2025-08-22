@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class MainController {
@@ -35,22 +36,15 @@ public class MainController {
     }
 
     @PostMapping("/register")
-    public String register(@Valid @ModelAttribute("account") RegistrationDTO acc, BindingResult result) {
+    public String register(@Valid @ModelAttribute("account") RegistrationDTO acc, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "auth/registration";
         }
-        try {
-            registration.registerNewUser(acc);
-        } catch (ValidationException e) {
-            LOGGER.error("Validation Error during registration: {}", e.getMessage());
-            result.rejectValue("username", "error.detail", e.getMessage());
-            return "auth/registration";
-        } catch
-        (Exception e) {
-            LOGGER.error("Error during registration: {}", e.getMessage());
-            result.rejectValue("error", "error.detail", "Something went wrong during registration contact creator");
+        if (!registration.registerNewUser(acc)) {
+            result.rejectValue("username", "error.detail", "Username already exists");
             return "auth/registration";
         }
-        return "auth/index";
+        redirectAttributes.addFlashAttribute("successMessage", "Your account was created successfully. You can now sign in.");
+        return "redirect:/";
     }
 }

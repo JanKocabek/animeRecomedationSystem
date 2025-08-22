@@ -17,11 +17,13 @@ public class RegistrationService {
         bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
-    public void registerNewUser(RegistrationDTO registrationDTO) {
-        appAccRepository.findByUsername(registrationDTO.username()).ifPresent(_ -> {
-            throw new ValidationException("this username is already taken!");
-        });
-        appAccRepository.save(createAppAccount(registrationDTO));
+    public boolean registerNewUser(RegistrationDTO registrationDTO) {
+        boolean isUsernameOk = appAccRepository.findByUsername(registrationDTO.username()).isEmpty();
+        if (isUsernameOk) {
+            appAccRepository.save(createAppAccount(registrationDTO));
+            return true;
+        }
+        return false;
     }
 
     private AppAccount createAppAccount(RegistrationDTO registrationDTO) {
