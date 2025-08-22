@@ -48,7 +48,8 @@ public class MainController {
         } catch
         (Exception e) {
             LOGGER.error("Error during registration: {}", e.getMessage());
-            return "/error";
+            result.rejectValue("error", "error.detail", "Something went wrong during registration contact creator");
+            return "auth/registration";
         }
         return "auth/index";
     }
