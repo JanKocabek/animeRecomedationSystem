@@ -35,10 +35,6 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
         context.disableDefaultConstraintViolation();
         if (s == null || s.isBlank()) {
             addViolation(context, LENGTH_MSG);
-            if (lowerCase) addViolation(context, LOWER_MSG);
-            if (upperCase) addViolation(context, UPPER_MSG);
-            if (numbers) addViolation(context, NUMBER_MSG);
-            if (specialChars) addViolation(context, SPECIAL_MSG);
             return false;
         }
         final var hasLower = s.matches(".*[a-z].*");
