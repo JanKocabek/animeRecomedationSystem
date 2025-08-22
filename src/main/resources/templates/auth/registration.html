@@ -66,8 +66,12 @@
                                         th:text="${err}"></li>
                                     <li class="text-white" th:each="err : ${#fields.errors('password')}"
                                         th:text="${err}"></li>
-                                    <li class="text-white" th:each="err : ${#fields.errors('error')}">
                                 </ul>
+                                <div th:if="${#fields.hasGlobalErrors()}"
+                                     class="alert alert-danger alert-dismissible fade show" role="alert"
+                                     style="max-width: 500px; margin: 0 auto;">
+                                    <div class="mb-0 mt-2 text-white" th:text="${#fields.globalErrors()}"></div>
+                                </div>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                                         aria-label="Close"></button>
                             </div>
