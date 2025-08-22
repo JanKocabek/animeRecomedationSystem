@@ -16,6 +16,7 @@ import java.time.Instant;
         @UniqueConstraint(name = "username", columnNames = {"username"})
 })
 public class AppAccount {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -36,6 +37,7 @@ public class AppAccount {
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
+    @NotNull
     private Instant createdAt;
 
     @NotNull
@@ -43,4 +45,18 @@ public class AppAccount {
     @Column(name = "role", nullable = false, length = 200)
     private RoleType role;
 
+    public AppAccount(String username, String passwordHash, RoleType role) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.role = role;
+    }
+
+    public AppAccount() {
+    }
+
+    @PrePersist
+    public void setCreatedAt() {
+        if (this.createdAt == null)
+            this.createdAt = Instant.now();
+    }
 }

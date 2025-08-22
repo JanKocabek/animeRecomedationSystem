@@ -3,6 +3,7 @@ package cz.kocabek.animerecomedationsystem.security.service;
 import cz.kocabek.animerecomedationsystem.security.dto.RegistrationDTO;
 import cz.kocabek.animerecomedationsystem.user.entity.AppAccount;
 import cz.kocabek.animerecomedationsystem.user.repository.AppAccRepository;
+import jakarta.validation.ValidationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,20 +17,19 @@ public class RegistrationService {
         bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
-    public void registerNewUser(RegistrationDTO registrationDTO) {
-        appAccRepository.findByUsername(registrationDTO.getUsername()).ifPresent(_ -> {
-            throw new IllegalArgumentException("Username is already taken!");
-        });
-        appAccRepository.save(createAppAccount(registrationDTO));
+    public boolean registerNewUser(RegistrationDTO registrationDTO) {
+        boolean isUsernameOk = appAccRepository.findByUsername(registrationDTO.username()).isEmpty();
+        if (isUsernameOk) {
+            appAccRepository.save(createAppAccount(registrationDTO));
+            return true;
+        }
+        return false;
     }
 
     private AppAccount createAppAccount(RegistrationDTO registrationDTO) {
-        final var appAccount = new AppAccount();
-        appAccount.setUsername(registrationDTO.getUsername());
-        appAccount.setPasswordHash(bCryptPasswordEncoder.encode(registrationDTO.getPassword()));
-        appAccount.setCreatedAt(registrationDTO.getCreatedAt());
-        appAccount.setRole(registrationDTO.getRole());
-        return appAccount;
+        return new AppAccount(
+                registrationDTO.username(),
+                bCryptPasswordEncoder.encode(registrationDTO.password()),
+                registrationDTO.role());
     }
-
 }
