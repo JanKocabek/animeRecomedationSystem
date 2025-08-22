@@ -52,42 +52,35 @@
                 <div class="card z-index-0 fadeIn3 fadeInBottom">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
-                            <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Sign in</h4>
+                            <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Sign Up</h4>
                         </div>
                     </div>
-                    <div class="card-body"> <form role="form" class="text-start" method="post" th:action="@{/login}">
-                        <input type="hidden" sec:csrf="true"/>
-                        <div class="input-group input-group-outline my-3">
-                            <label class="form-label" for="username">User Name</label>
-                            <input type="text" class="form-control" name="username" id="username">
-                        </div>
-                        <div class="input-group input-group-outline mb-3">
-                            <label class="form-label" for="password">Password</label>
-                            <input type="password" class="form-control" name="password" id="password">
-                        </div>
-                        <div class="form-check form-switch d-flex align-items-center mb-3">
-                            <input class="form-check-input" type="checkbox" id="rememberMe" checked>
-                            <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
-                        </div>
-                        <div class="row">
-                            <div class="text-center col-12">
-                                <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2 fs-4">
-                                    Sign In
-                                </button>
+                    <div class="card-body">
+                        <form role="form" class="text-start" method="post" th:action="@{/register}" th:object="${account}">
+                            <input type="hidden" sec:csrf="true"/>
+                            <div class="input-group input-group-outline my-3">
+                                <label class="form-label" for="username">User Name</label>
+                                <input type="text" class="form-control" th:field="*{username}">
                             </div>
-                        </div>
-                        <div th:if="${param.error}" class="text-danger">
-                            <p>Invalid username or password.</p>
-                        </div>
-                    </form>
+                            <div class="input-group input-group-outline mb-3">
+                                <label class="form-label" for="password">Password</label>
+                                <input type="password" class="form-control" th:field="*{passwordHash}">
+                            </div>
+                            <div class="row">
+                                <div class="text-center col-12">
+                                    <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2 fs-4">
+                                        Sign Up
+                                    </button>
+                                </div>
+                            </div>
+                            <div th:if="${param.error}" class="text-danger">
+                                <p>Invalid username or password.</p>
+                            </div>
+                        </form>
                         <div class="row text-center mt-3">
-                            <div class="col-12 mb-2">
-                                <p class="fst-italic d-inline">Not registered yet?</p>
-                                <a th:href="@{/register}" class="fw-bold ms-1 text-dark">Sign Up</a>
-                            </div>
                             <div class="col-12 mt-3">
-                                <a th:href="@{/main}" class="btn bg-gradient-dark w-75 my-2 mb-2">
-                                    Continue as Guest
+                                <a th:href="@{/}" class="btn bg-gradient-dark w-75 my-2 mb-2">
+                                   Back to Sign In
                                 </a>
                             </div>
                         </div>
