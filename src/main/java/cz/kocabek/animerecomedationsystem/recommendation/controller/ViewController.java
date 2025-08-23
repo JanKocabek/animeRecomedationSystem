@@ -86,6 +86,12 @@ public class ViewController {
         return "detail";
     }
 
+    @GetMapping("/watchlist")
+    public String getWatchlistPage(Model model) {
+        model.addAttribute("anime", config.getConfigForm());
+        return "watchlist";
+    }
+
     private Long processForm(InputDTO form) throws ValidationException {
         config.updateConfig(form);
         Long id = animeService.getAnimeIdByName(config.getAnimeName());
