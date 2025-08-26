@@ -1,3 +1,7 @@
+#WARNING!!!
+THIS README is under development,
+current informations here are mostly correct but they are AI-generated for me to have a simple point from where to start.
+The informations here will be made accurate and precise as soon as possible by me.
 # Anime Recommendation System
 
 A sophisticated anime recommendation engine built with Spring Boot that provides personalized suggestions based on collaborative filtering algorithms and user preferences.
