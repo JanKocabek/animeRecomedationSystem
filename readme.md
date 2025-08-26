@@ -43,7 +43,13 @@ src/
 │   │   │   ├── entity/              # JPA entities
 │   │   │   └── dto/                 # Data transfer objects
 │   │   ├── security/                # Authentication & authorization
-│   │   └── user/                    # User management
+│   │   │   ├── Config/              # Security Beans for filtering endpoints, password endcoding
+│   │   │   ├── controller/          # view controllers for login and register
+│   │   │   ├── service/             # login, registering inner logic
+│   │   │   ├── repository/          # Data access layer
+|   |   |   ├──Validation            # password validator
+│   │   │   └── dto/                 # registration form dto object         
+│   │   └── user/                    # app User management
 │   └── resources/
 │       ├── templates/               # Thymeleaf templates
 │       ├── static/assets/           # CSS, JS, images
