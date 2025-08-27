@@ -2,9 +2,21 @@
 THIS README is under development,
 current informations here are mostly correct but they are AI-generated for me to have a simple point from where to start.
 The informations here will be made accurate and precise as soon as possible by me.
+## Table of Contents
+1. [Anime Recommendation System](#anime-recommendation-system)
+2. [Technology Stack](#technology-stack)
+3. [Project Structure](#project-structure)
+4. [Database Setup](#database-setup)
+5. [Configuration](#configuration)
+6. [Recommendation Algorithm](#recommendation-algorithm)
+7. [API Endpoints](#api-endpoints)
+8. [Configuration Options](#configuration-options)
+9. [Testing](#testing)
+10. [Deployment](#deployment)
+
 # Anime Recommendation System
 
-A sophisticated anime recommendation engine built with Spring Boot that provides personalized suggestions based on collaborative filtering algorithms and user preferences.
+ Anime recommendation engine built with Spring Boot that provides personalized suggestions based on collaborative filtering algorithms and user preferences.
 
 ## 🚀 Features
 
@@ -24,11 +36,11 @@ A sophisticated anime recommendation engine built with Spring Boot that provides
 ## 🏗️ Architecture
 
 ### Technology Stack
-- **Backend**: Spring Boot 3.5.3, Spring Security, Spring Data JPA
+- **Backend**: Spring Boot 3.5.3, Spring Security, Spring Data JPA, hibernate
 - **Database**: MySQL 8.0 (containerized with Docker)
-- **Frontend**: Thymeleaf, Bootstrap 5.3, Material Kit, Tabler Icons
+- **Frontend**: Thymeleaf, Bootstrap 5.3, Material Kit, Tabler Icons, HTMX
 - **Build Tool**: Maven
-- **Testing**: JUnit 5, Mockito
+- **Testing**: JUnit 5
 - **Containerization**: Docker & Docker Compose
 
 ### Project Structure
@@ -68,7 +80,7 @@ src/
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/JanKocabek/animeRecomedationSystem.git
    cd animeRecomedationSystem
    ```
 
@@ -143,16 +155,13 @@ Key configuration options in `application.properties`:
 - `GET /register` - User registration
 - `GET /main` - Home page (guest access)
 - `POST /submit` - Search form submission
+- `GET /result` - Recommendation results page
 
 ### Protected Endpoints  
-- `GET /result` - Recommendation results
-- `GET /anime/{id}` - Individual anime details
-- `POST /watchlist` - Add anime to watchlist (authenticated users)
+
 
 ### REST API
-- `GET /api/anime/{id}` - Get anime by ID
-- `GET /api/anime/genre/{genre}` - Get anime by genre
-- `GET /api/anime/recommend/{name}` - Get recommendations by anime name
+- not functioned currently
 
 ## 🔧 Configuration Options
 
@@ -170,19 +179,18 @@ public static final int FINAL_ANIME_LIST_SIZE = 50;  // Results to return
 - Minimum rating threshold for input anime
 - Maximum number of users to analyze
 - Genre-based filtering toggle
-- Content filtering options
+- Content filtering options - in development
+
 
 ## 🧪 Testing
-
+- under development
 Run the test suite:
 ```bash
 ./mvnw test
 ```
 
 ### Test Coverage
-- **Unit Tests**: Service layer logic, recommendation algorithms
-- **Integration Tests**: Database interactions, controller endpoints
-- **Algorithm Tests**: Recommendation engine accuracy and performance
+
 
 ## 🚀 Deployment
 
@@ -204,16 +212,8 @@ docker-compose -f docker-compose.prod.yml up -d
 ## 📈 Performance Metrics
 
 ### Typical Performance
-- **Recommendation Generation**: 200-500ms for 50 recommendations
-- **Database Query Time**: <100ms for user data collection
-- **Memory Usage**: ~512MB for standard workload
-- **Concurrent Users**: Tested up to 100+ simultaneous users
 
 ### Optimization Features
-- Database connection pooling
-- Query result pagination
-- Session-based configuration caching
-- Efficient streaming data processing
 
 ## 🔒 Security Features
 
@@ -225,11 +225,6 @@ docker-compose -f docker-compose.prod.yml up -d
 
 ## 🎨 UI/UX Features
 
-- **Responsive Design**: Mobile-first Bootstrap implementation
-- **Modern Interface**: Material Kit components with custom styling
-- **Interactive Elements**: Real-time form validation, hover effects
-- **Accessibility**: Semantic HTML, keyboard navigation support
-- **Progressive Enhancement**: Works with JavaScript disabled
 
 ## 🤝 Contributing
 
@@ -248,7 +243,12 @@ docker-compose -f docker-compose.prod.yml up -d
 
 ## 📝 License
 
-This project is developed as an academic portfolio piece. See the project repository for license details.
+- This project is developed as an academic portfolio piece.
+- All my source code is licensed under [GPLv3.](license.md)
+- Except any third-party libraries that are licensed under different terms.
+- Kaggle Dataset is licensed under [Database Contents License (DbCL) v1.0](https://opendatacommons.org/licenses/dbcl/1-0/)
+- The background image is licensed under [Unsplash license](https://unsplash.com/license)
+
 
 ## 👤 Author
 
@@ -258,12 +258,12 @@ This project is developed as an academic portfolio piece. See the project reposi
 
 ## 🙏 Acknowledgments
 
-- **Data Source**: Kaggle anime and user rating datasets
+- **Data Source**: [Kaggle Anime Dataset 2023](https://www.kaggle.com/datasets/dbdmobile/myanimelist-dataset/data?select=users-score-2023.csv)
 - **UI Components**: Bootstrap, Material Kit, Tabler Icons
-- **Background Image**: Ian Valerio via Unsplash
+- **Background Image**: [Ian Valerio via Unsplash](https://unsplash.com/photos/aerial-view-photography-of-road-between-highrise-building-CAFq0pv9HjY)
 - **Framework**: Spring Boot ecosystem
-- **Inspiration**: Modern recommendation systems and collaborative filtering research
+- **Other**: Thymleaf, HTMX. Maven, Docker, Docker Compose, JUnit 5
 
 ---
 
-*This project demonstrates modern backend development practices, algorithm implementation, and full-stack web development skills using industry-standard technologies.*
+*This project demonstrates modern backend development practices, algorithm implementation, using industry-standard technologies.*
