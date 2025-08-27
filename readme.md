@@ -18,6 +18,8 @@ The informations here will be made accurate and precise as soon as possible by m
 
  Anime recommendation engine built with Spring Boot that provides personalized suggestions based on collaborative filtering algorithms and user preferences.
 
+![Anime Recommendation System](docs/recomendationApp.png)
+
 ## 🚀 Features
 
 ### Core Functionality
