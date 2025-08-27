@@ -2,6 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <title>Recommendation Result</title>
     <!-- Theme CSS -->
 
@@ -74,29 +76,31 @@
                                               th:text="${genre}"></span>
                                     </div>
                                 </div>
+                                <!-- Add to Watchlist Button -->
+                                <div sec:authorize="isAuthenticated()" id="watchlist-button" hx-include="this">
+                                    <input type="hidden" name="animeId" th:value="${recommend.animeId}">
+                                    <button
+                                            type="button"
+                                            hx-post="/add_watch"
+                                            hx-swap="outerHTML"
+                                            class="btn btn-info btn-sm rounded-pill">
+                                        <i class="ti ti-plus fs-6 me-1"></i><span>To Watchlist</span>
+                                    </button>
+                                </div><!--end of add to watchlist button-->
+                            </div><!--end of card inner block of card body-->
 
-                            </div>
-                            <div sec:authorize="isAuthenticated()">
-                                <button type="submit"
-                                        hx-post="/add_watch"
-                                        hx-vals="animeId=${recommend.animeId}"
-                                        class="btn btn-info btn-sm rounded-pill d-inline-flex align-items-center">
-                                    <i class="ti ti-plus fs-6 me-1"></i>
-                                    <span>To Watchlist</span>
-                                </button>
-                            </div>
-                        </div>
 
-                        <!-- Badges -->
-                        <div class="d-flex justify-content-between mt-3 ">
+                            <!-- Badges -->
+                            <div class="d-flex justify-content-between mt-3 ">
                                 <span class="badge bg-success"
                                       th:text="'Avg: ' + ${#numbers.formatDecimal(recommend.getAverageRating(), 1, 2)}">
                                 </span>
 
-                            <span class="badge bg-info">
+                                <span class="badge bg-info">
                                 <i class="ti ti-world fs-6"></i>
                                 <span th:text="'MAL: ' + ${recommend.animeInfo.score}"></span>
                                 </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -112,5 +116,12 @@
 <script th:src="@{/assets/js/core/popper.min.js}"></script>
 <script th:src="@{/assets/js/material-kit.min.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"></script>
+<script>
+    document.body.addEventListener('htmx:configRequest', e => {
+        const t = document.querySelector('meta[name="_csrf"]').content;
+        const h = document.querySelector('meta[name="_csrf_header"]').content;
+        e.detail.headers[h] = t;
+    });
+</script>
 </body>
 </html>

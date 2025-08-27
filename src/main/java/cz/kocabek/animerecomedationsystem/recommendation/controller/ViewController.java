@@ -1,15 +1,17 @@
 package cz.kocabek.animerecomedationsystem.recommendation.controller;
 
 import cz.kocabek.animerecomedationsystem.recommendation.dto.InputDTO;
-import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
 import cz.kocabek.animerecomedationsystem.recommendation.service.DTOResultBuilder;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationService;
+import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
+import cz.kocabek.animerecomedationsystem.user.service.AccService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +27,7 @@ public class ViewController {
     AnimeService animeService;
     DTOResultBuilder resultBuilder;
     RecommendationConfig config;
+    AccService appAccService;
 
     @GetMapping("/main")
     public String getHomePage(Model model) {
@@ -87,9 +90,15 @@ public class ViewController {
     }
 
     @GetMapping("/watchlist")
-    public String getWatchlistPage(Model model) {
-        model.addAttribute("anime", config.getConfigForm());
+    public String getWatchlistPage() {
         return "watchlist";
+    }
+
+    @PostMapping("/add_watch")
+    public String postWatchlistPage(@RequestParam long animeId, Authentication auth) {
+        final var username = auth.getName();
+        appAccService.addAnimeToWatchlist(animeId, username);
+        return "fragments/watchBtn";
     }
 
     private Long processForm(InputDTO form) throws ValidationException {
