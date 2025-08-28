@@ -13,18 +13,29 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class AuthConfig {
 
+    AppAuthenticationSuccessHandler successHandler;
+
+    public AuthConfig(AppAuthenticationSuccessHandler successHandler) {
+        this.successHandler = successHandler;
+    }
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/", "/main", "/submit", "/result", "/result/submit", "/register", "/assets/**", "/error").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/", "/main", "/submit", "/result", "/result/submit", "/register", "/assets/**", "/error")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/").loginProcessingUrl("/login")
                         .defaultSuccessUrl("/main", true)
-                        .permitAll())
+                        .permitAll()
+                        .successHandler(successHandler))
                 .logout(LogoutConfigurer::permitAll).build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
