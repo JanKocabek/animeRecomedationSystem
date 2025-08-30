@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -44,6 +46,9 @@ public class AppAccount {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 200)
     private RoleType role;
+
+    @OneToMany(mappedBy = "acc", fetch = FetchType.LAZY)
+    private Set<AccWatchlist> watchlist = new HashSet<>();
 
     public AppAccount(String username, String passwordHash, RoleType role) {
         this.username = username;
