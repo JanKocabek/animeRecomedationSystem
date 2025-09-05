@@ -1,6 +1,7 @@
 package cz.kocabek.animerecomedationsystem.user.service;
 
 import cz.kocabek.animerecomedationsystem.recommendation.entity.Anime;
+import cz.kocabek.animerecomedationsystem.user.UserSessionData;
 import cz.kocabek.animerecomedationsystem.user.entity.AccWatchlist;
 import cz.kocabek.animerecomedationsystem.user.entity.AppAccount;
 import cz.kocabek.animerecomedationsystem.user.repository.AccWatchlistRepository;
@@ -20,16 +21,18 @@ public class AccService {
     AppAccRepository appAccRepository;
     EntityManager entityManager;
     AccWatchlistRepository accWatchlistRepository;
+    UserSessionData userSessionData;
 
-    public Long getUserIdByUsername(String username) throws IllegalArgumentException {
-        Optional<Long> userId = appAccRepository.findAccountIdByUsername(username);
+
+    public Integer getUserIdByUsername(String username) throws IllegalArgumentException {
+        Optional<Integer> userId = appAccRepository.findAccountIdByUsername(username);
         return userId.orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 
-    public void addAnimeToWatchlist(long animeId, String username) {
-        final var acc = entityManager.getReference(AppAccount.class, getUserIdByUsername(username));
+    public void addAnimeToWatchlist(long animeId) {
+        final var acc = entityManager.getReference(AppAccount.class, userSessionData.getUserId());
         final var anime = entityManager.getReference(Anime.class, animeId);
         accWatchlistRepository.save(new AccWatchlist(acc, anime));
-        logger.info("Anime {} added to watchlist of user {}", anime.getName(), username);
+        logger.info("Anime {} added to watchlist", anime.getName());
     }
 }
