@@ -5,7 +5,6 @@ import cz.kocabek.animerecomedationsystem.recommendation.service.DTOResultBuilde
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationService;
 import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
-import cz.kocabek.animerecomedationsystem.user.service.AccService;
 import cz.kocabek.animerecomedationsystem.user.service.WatchListService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
@@ -28,7 +27,6 @@ public class ViewController {
     AnimeService animeService;
     DTOResultBuilder resultBuilder;
     RecommendationConfig config;
-    AccService accService;
     WatchListService watchListService;
 
     @GetMapping("/main")
@@ -99,30 +97,6 @@ public class ViewController {
     @GetMapping("/watchlist")
     public String getWatchlistPage() {
         return "watchlist";
-    }
-
-    /*Watchlist buttons section*/
-    private static final String WATCH_BTN_FRAGMENT = "fragments/watchBtn ::";
-
-    @PostMapping("/add_watch")
-    public String postWatchlistPage(@RequestParam long animeId, Model model) {
-        accService.addAnimeToWatchlist(animeId);
-        model.addAttribute("animeId", animeId);
-        return WATCH_BTN_FRAGMENT + " watchBtnRemove";
-    }
-
-    @PatchMapping("/remove_watch")
-    public String removeFromWatchList(@RequestParam long animeId, Model model) {
-        watchListService.removeFromWatchlist(animeId);
-        model.addAttribute("animeId", animeId);
-        return WATCH_BTN_FRAGMENT + " watchBtnReAdd";
-    }
-
-    @PatchMapping("/readd_watch")
-    public String reAddToWatchList(@RequestParam long animeId, Model model) {
-        watchListService.reAddToWatchlist(animeId);
-        model.addAttribute("animeId", animeId);
-        return WATCH_BTN_FRAGMENT + " watchBtnRemove";
     }
 
     private Long processForm(InputDTO form) throws ValidationException {
