@@ -6,6 +6,7 @@ import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationC
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationService;
 import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
 import cz.kocabek.animerecomedationsystem.user.service.AccService;
+import cz.kocabek.animerecomedationsystem.user.service.WatchListService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,8 @@ public class ViewController {
     AnimeService animeService;
     DTOResultBuilder resultBuilder;
     RecommendationConfig config;
-    AccService appAccService;
+    AccService accService;
+    WatchListService watchListService;
 
     @GetMapping("/main")
     public String getHomePage(Model model) {
@@ -50,13 +52,17 @@ public class ViewController {
     }
 
     @GetMapping("/result")
-    public String getResultPage(@RequestParam("id") Long animeId, Model model) {
+    public String getResultPage(@RequestParam("id") Long animeId, Model model, Authentication auth) {
         try {
             checkAnimeId(animeId);
         } catch (ValidationException e) {
+            //TODO: add proper return to the view by
             return "redirect:/";
         }
         final var recommendations = recommendationService.getAnimeRecommendation(animeId);
+        if (auth != null) {
+            watchListService.setWatchlistButtons(recommendations);
+        }
         model.addAttribute("recommendations", recommendations);
         model.addAttribute("anime", config.getConfigForm());
         model.addAttribute("action", "/result/submit");
@@ -65,6 +71,7 @@ public class ViewController {
 
     @PostMapping("/result/submit")
     public String postResultPage(@Valid @ModelAttribute("anime") InputDTO form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        //todo:move this line in the if statement
         final var previousAnime = resultBuilder.getResultDto();
         if (bindingResult.hasErrors()) {
             model.addAttribute("recommendations", previousAnime);
@@ -95,10 +102,24 @@ public class ViewController {
     }
 
     @PostMapping("/add_watch")
-    public String postWatchlistPage(@RequestParam long animeId, Authentication auth) {
-        final var username = auth.getName();
-        appAccService.addAnimeToWatchlist(animeId, username);
-        return "fragments/watchBtn";
+    public String postWatchlistPage(@RequestParam long animeId, Model model) {
+        accService.addAnimeToWatchlist(animeId);
+        model.addAttribute("animeId", animeId);
+        return "fragments/WatchBtnNew :: WatchBtnRemove";
+    }
+
+    @PatchMapping("/remove_watch")
+    public String removeFromWatchList(@RequestParam long animeId, Model model) {
+        watchListService.removeFromWatchlist(animeId);
+        model.addAttribute("animeId", animeId);
+        return "fragments/watchBtnNew :: WatchBtnReAdd";
+    }
+
+    @PatchMapping("/readd_watch")
+    public String reAddToWachList(@RequestParam long animeId, Model model) {
+        watchListService.reAddToWatchlist(animeId);
+        model.addAttribute("animeId", animeId);
+        return "fragments/WatchBtnNew :: WatchBtnRemove";
     }
 
     private Long processForm(InputDTO form) throws ValidationException {

@@ -76,17 +76,18 @@
                                               th:text="${genre}"></span>
                                     </div>
                                 </div>
-                                <!-- Add to Watchlist Button -->
-                                <div sec:authorize="isAuthenticated()" id="watchlist-button" hx-include="this">
-                                    <input type="hidden" name="animeId" th:value="${recommend.animeId}">
-                                    <button
-                                            type="button"
-                                            hx-post="/add_watch"
-                                            hx-swap="outerHTML"
-                                            class="btn btn-info btn-sm rounded-pill">
-                                        <i class="ti ti-plus fs-6 me-1"></i><span>To Watchlist</span>
-                                    </button>
-                                </div><!--end of add to watchlist button-->
+                                <!-- Watchlist Button selection-->
+                                <th:block sec:authorize="isAuthenticated()" th:switch="${recommend.inWatchList}">
+                                    <th:block th:case="null">
+                                        <div th:replace="fragments/WatchBtnNew :: WatchBtnNew"></div>
+                                    </th:block>
+                                    <th:block th:case="true">
+                                        <div th:replace="fragments/WatchBtnNew :: WatchBtnRemove"></div>
+                                    </th:block>
+                                    <th:block th:case="false">
+                                        <div th:replace="fragments/WatchBtnNew :: WatchBtnReAdd"></div>
+                                    </th:block>
+                                </th:block><!--end of selection-->
                             </div><!--end of card inner block of card body-->
 
 

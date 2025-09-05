@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>newAddInWatchlistBtn</title>
+</head>
+<body>
+<div th:fragment="WatchBtnNew"
+     id="watchlist-button" hx-include="this">
+    <input type="hidden" name="animeId" th:value="${recommend != null ? recommend.animeId : animeId}">
+    <button
+            type="button"
+            hx-post="/add_watch"
+            hx-swap="outerHTML"
+            class="btn btn-info btn-sm rounded-pill">
+        <i class="ti ti-plus fs-6 me-1"></i>
+        <span>To Watchlist</span>
+    </button>
+</div> <!--fragment of button for new add to watchlist-->
+
+<div th:fragment="WatchBtnRemove"
+     id="watchlist-button" hx-include="this">
+    <input type="hidden" name="animeId" th:value="${recommend != null ? recommend.animeId : animeId}">
+    <button
+            type="button"
+            hx-patch="/remove_watch"
+            hx-swap="outerHTML"
+            class="btn btn-success btn-sm rounded-pill">
+        <i class="ti ti-check fs-6 me-1"></i><span>Remove from Watchlist</span>
+    </button>
+</div> <!--fragment of button for remove from watchlist-->
+
+<div th:fragment="WatchBtnReAdd"
+     id="watchlist-button" hx-include="this">
+    <input type="hidden" name="animeId" th:value="${recommend != null ? recommend.animeId : animeId}">
+    <button
+            type="button"
+            hx-patch="/readd_watch"
+            hx-swap="outerHTML"
+            class="btn btn-info btn-sm rounded-pill">
+        <i class="ti ti-plus fs-6 me-1"></i>
+        <span>To Watchlist</span>
+    </button>
+</div> <!--fragment of button for new add to watchlist-->
+</body>
+</html>
