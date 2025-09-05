@@ -2,8 +2,10 @@ package cz.kocabek.animerecomedationsystem.user.entity;
 
 import cz.kocabek.animerecomedationsystem.recommendation.entity.Anime;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
@@ -23,13 +25,18 @@ public class AccWatchlist {
     @JoinColumn(name = "anime_id", nullable = false)
     private Anime anime;
 
+    @Column(name = "inWatchlist")
+    @NotNull
+    @ColumnDefault("true")
+    private boolean inWatchlist;
+
     public AccWatchlist(AppAccount acc, Anime anime) {
         this.acc=acc;
         this.anime=anime;
-        AccWatchlistId id = new AccWatchlistId();
-        id.setAccId(acc.getId());
-        id.setAnimeId(anime.getId());
-        this.id = id;
+        AccWatchlistId watchlistId = new AccWatchlistId();
+        watchlistId.setAccId(acc.getId());
+        watchlistId.setAnimeId(anime.getId());
+        this.id = watchlistId;
     }
 
     public AccWatchlist() {
