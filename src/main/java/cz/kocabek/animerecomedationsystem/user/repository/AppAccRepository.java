@@ -12,5 +12,6 @@ public interface AppAccRepository extends JpaRepository<AppAccount, Integer> {
 
     @Query("select a.id from AppAccount a where a.username = ?1")
     @NonNull
-    Optional<Long> findAccountIdByUsername(@NonNull String username);
+    Optional<Integer> findAccountIdByUsername(@NonNull String username);
+
 }
