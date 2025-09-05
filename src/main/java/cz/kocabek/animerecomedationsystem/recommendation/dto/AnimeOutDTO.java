@@ -19,6 +19,16 @@ public class AnimeOutDTO {
      */
     private Long animeId;
 
+    private List<String> genres;
+
+    /* True is in the user's watch list, false was removed from a list, null = is not in the watch list */
+    private Boolean inWatchList;
+
+    /**
+     * Detailed information about the anime.
+     */
+    private AnimeDto animeInfo;
+
     /**
      * The average rating of the anime, calculated from user ratings.
      */
@@ -35,16 +45,9 @@ public class AnimeOutDTO {
     private double percentageOccurrences;
 
     /**
-     * Detailed information about the anime.
-     */
-    private AnimeDto animeInfo;
-
-    /**
      * The total sum of ratings received for this anime.
      */
     private double sumOfRatings;
-
-    private List<String> genres;
 
     /**
      * Constructs a new {@code AnimeOutDTO} with the specified sum of ratings and number of occurrences.
