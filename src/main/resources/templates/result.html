@@ -79,13 +79,13 @@
                                 <!-- Watchlist Button selection-->
                                 <th:block sec:authorize="isAuthenticated()" th:switch="${recommend.inWatchList}">
                                     <th:block th:case="null">
-                                        <div th:replace="fragments/WatchBtnNew :: WatchBtnNew"></div>
+                                        <div th:replace="fragments/watchBtn :: watchBtnNew"></div>
                                     </th:block>
                                     <th:block th:case="true">
-                                        <div th:replace="fragments/WatchBtnNew :: WatchBtnRemove"></div>
+                                        <div th:replace="fragments/watchBtn :: watchBtnRemove"></div>
                                     </th:block>
                                     <th:block th:case="false">
-                                        <div th:replace="fragments/WatchBtnNew :: WatchBtnReAdd"></div>
+                                        <div th:replace="fragments/watchBtn :: watchBtnReAdd"></div>
                                     </th:block>
                                 </th:block><!--end of selection-->
                             </div><!--end of card inner block of card body-->
