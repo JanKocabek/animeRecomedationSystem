@@ -5,12 +5,14 @@ import cz.kocabek.animerecomedationsystem.recommendation.service.DTOResultBuilde
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationService;
 import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
+import cz.kocabek.animerecomedationsystem.user.service.AccService;
 import cz.kocabek.animerecomedationsystem.user.service.WatchListService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,22 +24,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class ViewController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewController.class);
-
+    AccService accService;
     RecommendationService recommendationService;
     AnimeService animeService;
     DTOResultBuilder resultBuilder;
     RecommendationConfig config;
     WatchListService watchListService;
 
+    private static final String INPUT_ATR_NAME = "anime";
+
     @GetMapping("/main")
     public String getHomePage(Model model) {
-        model.addAttribute("anime", config.getConfigForm());
+        model.addAttribute(INPUT_ATR_NAME, config.getConfigForm());
         model.addAttribute("action", "/submit");
         return "main";
     }
 
     @PostMapping("/submit")
-    public String postHomePage(@Valid @ModelAttribute("anime") InputDTO form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String postHomePage(@Valid @ModelAttribute(INPUT_ATR_NAME) InputDTO form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) return "main";
         try {
             Long id = processForm(form);
@@ -62,7 +66,7 @@ public class ViewController {
             watchListService.setWatchlistButtons(recommendations);
         }
         model.addAttribute("recommendations", recommendations);
-        model.addAttribute("anime", config.getConfigForm());
+        model.addAttribute(INPUT_ATR_NAME, config.getConfigForm());
         model.addAttribute("action", "/result/submit");
         return "result";
     }
@@ -90,13 +94,22 @@ public class ViewController {
     public String getAnimePage(@PathVariable Long id, Model model) {
         final var detail = animeService.getAnimeById(id);
         model.addAttribute("detail", detail);
-        model.addAttribute("anime", config.getConfigForm());
+        model.addAttribute(INPUT_ATR_NAME, config.getConfigForm());
         return "detail";
     }
 
     @GetMapping("/watchlist")
-    public String getWatchlistPage() {
+    public String getWatchlistPage(Model model) {
+        model.addAttribute(INPUT_ATR_NAME, config.getConfigForm());
+        model.addAttribute("watchlist", accService.getWatchlistData());
         return "watchlist";
+    }
+
+    @DeleteMapping("/remove_uiitem")
+    @ResponseBody
+    public ResponseEntity<String> removeFromWatchListPage(@RequestParam long animeId) {
+        watchListService.removeFromWatchlist(animeId);
+        return ResponseEntity.ok("");
     }
 
     private Long processForm(InputDTO form) throws ValidationException {
