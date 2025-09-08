@@ -1,7 +1,5 @@
-#WARNING!!!
-THIS README is under development,
-current informations here are mostly correct but they are Partially AI-generated.
-The informations here will be made accurate and precise as soon as possible.
+# THIS README is under development,current informations here are mostly correct but they are Partially AI-generated.
+# The informations here will be made accurate and precise as soon as possible.
 ## Table of Contents
 1. [Anime Recommendation System](#anime-recommendation-system)
 2. [Technology Stack](#technology-stack)
