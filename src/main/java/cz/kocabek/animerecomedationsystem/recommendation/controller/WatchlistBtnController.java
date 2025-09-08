@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-class WatchlistController {
+class WatchlistBtnController {
 
 
     WatchListService watchListService;
@@ -18,7 +18,7 @@ class WatchlistController {
     private static final String WATCH_BTN_FRAGMENT = "fragments/watchBtn ::";
     private static final String ANIMEID_MODEL_ATR = "animeId";
 
-    public WatchlistController(WatchListService watchListService, AccService accService) {
+    public WatchlistBtnController(WatchListService watchListService, AccService accService) {
         this.watchListService = watchListService;
         this.accService = accService;
     }
