@@ -18,9 +18,9 @@
     </button>
 </div> <!--fragment of button for new add to watchlist-->
 
-<div th:fragment="watchBtnRemove"
+<div th:fragment="watchBtnRemove (animeId)"
      id="watchlist-button" hx-include="this">
-    <input type="hidden" name="animeId" th:value="${recommend != null ? recommend.animeId : animeId}">
+    <input type="hidden" name="animeId" th:value="${animeId}">
     <button
             type="button"
             hx-patch="/remove_watch"
@@ -42,5 +42,17 @@
         <span>To Watchlist</span>
     </button>
 </div> <!--fragment of button for new add to watchlist-->
+<!-- delete item from the watchlist page -->
+<div th:fragment="watchBtnDeleteItem (animeId)"
+     id="watchlist-button" hx-include="this">
+    <button
+            type="button"
+            th:hx-delete="@{/remove_uiitem(animeId=${animeId})}"
+            hx-swap="outerHTML"
+            hx-target="closest li"
+            class="btn btn-success btn-sm rounded-pill">
+        <i class="ti ti-check fs-6 me-1"></i><span>Remove from Watchlist</span>
+    </button>
+</div> <!--fragment of button for remove from watchlist-->
 </body>
 </html>

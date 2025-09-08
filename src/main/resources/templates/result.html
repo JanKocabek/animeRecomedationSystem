@@ -82,7 +82,7 @@
                                         <div th:replace="fragments/watchBtn :: watchBtnNew"></div>
                                     </th:block>
                                     <th:block th:case="true">
-                                        <div th:replace="fragments/watchBtn :: watchBtnRemove"></div>
+                                        <div th:replace="fragments/watchBtn :: watchBtnRemove(${recommend.getAnimeId()})"></div>
                                     </th:block>
                                     <th:block th:case="false">
                                         <div th:replace="fragments/watchBtn :: watchBtnReAdd"></div>
@@ -116,14 +116,6 @@
 <script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
 <script th:src="@{/assets/js/core/popper.min.js}"></script>
 <script th:src="@{/assets/js/material-kit.min.js}"></script>
-<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous">
-</script>
-<script>
-    document.body.addEventListener('htmx:configRequest', e => {
-        const t = document.querySelector('meta[name="_csrf"]').content;
-        const h = document.querySelector('meta[name="_csrf_header"]').content;
-        e.detail.headers[h] = t;
-    });
-</script>
+<th:block th:include="fragments/htmxFragment :: htmxFragment"></th:block>
 </body>
 </html>
