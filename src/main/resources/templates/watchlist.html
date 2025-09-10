@@ -25,16 +25,9 @@
                 <h2 class="mb-4">
                     Personal Watchlist:
                 </h2>
-                <!--            <ul class="list-group">-->
-                <!--                <li class="list-group-item" th:each="item : ${watchlist}">-->
-                <!--                    <img th:src="${item.animeImageUrl}" alt="Anime" class="img-fluid rounded" style="max-width: 100px;">-->
-                <!--                    <span th:text="${item.animeEnglishName}">-->
-                <!--                    </span>-->
-                <!--                    <th:block th:include="fragments/watchBtn :: watchBtnDeleteItem (${item.idAnimeId})"></th:block>-->
-                <!--                </li>-->
-                <!--            </ul>-->
                 <div class="row">
-                    <div th:each="item : ${watchlist}" class="col-md-auto col-sm-auto mb-4" th:id="'item'+${item.idAnimeId()}">
+                    <div th:each="item : ${watchlist}" class="col-md-auto col-sm-auto mb-4"
+                        th:id="'item'+${item.idAnimeId()}">
                         <div class="card" style="width: fit-content;">
                             <div class="d-flex">
                                 <div class="flex-shrink-1">
@@ -46,7 +39,9 @@
                                 </div>
                             </div>
                             <div class="card-body  p-2 ">
-                                <h5 class="card-title mb-2" th:text="${item.animeEnglishName()}">Anime name</h5>
+                                <h5 class="card-title mb-2 text-wrap" style="max-width: 200px;"
+                                    th:text="${item.animeEnglishName()}">Anime name
+                                </h5>
                                 <div class="d-flex">
                                     <div class="d-flex flex-column flex-grow-1">
                                         <span class="badge rounded-pill bg-secondary mb-1 ">
@@ -60,7 +55,6 @@
                                         </span>
                                     </div>
                                     <div class="flex-shrink-1 align-self-start ms-2">
-
                                         <div th:replace="fragments/watchBtn :: watchBtnDeleteItem(${item.idAnimeId})">
                                         </div>
                                     </div>
