@@ -49,7 +49,7 @@
             type="button"
             th:hx-delete="@{/remove_uiitem(animeId=${animeId})}"
             hx-swap="outerHTML"
-            hx-target="closest li"
+            th:hx-target="'#item'+${animeId}"
             class="btn btn-success btn-sm rounded-pill">
         <i class="ti ti-check fs-6 me-1"></i><span>Remove from Watchlist</span>
     </button>
