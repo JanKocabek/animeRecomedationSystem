@@ -26,7 +26,7 @@
             hx-patch="/remove_watch"
             hx-swap="outerHTML"
             class="btn btn-success btn-sm rounded-pill">
-        <i class="ti ti-check fs-6 me-1"></i><span>Remove from Watchlist</span>
+        <i class="ti ti-heart-off fs-6 me-1"></i><span>Remove from Watchlist</span>
     </button>
 </div> <!--fragment of button for remove from watchlist-->
 
@@ -44,14 +44,14 @@
 </div> <!--fragment of button for new add to watchlist-->
 <!-- delete item from the watchlist page -->
 <div th:fragment="watchBtnDeleteItem (animeId)"
-     id="watchlist-button" hx-include="this">
+     id="watchlist-button" hx-include="this" class="">
     <button
             type="button"
             th:hx-delete="@{/remove_uiitem(animeId=${animeId})}"
             hx-swap="outerHTML"
             th:hx-target="'#item'+${animeId}"
-            class="btn btn-success btn-sm rounded-pill">
-        <i class="ti ti-check fs-6 me-1"></i><span>Remove from Watchlist</span>
+            class="btn btn-danger btn-sm rounded-pill">
+        <i class="ti ti-heart-off fs-6 me-1"></i><span>Remove</span>
     </button>
 </div> <!--fragment of button for remove from watchlist-->
 </body>
