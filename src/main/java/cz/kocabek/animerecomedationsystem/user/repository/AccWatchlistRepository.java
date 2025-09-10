@@ -35,7 +35,7 @@ public interface AccWatchlistRepository extends JpaRepository<AccWatchlist, AccW
 
     */
     @Query("""
-            select new cz.kocabek.animerecomedationsystem.user.dto.AccWatchlistShowDto(a.id.animeId,a.anime.name,a.anime.englishName,a.anime.score)
+            select new cz.kocabek.animerecomedationsystem.user.dto.AccWatchlistShowDto(a.id.animeId,a.anime.name,a.anime.englishName,a.anime.score,a.anime.imageURL)
                         from AccWatchlist a
                         where a.id.accId =:accId
                         and a.inWatchlist=true

@@ -12,5 +12,6 @@ public record AccWatchlistShowDto(
         Long idAnimeId,
         String animeName,
         String animeEnglishName,
-        Double animeScore) implements Serializable {
+        Double animeScore,
+        String animeImageUrl) implements Serializable {
 }
