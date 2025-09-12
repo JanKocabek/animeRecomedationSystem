@@ -27,16 +27,14 @@ public class AccWatchlist {
 
     @Column(name = "inWatchlist")
     @NotNull
-    @ColumnDefault("true")
     private boolean inWatchlist;
 
     public AccWatchlist(AppAccount acc, Anime anime) {
-        this.acc=acc;
-        this.anime=anime;
-        AccWatchlistId watchlistId = new AccWatchlistId();
-        watchlistId.setAccId(acc.getId());
-        watchlistId.setAnimeId(anime.getId());
+        this.acc = acc;
+        this.anime = anime;
+        AccWatchlistId watchlistId = new AccWatchlistId(acc.getId(), anime.getId());
         this.id = watchlistId;
+        this.inWatchlist = true;
     }
 
     public AccWatchlist() {
