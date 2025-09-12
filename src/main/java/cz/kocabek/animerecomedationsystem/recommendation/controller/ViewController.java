@@ -116,6 +116,7 @@ public class ViewController {
         try {
             model.addAttribute("watchlist", accService.getWatchlistData());
         } catch (IllegalStateException e) {
+            LOGGER.error("some unexpected logout because of {}", e.getMessage());
             return "redirect:/logout";
         }
         model.addAttribute(ATR_ACTION, "/submit");
