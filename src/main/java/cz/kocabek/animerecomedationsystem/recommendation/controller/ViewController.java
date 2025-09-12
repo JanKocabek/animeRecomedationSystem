@@ -40,11 +40,12 @@ public class ViewController {
     WatchListService watchListService;
 
     private static final String INPUT_ATR_NAME = "anime";
+    private static final String ATR_ACTION = "action";
 
     @GetMapping("/main")
     public String getHomePage(Model model) {
         model.addAttribute(INPUT_ATR_NAME, config.getConfigForm());
-        model.addAttribute("action", "/submit");
+        model.addAttribute(ATR_ACTION, "/submit");
         return "main";
     }
 
@@ -77,7 +78,7 @@ public class ViewController {
         }
         model.addAttribute("recommendations", recommendations);
         model.addAttribute(INPUT_ATR_NAME, config.getConfigForm());
-        model.addAttribute("action", "/result/submit");
+        model.addAttribute(ATR_ACTION, "/result/submit");
         return "result";
     }
 
@@ -112,8 +113,12 @@ public class ViewController {
     @GetMapping("/watchlist")
     public String getWatchlistPage(Model model) {
         model.addAttribute(INPUT_ATR_NAME, config.getConfigForm());
-        model.addAttribute("watchlist", accService.getWatchlistData());
-        model.addAttribute("action", "/submit");
+        try {
+            model.addAttribute("watchlist", accService.getWatchlistData());
+        } catch (IllegalStateException e) {
+            return "/logout";
+        }
+        model.addAttribute(ATR_ACTION, "/submit");
         return "watchlist";
     }
 
@@ -123,7 +128,7 @@ public class ViewController {
         try {
             watchListService.removeFromWatchlist(animeId);
         } catch (IllegalStateException e) {
-            LOGGER.error("during removing item from UI happende error:%n", e.getMessage());
+            LOGGER.error("during removing item from UI happende error:%n {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
         }
         return ResponseEntity.ok("");

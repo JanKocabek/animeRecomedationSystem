@@ -39,6 +39,8 @@ public class AccService {
     }
 
     public List<AccWatchlistShowDto> getWatchlistData() {
+        if(userSessionData.getUserId().equals(null))
+        throw new IllegalStateException("User isn't log-in or issue in the Auth process");
         return accWatchlistRepository.getActiveWatchlistByAccountId(userSessionData.getUserId());
     }
 }
