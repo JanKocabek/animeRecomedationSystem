@@ -128,7 +128,7 @@ public class ViewController {
         try {
             watchListService.removeFromWatchlist(animeId);
         } catch (IllegalStateException e) {
-            LOGGER.error("during removing item from UI happende error:%n {}", e.getMessage());
+            LOGGER.error("during removing item from UI happened error:%n {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
         }
         return ResponseEntity.ok("");
