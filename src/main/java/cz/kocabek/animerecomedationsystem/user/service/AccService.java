@@ -25,7 +25,6 @@ public class AccService {
     private final AccWatchlistRepository accWatchlistRepository;
     private final UserSessionData userSessionData;
 
-
     public Integer getUserIdByUsername(String username) throws IllegalArgumentException {
         Optional<Integer> userId = appAccRepository.findAccountIdByUsername(username);
         return userId.orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -38,9 +37,10 @@ public class AccService {
         logger.info("Anime {} added to watchlist", anime.getName());
     }
 
-    public List<AccWatchlistShowDto> getWatchlistData() {
-        if(userSessionData.getUserId().equals(null))
-        throw new IllegalStateException("User isn't log-in or issue in the Auth process");
+    public List<AccWatchlistShowDto> getWatchlistData() throws IllegalStateException {
+        if (userSessionData.getUserId() == null) {
+            throw new IllegalStateException("User isn't log-in or issue in the Auth process");
+        }
         return accWatchlistRepository.getActiveWatchlistByAccountId(userSessionData.getUserId());
     }
 }
