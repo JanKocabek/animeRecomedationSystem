@@ -1,24 +1,32 @@
 package cz.kocabek.animerecomedationsystem.recommendation.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import cz.kocabek.animerecomedationsystem.recommendation.dto.InputDTO;
 import cz.kocabek.animerecomedationsystem.recommendation.service.DTOResultBuilder;
-import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationService;
+import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
 import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
 import cz.kocabek.animerecomedationsystem.user.service.AccService;
 import cz.kocabek.animerecomedationsystem.user.service.WatchListService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @AllArgsConstructor
 @Controller
@@ -41,8 +49,10 @@ public class ViewController {
     }
 
     @PostMapping("/submit")
-    public String postHomePage(@Valid @ModelAttribute(INPUT_ATR_NAME) InputDTO form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) return "main";
+    public String postHomePage(@Valid @ModelAttribute(INPUT_ATR_NAME) InputDTO form, BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors())
+            return "main";
         try {
             Long id = processForm(form);
             redirectAttributes.addAttribute("id", id);
@@ -58,7 +68,7 @@ public class ViewController {
         try {
             checkAnimeId(animeId);
         } catch (ValidationException e) {
-            //TODO: add proper return to the view by
+            // TODO: add proper return to the view by
             return "redirect:/";
         }
         final var recommendations = recommendationService.getAnimeRecommendation(animeId);
@@ -72,8 +82,9 @@ public class ViewController {
     }
 
     @PostMapping("/result/submit")
-    public String postResultPage(@Valid @ModelAttribute("anime") InputDTO form, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
-        //todo:move this line in the if statement
+    public String postResultPage(@Valid @ModelAttribute("anime") InputDTO form, BindingResult bindingResult,
+            RedirectAttributes redirectAttributes, Model model) {
+        // todo:move this line in the if statement
         final var previousAnime = resultBuilder.getResultDto();
         if (bindingResult.hasErrors()) {
             model.addAttribute("recommendations", previousAnime);
@@ -102,14 +113,19 @@ public class ViewController {
     public String getWatchlistPage(Model model) {
         model.addAttribute(INPUT_ATR_NAME, config.getConfigForm());
         model.addAttribute("watchlist", accService.getWatchlistData());
-         model.addAttribute("action", "/submit");
+        model.addAttribute("action", "/submit");
         return "watchlist";
     }
 
     @DeleteMapping("/remove_uiitem")
     @ResponseBody
     public ResponseEntity<String> removeFromWatchListPage(@RequestParam long animeId) {
-        watchListService.removeFromWatchlist(animeId);
+        try {
+            watchListService.removeFromWatchlist(animeId);
+        } catch (IllegalStateException e) {
+            LOGGER.error("during removing item from UI happende error:%n", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
+        }
         return ResponseEntity.ok("");
     }
 
@@ -122,7 +138,8 @@ public class ViewController {
     }
 
     private void checkAnimeId(Long id) throws ValidationException {
-        if (config.getAnimeId() != null && config.getAnimeId().equals(id)) return;
+        if (config.getAnimeId() != null && config.getAnimeId().equals(id))
+            return;
         final var name = animeService.getAnimeNameById(id);
         config.setAnimeName(name);
         config.setAnimeId(id);

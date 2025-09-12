@@ -55,7 +55,8 @@
                                         </span>
                                     </div>
                                     <div class="flex-shrink-1 align-self-start ms-2">
-                                        <div th:replace="fragments/watchBtn :: watchBtnDeleteItem(${item.idAnimeId})">
+                                        <div
+                                            th:replace="~{fragments/watchBtn :: watchBtnDeleteItem(${item.idAnimeId})}">
                                         </div>
                                     </div>
                                 </div>
@@ -74,7 +75,7 @@
     <script th:src="@{/assets/js/core/popper.min.js}"></script>
     <script th:src="@{/assets/js/material-kit.min.js}"></script>
     <script th:src="@{/assets/js/plugins/perfect-scrollbar.min.js}"></script>
-    <th:block th:include="fragments/htmxFragment :: htmxFragment"></th:block>
+    <th:block th:include="~{fragments/htmxFragment :: htmxFragment}"></th:block>
 </body>
 
 </html>
