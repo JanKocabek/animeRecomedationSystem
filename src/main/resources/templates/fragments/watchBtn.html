@@ -44,7 +44,7 @@
 </div> <!--fragment of button for new add to watchlist-->
 <!-- delete item from the watchlist page -->
 <div th:fragment="watchBtnDeleteItem (animeId)"
-     id="watchlist-button" hx-include="this" class="">
+     th:id="'watchlist-button-' + ${animeId}" hx-include="this" class="">
     <button
             type="button"
             th:hx-delete="@{/remove_uiitem(animeId=${animeId})}"
