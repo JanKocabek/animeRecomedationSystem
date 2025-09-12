@@ -1,9 +1,6 @@
 package cz.kocabek.animerecomedationsystem.user.entity;
 
 import java.io.Serializable;
-import java.util.Objects;
-
-import org.hibernate.Hibernate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
