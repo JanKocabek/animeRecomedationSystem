@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="_csrf" th:content="${_csrf.token}">
@@ -12,110 +13,121 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
     <!--my main css-->
     <link th:href="@{/assets/css/main.css}" rel="stylesheet">
 </head>
-<body class="bg-light">
-<!-- Hero Section -->
-<header th:replace="~{fragments/header :: header}"></header>
-<main>
-    <!-- Recommendations Section -->
-    <section class="py-5">
-        <div class="container">
-            <h2 class="mb-4"
-                th:text="'Anime Recommendations for: ' + ${#strings.listJoin(recommendations.inputAnimeNames, ', ')}"></h2>
-            <div class="row g-4">
-                <div th:each="recommend : ${recommendations.getRecommendedAnime()}"
-                     class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card shadow-sm h-100">
-                        <!-- Image -->
-                        <a th:href="@{'https://myanimelist.net/anime/' + ${recommend.animeId} + '/'}">
-                            <img th:src="${recommend.animeInfo.imageURL}"
-                                 th:alt="${recommend.animeInfo.name}"
-                                 class="card-img-top img-fluid">
-                        </a>
 
-                        <!-- Card Body -->
-                        <div class="card-body d-flex flex-column flex-grow-1 ">
-                            <!--card-title-->
-                            <h5 class="card-title mb-3" th:text="${recommend.animeInfo.name}"></h5>
-                            <div class="d-flex flex-column justify-content-center flex-grow-1">
-                                <!--   main columns-->
-                                <div class="card-text d-flex flex-row justify-content-between align-items-start ">
-                                    <!-- Left side: Recommendation text -->
-                                    <div class="d-flex flex-column align-items-center me-3" style="min-height: 200px">
-                                        <div class="flex-fill">
-                                            <small class="text-muted mb-2" style="font-style: italic;">Rated by</small>
-                                            <div class="vertical-progress " style="height: 100px; width: 50px;">
-                                                <div class="vertical-progress-bar"
-                                                     th:style="'height: calc(' + ${recommend.percentageOccurrences} + '% + 15px); background-color:' +
+<body class="bg-light">
+    <!-- Hero Section -->
+    <header th:replace="~{fragments/header :: header}"></header>
+    <main>
+        <!-- Recommendations Section -->
+        <section class="py-5">
+            <div class="container">
+                <h2 class="mb-4"
+                    th:text="'Anime Recommendations for: ' + ${#strings.listJoin(recommendations.inputAnimeNames, ', ')}">
+                </h2>
+                <div class="row g-4">
+                    <div th:each="recommend : ${recommendations.getRecommendedAnime()}"
+                        class="col-sm-6 col-md-4 col-lg-3">
+                        <div class="card shadow-sm h-100">
+                            <!-- Image -->
+                            <a th:href="@{'https://myanimelist.net/anime/' + ${recommend.animeId} + '/'}">
+                                <img th:src="${recommend.animeInfo.imageURL}" th:alt="${recommend.animeInfo.name}"
+                                    class="card-img-top img-fluid">
+                            </a>
+
+                            <!-- Card Body -->
+                            <div class="card-body d-flex flex-column flex-grow-1 ">
+                                <!--card-title-->
+                                <h5 class="card-title mb-3" th:text="${recommend.animeInfo.name}"></h5>
+                                <div class="d-flex flex-column justify-content-center flex-grow-1">
+                                    <!--   main columns-->
+                                    <div class="card-text d-flex flex-row justify-content-between align-items-start ">
+                                        <!-- Left side: Recommendation text -->
+                                        <div class="d-flex flex-column align-items-center me-3"
+                                            style="min-height: 200px">
+                                            <div class="flex-fill">
+                                                <small class="text-muted mb-2" style="font-style: italic;">Rated
+                                                    by</small>
+                                                <div class="vertical-progress " style="height: 100px; width: 50px;">
+                                                    <div class="vertical-progress-bar" th:style="'height: calc(' + ${recommend.percentageOccurrences} + '% + 15px); background-color:' +
                        (${recommend.percentageOccurrences} >= 70 ? '#28a745' :
                         (${recommend.percentageOccurrences} >= 40 ? '#ffc107' : '#dc3545'))">
-                                                    <div class="d-flex flex-column align-items-center">
-                                                        <span th:text="${#numbers.formatDecimal(recommend.percentageOccurrences, 1, 2)} + '%'"></span>
-                                                        <small>users</small>
+                                                        <div class="d-flex flex-column align-items-center">
+                                                            <span
+                                                                th:text="${#numbers.formatDecimal(recommend.percentageOccurrences, 1, 2)} + '%'"></span>
+                                                            <small>users</small>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="flex-fill">
+                                                <span class="badge rounded-pill bg-secondary mb-1 ">
+                                                    <i class="ti ti-eye fs-6"></i>
+                                                    <a th:href="@{'/anime/' + ${recommend.animeId} }"
+                                                        class="text-white">Details</a>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="flex-fill">
-                                            <span class="badge rounded-pill bg-secondary mb-1 ">
-                                                <i class="ti ti-eye fs-6"></i>
-                                            <a th:href="@{'/anime/' + ${recommend.animeId} }"
-                                               class="text-white">Details</a>
-                                            </span>
+                                        <!-- Right side: Genre pills aligned to right -->
+                                        <div class="d-flex flex-column justify-content-center align-items-end ms-auto "
+                                            style="min-height: 200px">
+                                            <span class="badge bg-secondary mb-2">Genres:</span>
+                                            <span th:each="genre : ${recommend.genres}"
+                                                class="badge rounded-pill bg-secondary mb-1" th:text="${genre}"></span>
                                         </div>
                                     </div>
-                                    <!-- Right side: Genre pills aligned to right -->
-                                    <div class="d-flex flex-column justify-content-center align-items-end ms-auto "
-                                         style="min-height: 200px">
-                                        <span class="badge bg-secondary mb-2">Genres:</span>
-                                        <span th:each="genre : ${recommend.genres}"
-                                              class="badge rounded-pill bg-secondary mb-1"
-                                              th:text="${genre}"></span>
-                                    </div>
+
+                                    <!-- Watchlist Button selection-->
+                                    <th:block sec:authorize="isAuthenticated()" th:switch="${recommend.inWatchList}">
+                                        <th:block th:case="null">
+                                            <div
+                                                th:replace="fragments/watchBtn :: watchBtnNew(${recommend.getAnimeId()})">
+                                            </div>
+                                        </th:block>
+                                        <th:block th:case="true">
+                                            <div
+                                                th:replace="fragments/watchBtn :: watchBtnRemove(${recommend.getAnimeId()})">
+                                            </div>
+                                        </th:block>
+                                        <th:block th:case="false">
+                                            <div
+                                                th:replace="fragments/watchBtn :: watchBtnReAdd(${recommend.getAnimeId()})">
+                                            </div>
+                                        </th:block>
+                                    </th:block><!--end of selection-->
+
+                                </div><!--end of card inner block of card body-->
+
+
+                                <!-- Badges -->
+                                <div class="d-flex justify-content-between mt-3 ">
+                                    <span class="badge bg-success"
+                                        th:text="'Avg: ' + ${#numbers.formatDecimal(recommend.getAverageRating(), 1, 2)}">
+                                    </span>
+
+                                    <span class="badge bg-info">
+                                        <i class="ti ti-world fs-6"></i>
+                                        <span th:text="'MAL: ' + ${recommend.animeInfo.score}"></span>
+                                    </span>
                                 </div>
-                                <!-- Watchlist Button selection-->
-                                <th:block sec:authorize="isAuthenticated()" th:switch="${recommend.inWatchList}">
-                                    <th:block th:case="null">
-                                        <div th:replace="fragments/watchBtn :: watchBtnNew"></div>
-                                    </th:block>
-                                    <th:block th:case="true">
-                                        <div th:replace="fragments/watchBtn :: watchBtnRemove(${recommend.getAnimeId()})"></div>
-                                    </th:block>
-                                    <th:block th:case="false">
-                                        <div th:replace="fragments/watchBtn :: watchBtnReAdd"></div>
-                                    </th:block>
-                                </th:block><!--end of selection-->
-                            </div><!--end of card inner block of card body-->
-
-
-                            <!-- Badges -->
-                            <div class="d-flex justify-content-between mt-3 ">
-                                <span class="badge bg-success"
-                                      th:text="'Avg: ' + ${#numbers.formatDecimal(recommend.getAverageRating(), 1, 2)}">
-                                </span>
-
-                                <span class="badge bg-info">
-                                <i class="ti ti-world fs-6"></i>
-                                <span th:text="'MAL: ' + ${recommend.animeInfo.score}"></span>
-                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</main>
-<!--footer-->
-<footer th:replace="~{fragments/footer :: footer}"></footer>
-<script th:src="@{/assets/js/formUI.js}"></script>
-<script th:src="@{/assets/js/core/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
-<script th:src="@{/assets/js/core/popper.min.js}"></script>
-<script th:src="@{/assets/js/material-kit.min.js}"></script>
-<th:block th:include="fragments/htmxFragment :: htmxFragment"></th:block>
+        </section>
+    </main>
+    <!--footer-->
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+    <script th:src="@{/assets/js/formUI.js}"></script>
+    <script th:src="@{/assets/js/core/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+    <script th:src="@{/assets/js/core/popper.min.js}"></script>
+    <script th:src="@{/assets/js/material-kit.min.js}"></script>
+    <th:block th:include="fragments/htmxFragment :: htmxFragment"></th:block>
 </body>
+
 </html>
