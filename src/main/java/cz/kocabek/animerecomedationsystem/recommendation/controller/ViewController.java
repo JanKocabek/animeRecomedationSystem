@@ -102,6 +102,7 @@ public class ViewController {
     public String getWatchlistPage(Model model) {
         model.addAttribute(INPUT_ATR_NAME, config.getConfigForm());
         model.addAttribute("watchlist", accService.getWatchlistData());
+         model.addAttribute("action", "/submit");
         return "watchlist";
     }
 
