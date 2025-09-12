@@ -1,6 +1,7 @@
 package cz.kocabek.animerecomedationsystem.user.repository;
 
 import cz.kocabek.animerecomedationsystem.user.dto.AccWatchlistDto;
+import cz.kocabek.animerecomedationsystem.user.dto.AccWatchlistShowDto;
 import cz.kocabek.animerecomedationsystem.user.entity.AccWatchlist;
 import cz.kocabek.animerecomedationsystem.user.entity.AccWatchlistId;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,5 +31,14 @@ public interface AccWatchlistRepository extends JpaRepository<AccWatchlist, AccW
             """)
     int updateWatchlistStatus(@NonNull @Param("animeId") Long animeId, @NonNull @Param("accId") Integer accId, @Param("isInWatchlist") boolean isInWatchlist);
 
+    /*TODO choose fields and create dto for it
 
+    */
+    @Query("""
+            select new cz.kocabek.animerecomedationsystem.user.dto.AccWatchlistShowDto(a.id.animeId,a.anime.name,a.anime.englishName,a.anime.score,a.anime.imageURL)
+                        from AccWatchlist a
+                        where a.id.accId =:accId
+                        and a.inWatchlist=true
+            """)
+    List<AccWatchlistShowDto> getActiveWatchlistByAccountId(@NonNull @Param("accId") Integer accId);
 }
