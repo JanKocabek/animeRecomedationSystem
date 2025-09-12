@@ -35,11 +35,18 @@ public class AccWatchlist {
     @NotNull
     private boolean inWatchlist;
 
-    public AccWatchlist(Integer accId, Long animeId) {
-        this.id = new AccWatchlistId(accId,animeId);
+    private AccWatchlist(Integer accId, Long animeId) {
+        this.id = new AccWatchlistId(accId, animeId);
         this.inWatchlist = true;
     }
 
-    public AccWatchlist() {
+    public static AccWatchlist create(AppAccount acc, Anime anime) {
+        AccWatchlist watchlist = new AccWatchlist(acc.getId(),anime.getId());
+        watchlist.setAcc(acc);
+        watchlist.setAnime(anime);
+        return watchlist;
+    }
+
+    private AccWatchlist() {
     }
 }

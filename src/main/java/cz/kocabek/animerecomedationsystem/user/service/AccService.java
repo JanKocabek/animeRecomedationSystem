@@ -33,11 +33,8 @@ public class AccService {
     public void addAnimeToWatchlist(long animeId) {
         final var acc = entityManager.getReference(AppAccount.class, userSessionData.getUserId());
         final var anime = entityManager.getReference(Anime.class, animeId);
-        AccWatchlist watchlist= new AccWatchlist(userSessionData.getUserId(), animeId);
-        watchlist.setAcc(acc);
-        watchlist.setAnime(anime);
-        accWatchlistRepository.save(watchlist);
-        logger.info("Anime with id {} added to watchlist",anime.getId() );
+        accWatchlistRepository.save(AccWatchlist.create(acc, anime));
+        logger.info("Anime with id {} added to watchlist", anime.getId());
     }
 
     public List<AccWatchlistShowDto> getWatchlistData() throws IllegalStateException {
