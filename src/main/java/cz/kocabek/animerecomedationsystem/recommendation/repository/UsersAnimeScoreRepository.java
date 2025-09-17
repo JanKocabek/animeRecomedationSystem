@@ -1,8 +1,7 @@
 package cz.kocabek.animerecomedationsystem.recommendation.repository;
 
-import cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto;
-import cz.kocabek.animerecomedationsystem.recommendation.entity.UsersAnimeScore;
-import cz.kocabek.animerecomedationsystem.recommendation.entity.UsersAnimeScoreId;
+import java.util.Collection;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
