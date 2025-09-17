@@ -1,13 +1,14 @@
 package cz.kocabek.animerecomedationsystem.recommendation.service.db;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeDto;
 import cz.kocabek.animerecomedationsystem.recommendation.entity.Anime;
 import cz.kocabek.animerecomedationsystem.recommendation.repository.AnimeRepository;
 import jakarta.validation.ValidationException;
-import org.springframework.stereotype.Service;
-
-import java.util.Collection;
-import java.util.List;
 
 @Service
 public class AnimeService {
@@ -43,6 +44,7 @@ public class AnimeService {
     public Collection<String> getAnimeNamesByIds(Collection<Long> animeIds) {
         return animeRepository.getAnimeNamesByIds(animeIds);
     }
+
     public String getAnimeNameById(Long id) {
         return animeRepository.getAnimeNameById(id);
     }
