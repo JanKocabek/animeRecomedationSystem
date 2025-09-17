@@ -23,17 +23,17 @@ public class AnimeService {
     }
 
     public Iterable<Anime> getAnimeByGenre(String genre) {
-        return animeRepository.findTop5ByGenres_GenreNameContainsIgnoreCaseAllIgnoreCase(genre);
+        return animeRepository.findTop5ByGenres_GenreName(genre);
     }
 
     public Long getAnimeIdByName(String animeName) throws ValidationException {
-        final var name = animeName.trim().toLowerCase();
+        final var name = animeName.trim();
         if (name.isBlank() || name.equals(" ")) {
             throw new ValidationException("Anime name cannot be blank");
         }
         return animeRepository.getAnimeIdByName(name)
                 .orElseGet(() -> animeRepository.getAnimeIdByEnglishName(name)
-                        .orElseThrow(() -> new ValidationException("This anime was not found.%nTry again with different name".formatted())));
+                .orElseThrow(() -> new ValidationException("This anime was not found.%nTry again with different name".formatted())));
     }
 
     public List<AnimeDto> retrieveAnimeByIdsSortedByScore(Collection<Long> ids) {
