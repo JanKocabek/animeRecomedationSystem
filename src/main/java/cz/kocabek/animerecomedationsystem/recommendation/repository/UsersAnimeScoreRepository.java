@@ -17,7 +17,6 @@ public interface UsersAnimeScoreRepository extends JpaRepository<UsersAnimeScore
     @Query("""
             select new cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto(u.id.userId,u.id.animeId,u.rating)  from UsersAnimeScore u
             where u.id.userId in :userIds and u.id.animeId != :animeId
-            order by u.id.userId, u.rating desc
             """)
     Slice<UsersAnimeScoreDto> getUsersListRatedAnime(@Param("userIds") @NonNull Collection<Long> userIds, @Param("animeId") Long animeId, Pageable pageable);
 
