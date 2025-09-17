@@ -1,18 +1,25 @@
 package cz.kocabek.animerecomedationsystem.recommendation.entity;
 
-import jakarta.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "anime")
 public class Anime {
+
     @Id
     @Column(name = "anime_id", columnDefinition = "int UNSIGNED not null")
     private Long id;
@@ -27,22 +34,18 @@ public class Anime {
     @Column(name = "Score")
     private Double score;
 
-    @Lob
     @Column(name = "Type")
     private String type;
 
     @Column(name = "Episodes")
-    private Long episodes;
+    private Integer episodes;
 
-    @Lob
     @Column(name = "Status")
     private String status;
 
-    @Lob
     @Column(name = "Source")
     private String source;
 
-    @Lob
     @Column(name = "Rating")
     private String rating;
 
@@ -52,7 +55,6 @@ public class Anime {
     @Column(name = "Popularity")
     private Integer popularity;
 
-    @Lob
     @Column(name = "`Image URL`")
     private String imageURL;
 
