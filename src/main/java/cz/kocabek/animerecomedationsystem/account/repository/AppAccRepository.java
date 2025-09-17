@@ -1,11 +1,12 @@
-package cz.kocabek.animerecomedationsystem.user.repository;
+package cz.kocabek.animerecomedationsystem.account.repository;
 
-import cz.kocabek.animerecomedationsystem.user.entity.AppAccount;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.NonNull;
 
-import java.util.Optional;
+import cz.kocabek.animerecomedationsystem.account.entity.AppAccount;
 
 public interface AppAccRepository extends JpaRepository<AppAccount, Integer> {
     Optional<AppAccount> findByUsername(String username);

@@ -1,14 +1,15 @@
-package cz.kocabek.animerecomedationsystem.user.service;
-
-import cz.kocabek.animerecomedationsystem.recommendation.dto.RecommendationDTO;
-import cz.kocabek.animerecomedationsystem.user.UserSessionData;
-import cz.kocabek.animerecomedationsystem.user.dto.AccWatchlistDto;
-import cz.kocabek.animerecomedationsystem.user.repository.AccWatchlistRepository;
-import jakarta.persistence.EntityManager;
-import org.springframework.stereotype.Service;
+package cz.kocabek.animerecomedationsystem.account.service;
 
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import cz.kocabek.animerecomedationsystem.account.UserSessionData;
+import cz.kocabek.animerecomedationsystem.account.dto.AccWatchlistDto;
+import cz.kocabek.animerecomedationsystem.account.repository.AccWatchlistRepository;
+import cz.kocabek.animerecomedationsystem.recommendation.dto.RecommendationDTO;
+import jakarta.persistence.EntityManager;
 
 @Service
 public class WatchListService {
