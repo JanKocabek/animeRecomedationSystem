@@ -1,12 +1,13 @@
 package cz.kocabek.animerecomedationsystem.security.config;
 
-import cz.kocabek.animerecomedationsystem.user.UserSessionData;
-import cz.kocabek.animerecomedationsystem.user.service.AccService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+
+import cz.kocabek.animerecomedationsystem.account.UserSessionData;
+import cz.kocabek.animerecomedationsystem.account.service.AccService;
 
 import java.io.IOException;
 

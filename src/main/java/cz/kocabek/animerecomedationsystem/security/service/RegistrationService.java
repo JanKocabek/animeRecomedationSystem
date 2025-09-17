@@ -1,11 +1,11 @@
 package cz.kocabek.animerecomedationsystem.security.service;
 
-import cz.kocabek.animerecomedationsystem.security.dto.RegistrationDTO;
-import cz.kocabek.animerecomedationsystem.user.entity.AppAccount;
-import cz.kocabek.animerecomedationsystem.user.repository.AppAccRepository;
-import jakarta.validation.ValidationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import cz.kocabek.animerecomedationsystem.account.entity.AppAccount;
+import cz.kocabek.animerecomedationsystem.account.repository.AppAccRepository;
+import cz.kocabek.animerecomedationsystem.security.dto.RegistrationDTO;
 
 @Service
 public class RegistrationService {
