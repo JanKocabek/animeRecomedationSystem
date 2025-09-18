@@ -1,9 +1,9 @@
 package cz.kocabek.animerecomedationsystem.recommendation.dto;
 
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.Data;
 
 /**
  * Data Transfer Object (DTO) representing output data related to concrete anime in the recommendation.
