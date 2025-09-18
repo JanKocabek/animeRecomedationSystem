@@ -1,38 +1,41 @@
 package cz.kocabek.animerecomedationsystem.recommendation.service;
 
-
-
-import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeOutDTO;
-import cz.kocabek.animerecomedationsystem.recommendation.dto.UserAnimeList;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeOutDTO;
+import cz.kocabek.animerecomedationsystem.recommendation.dto.UserAnimeList;
 
 class RecommendationEngineTest {
+
     RecommendationEngine engine;
 
     @BeforeEach
     void setUp() {
-        engine = new RecommendationEngine();
+        AnimePreprocessingService preprocessing = new AnimePreprocessingService(null, null);
+        engine = new RecommendationEngine(preprocessing);
     }
 
     @Test
     void testCountAnimeOccurrences_ShouldReturnCorrectAnimeData_WhenUserAnimeListProvided() {
         //arrange
-        List<UserAnimeList> list = List.of(new UserAnimeList(1L, new HashMap<>() {{
-            put(1L, 10);
-            put(2L, 10);
-            put(3L, 10);
-        }}));
+        List<UserAnimeList> list = List.of(new UserAnimeList(1L, new HashMap<>() {
+            {
+                put(1L, 10);
+                put(2L, 10);
+                put(3L, 10);
+            }
+        }));
         //act
-        Map<Long, AnimeOutDTO> out = engine.buildAnimeOccurrencesMap(list);
+        Map<Long, AnimeOutDTO> out = engine.buildAnimeMap(list);
         //assert
         assertNotNull(out);
         assertEquals(list.getFirst().animeList().size(), out.size());
@@ -43,13 +46,17 @@ class RecommendationEngineTest {
     @Test
     void testShouldReturnRightOccurrences() {
         //arrange
-        List<UserAnimeList> list = List.of(new UserAnimeList(1L, new HashMap<>() {{
-            put(1L, 10);
-        }}), new UserAnimeList(2L, new HashMap<>() {{
-            put(1L, 10);
-        }}));
+        List<UserAnimeList> list = List.of(new UserAnimeList(1L, new HashMap<>() {
+            {
+                put(1L, 10);
+            }
+        }), new UserAnimeList(2L, new HashMap<>() {
+            {
+                put(1L, 10);
+            }
+        }));
         //act
-        Map<Long, AnimeOutDTO> out = engine.buildAnimeOccurrencesMap(list);
+        Map<Long, AnimeOutDTO> out = engine.buildAnimeMap(list);
         //assert
         assertNotNull(out);
         assertEquals(1, out.size());
@@ -60,19 +67,25 @@ class RecommendationEngineTest {
     @Test
     void testMultipleUsersMultipleAnime() {
         //arrange
-        List<UserAnimeList> list = List.of(new UserAnimeList(1L, new HashMap<>() {{
-            put(1L, 10);
-            put(2L, 8);
-        }}), new UserAnimeList(2L, new HashMap<>() {{
-            put(1L, 10);
-            put(3L, 7);
-        }}), new UserAnimeList(3L, new HashMap<>() {{
-            put(1L, 10);
-            put(2L, 10);
-            put(4L, 6);
-        }}));
+        List<UserAnimeList> list = List.of(new UserAnimeList(1L, new HashMap<>() {
+            {
+                put(1L, 10);
+                put(2L, 8);
+            }
+        }), new UserAnimeList(2L, new HashMap<>() {
+            {
+                put(1L, 10);
+                put(3L, 7);
+            }
+        }), new UserAnimeList(3L, new HashMap<>() {
+            {
+                put(1L, 10);
+                put(2L, 10);
+                put(4L, 6);
+            }
+        }));
         //act
-        Map<Long, AnimeOutDTO> out = engine.buildAnimeOccurrencesMap(list);
+        Map<Long, AnimeOutDTO> out = engine.buildAnimeMap(list);
         //assert
         assertNotNull(out);
         assertEquals(4, out.size());
@@ -86,25 +99,33 @@ class RecommendationEngineTest {
     @Test
     void buildAnimeOccurrencesMap() {
         //arrange
-        final var list = List.of(new UserAnimeList(1L, new HashMap<>() {{
-            put(1L, 10);
-            put(2L, 8);
-            put(8L, 1);
-        }}), new UserAnimeList(2L, new HashMap<>() {{
-            put(1L, 10);
-            put(3L, 7);
-            put(8L, 1);
-        }}), new UserAnimeList(3L, new HashMap<>() {{
-            put(1L, 10);
-            put(2L, 10);
-            put(4L, 4);
-            put(5L, 5);
-            put(8L, 1);
-        }}), new UserAnimeList(4L, new HashMap<>() {{
-            put(8L, 1);
-        }}));
+        final var list = List.of(new UserAnimeList(1L, new HashMap<>() {
+            {
+                put(1L, 10);
+                put(2L, 8);
+                put(8L, 1);
+            }
+        }), new UserAnimeList(2L, new HashMap<>() {
+            {
+                put(1L, 10);
+                put(3L, 7);
+                put(8L, 1);
+            }
+        }), new UserAnimeList(3L, new HashMap<>() {
+            {
+                put(1L, 10);
+                put(2L, 10);
+                put(4L, 4);
+                put(5L, 5);
+                put(8L, 1);
+            }
+        }), new UserAnimeList(4L, new HashMap<>() {
+            {
+                put(8L, 1);
+            }
+        }));
         //act
-        final var map = engine.buildAnimeOccurrencesMap(list);
+        final var map = engine.buildAnimeMap(list);
         List<Map.Entry<Long, AnimeOutDTO>> entries = new ArrayList<>(map.entrySet());
         //assert
         assertThat(map).hasSize(6);
@@ -119,27 +140,33 @@ class RecommendationEngineTest {
     @Test
     void weightAnime() {
         //arrange
-        final var list = List.of(new UserAnimeList(1L, new HashMap<>() {{
-                    put(1L, 10);
-                    put(2L, 8);
-                    put(8L, 1);
-                }}), new UserAnimeList(2L, new HashMap<>() {{
-                    put(1L, 10);
-                    put(3L, 7);
-                    put(8L, 1);
-                }}), new UserAnimeList(3L, new HashMap<>() {{
-                    put(1L, 10);
-                    put(2L, 10);
-                    put(4L, 4);
-                    put(5L, 5);
-                }})
+        final var list = List.of(new UserAnimeList(1L, new HashMap<>() {
+            {
+                put(1L, 10);
+                put(2L, 8);
+                put(8L, 1);
+            }
+        }), new UserAnimeList(2L, new HashMap<>() {
+            {
+                put(1L, 10);
+                put(3L, 7);
+                put(8L, 1);
+            }
+        }), new UserAnimeList(3L, new HashMap<>() {
+            {
+                put(1L, 10);
+                put(2L, 10);
+                put(4L, 4);
+                put(5L, 5);
+            }
+        })
         );
         //act
-       final var map= engine.buildAnimeOccurrencesMap(list);
-       final var weightedAnime = engine.weightAnime(map, AnimeScore.compositeScoring);
-       //assert
+        final var map = engine.buildAnimeMap(list);
+        final var weightedAnime = engine.weightAnime(map, AnimeScoreCalculator.compositeScoring);
+        //assert
         assertThat(weightedAnime).hasSize(6);
-        assertThat(weightedAnime.keySet()).containsExactly(1L, 2L, 3L, 5L, 4L,8L);//error it give  prefeer more occurce then rating
+        assertThat(weightedAnime.keySet()).containsExactly(1L, 2L, 3L, 5L, 4L, 8L);//error it give  prefeer more occurce then rating
 
     }
 }
