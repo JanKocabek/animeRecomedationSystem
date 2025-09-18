@@ -1,8 +1,7 @@
 package cz.kocabek.animerecomedationsystem.recommendation.repository;
 
-import cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto;
-import cz.kocabek.animerecomedationsystem.recommendation.entity.UsersAnimeScore;
-import cz.kocabek.animerecomedationsystem.recommendation.entity.UsersAnimeScoreId;
+import java.util.Collection;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,13 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 
-import java.util.Collection;
+import cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto;
+import cz.kocabek.animerecomedationsystem.recommendation.entity.UsersAnimeScore;
+import cz.kocabek.animerecomedationsystem.recommendation.entity.UsersAnimeScoreId;
 
 public interface UsersAnimeScoreRepository extends JpaRepository<UsersAnimeScore, UsersAnimeScoreId> {
     @Query("""
-            select new cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto(u.id.userId,u.id.animeId,u.animeTitle,u.rating)  from UsersAnimeScore u
+            select new cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto(u.id.userId,u.id.animeId,u.rating)  from UsersAnimeScore u
             where u.id.userId in :userIds and u.id.animeId != :animeId
-            order by u.id.userId, u.rating desc
             """)
     Slice<UsersAnimeScoreDto> getUsersListRatedAnime(@Param("userIds") @NonNull Collection<Long> userIds, @Param("animeId") Long animeId, Pageable pageable);
 

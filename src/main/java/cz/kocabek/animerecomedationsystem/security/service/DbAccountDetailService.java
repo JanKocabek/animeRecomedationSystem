@@ -1,11 +1,12 @@
 package cz.kocabek.animerecomedationsystem.security.service;
 
-import cz.kocabek.animerecomedationsystem.user.repository.AppAccRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import cz.kocabek.animerecomedationsystem.account.repository.AppAccRepository;
 
 @Service
 public class DbAccountDetailService implements UserDetailsService {

@@ -1,20 +1,21 @@
-package cz.kocabek.animerecomedationsystem.user.service;
+package cz.kocabek.animerecomedationsystem.account.service;
 
-import cz.kocabek.animerecomedationsystem.recommendation.entity.Anime;
-import cz.kocabek.animerecomedationsystem.user.UserSessionData;
-import cz.kocabek.animerecomedationsystem.user.dto.AccWatchlistShowDto;
-import cz.kocabek.animerecomedationsystem.user.entity.AccWatchlist;
-import cz.kocabek.animerecomedationsystem.user.entity.AppAccount;
-import cz.kocabek.animerecomedationsystem.user.repository.AccWatchlistRepository;
-import cz.kocabek.animerecomedationsystem.user.repository.AppAccRepository;
-import jakarta.persistence.EntityManager;
-import lombok.AllArgsConstructor;
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import cz.kocabek.animerecomedationsystem.account.UserSessionData;
+import cz.kocabek.animerecomedationsystem.account.dto.AccWatchlistShowDto;
+import cz.kocabek.animerecomedationsystem.account.entity.AccWatchlist;
+import cz.kocabek.animerecomedationsystem.account.entity.AppAccount;
+import cz.kocabek.animerecomedationsystem.account.repository.AccWatchlistRepository;
+import cz.kocabek.animerecomedationsystem.account.repository.AppAccRepository;
+import cz.kocabek.animerecomedationsystem.recommendation.entity.Anime;
+import jakarta.persistence.EntityManager;
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor

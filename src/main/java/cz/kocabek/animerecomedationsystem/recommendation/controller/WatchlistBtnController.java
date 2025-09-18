@@ -1,12 +1,13 @@
 package cz.kocabek.animerecomedationsystem.recommendation.controller;
 
-import cz.kocabek.animerecomedationsystem.user.service.AccService;
-import cz.kocabek.animerecomedationsystem.user.service.WatchListService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import cz.kocabek.animerecomedationsystem.account.service.AccService;
+import cz.kocabek.animerecomedationsystem.account.service.WatchListService;
 
 @Controller
 class WatchlistBtnController {

@@ -6,12 +6,14 @@ spring:
     name: animeRecommendationSystem
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/mydatabase
+    url: jdbc:mysql://localhost:3307/animerecoapp
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update
+
+      ddl-auto: validate
+
     show-sql: true
     properties:
       hibernate:
@@ -32,3 +34,8 @@ logging:
     cz:
       kocabek:
         animerecomedationsystem: debug
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

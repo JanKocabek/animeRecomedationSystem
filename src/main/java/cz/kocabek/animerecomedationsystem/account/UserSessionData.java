@@ -1,8 +1,9 @@
-package cz.kocabek.animerecomedationsystem.user;
+package cz.kocabek.animerecomedationsystem.account;
 
-import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
+
+import lombok.Data;
 
 @Component
 @SessionScope

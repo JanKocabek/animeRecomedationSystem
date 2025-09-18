@@ -1,4 +1,4 @@
-package cz.kocabek.animerecomedationsystem.user.entity;
+package cz.kocabek.animerecomedationsystem.account.entity;
 
 import java.io.Serializable;
 

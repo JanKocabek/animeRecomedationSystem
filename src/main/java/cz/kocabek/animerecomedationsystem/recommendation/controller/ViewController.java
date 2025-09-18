@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import cz.kocabek.animerecomedationsystem.account.service.AccService;
+import cz.kocabek.animerecomedationsystem.account.service.WatchListService;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.InputDTO;
 import cz.kocabek.animerecomedationsystem.recommendation.service.DTOResultBuilder;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationService;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
 import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
-import cz.kocabek.animerecomedationsystem.user.service.AccService;
-import cz.kocabek.animerecomedationsystem.user.service.WatchListService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.AllArgsConstructor;

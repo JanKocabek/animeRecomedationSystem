@@ -1,9 +1,7 @@
-package cz.kocabek.animerecomedationsystem.user.repository;
+package cz.kocabek.animerecomedationsystem.account.repository;
 
-import cz.kocabek.animerecomedationsystem.user.dto.AccWatchlistDto;
-import cz.kocabek.animerecomedationsystem.user.dto.AccWatchlistShowDto;
-import cz.kocabek.animerecomedationsystem.user.entity.AccWatchlist;
-import cz.kocabek.animerecomedationsystem.user.entity.AccWatchlistId;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,12 +9,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import cz.kocabek.animerecomedationsystem.account.dto.AccWatchlistDto;
+import cz.kocabek.animerecomedationsystem.account.dto.AccWatchlistShowDto;
+import cz.kocabek.animerecomedationsystem.account.entity.AccWatchlist;
+import cz.kocabek.animerecomedationsystem.account.entity.AccWatchlistId;
 
 public interface AccWatchlistRepository extends JpaRepository<AccWatchlist, AccWatchlistId> {
 
     @Query("""
-            select new cz.kocabek.animerecomedationsystem.user.dto.AccWatchlistDto( a.id.animeId,a.inWatchlist)
+            select new cz.kocabek.animerecomedationsystem.account.dto.AccWatchlistDto( a.id.animeId,a.inWatchlist)
                         from AccWatchlist a where a.id.accId=?1
             """
     )
@@ -33,9 +34,9 @@ public interface AccWatchlistRepository extends JpaRepository<AccWatchlist, AccW
 
     /*TODO choose fields and create dto for it
 
-    */
+     */
     @Query("""
-            select new cz.kocabek.animerecomedationsystem.user.dto.AccWatchlistShowDto(a.id.animeId,a.anime.name,a.anime.englishName,a.anime.score,a.anime.imageURL)
+            select new cz.kocabek.animerecomedationsystem.account.dto.AccWatchlistShowDto(a.id.animeId,a.anime.name,a.anime.englishName,a.anime.score,a.anime.imageURL)
                         from AccWatchlist a
                         where a.id.accId =:accId
                         and a.inWatchlist=true

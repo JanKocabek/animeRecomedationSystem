@@ -1,4 +1,4 @@
-package cz.kocabek.animerecomedationsystem.user.entity;
+package cz.kocabek.animerecomedationsystem.account.entity;
 
 import cz.kocabek.animerecomedationsystem.recommendation.entity.Anime;
 import jakarta.persistence.Column;
@@ -10,11 +10,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "acc_watchlist", schema = "mydatabase")
 public class AccWatchlist {
@@ -41,7 +39,7 @@ public class AccWatchlist {
     }
 
     public static AccWatchlist create(AppAccount acc, Anime anime) {
-        AccWatchlist watchlist = new AccWatchlist(acc.getId(),anime.getId());
+        AccWatchlist watchlist = new AccWatchlist(acc.getId(), anime.getId());
         watchlist.setAcc(acc);
         watchlist.setAnime(anime);
         return watchlist;
