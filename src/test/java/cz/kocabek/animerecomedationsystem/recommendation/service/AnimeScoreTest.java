@@ -19,7 +19,7 @@ class AnimeScoreTest {
         var normRating = anime.getAverageRating() / 10;
         var expected = normOccurrences * ConfigConstant.OCCURRENCE_WEIGHT + normRating * ConfigConstant.SCORE_WEIGHT;
         //act
-        var result = AnimeScore.compositeScoring.applyAsDouble(anime);
+        var result = AnimeScoreCalculator.compositeScoring.applyAsDouble(anime);
         //assert
         assertEquals(expected, result);
     }
@@ -31,7 +31,7 @@ class AnimeScoreTest {
         anime.calculateAverageRating();
         anime.setPercentageOccurrences(100);
         //act
-        var result = AnimeScore.compositeScoring.applyAsDouble(anime);
+        var result = AnimeScoreCalculator.compositeScoring.applyAsDouble(anime);
         //assert
         assertThat(result).isEqualTo(1);
     }
