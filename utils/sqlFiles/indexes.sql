@@ -14,3 +14,5 @@ CREATE INDEX idx_users_anime_score_user_anime ON users_anime_score (user_id, ani
 CREATE INDEX idx_users_anime_score_user_rating ON users_anime_score (user_id, rating DESC);
 #index for slowest and main query
 CREATE INDEX idx_optimized_user_rating_fetch ON users_anime_score (user_id, rating DESC, anime_id);
+
+CREATE INDEX idx_anime_genres_anime_id ON anime_genres(anime_id);
