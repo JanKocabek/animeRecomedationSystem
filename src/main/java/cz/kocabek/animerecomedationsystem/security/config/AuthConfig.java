@@ -23,7 +23,7 @@ public class AuthConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/", "/main", "/submit", "/result", "/result/submit", "/register", "/assets/**", "/error")
+                        .requestMatchers("/", "/main", "/submit", "/result", "/result/submit", "/register", "/assets/**", "/error","/actuator/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
@@ -35,7 +35,6 @@ public class AuthConfig {
                         .successHandler(successHandler))
                 .logout(LogoutConfigurer::permitAll).build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

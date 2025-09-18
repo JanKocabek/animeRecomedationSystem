@@ -34,3 +34,8 @@ logging:
     cz:
       kocabek:
         animerecomedationsystem: debug
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
