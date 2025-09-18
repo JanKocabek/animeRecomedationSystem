@@ -1,13 +1,14 @@
 package cz.kocabek.animerecomedationsystem.recommendation.service.db;
 
-import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeGenreInfo;
-import cz.kocabek.animerecomedationsystem.recommendation.repository.AnimeGenreRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeGenreInfo;
+import cz.kocabek.animerecomedationsystem.recommendation.repository.AnimeGenreRepository;
 
 @Service
 public class AnimeGenreService {
@@ -24,8 +25,7 @@ public class AnimeGenreService {
     }
 
     public List<String> getGenresForAnime(Long animeId) {
-        final var genres = repository.getAnimeGenresByAnimeId(animeId);
-        return genres.stream().map(info -> info.getGenre().getGenreName()).toList();
+        return repository.getAnimeGenresByAnimeId(animeId);
     }
 
     private Map<Long, List<String>> groupGenrePerAnime(List<AnimeGenreInfo> genreInfos) {
