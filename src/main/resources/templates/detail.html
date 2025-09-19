@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{fragments/core :: head(~{::title},_)}">
-    <title>detail</title>
+    <title th:text="${detail.getEnglishName()} + ' Detail' ">Anime Detail</title>
 </head>
 
 <body class="bg-light d-flex flex-column min-vh-100">
