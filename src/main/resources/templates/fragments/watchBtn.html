@@ -1,4 +1,4 @@
-<div th:fragment="watchBtnNew (animeId)" id="'watchlist-button-' + ${animeId}" hx-include="this">
+<div th:fragment="watchBtnNew (animeId)" th:id="'watchlist-button-' + ${animeId}" hx-include="this">
     <input type="hidden" name="animeId" th:value="${animeId}">
     <button type="button" hx-post="/add_watch" hx-swap="outerHTML" class="btn btn-info btn-sm rounded-pill">
         <i class="ti ti-plus fs-6 me-1"></i>
@@ -6,14 +6,14 @@
     </button>
 </div> <!--fragment of button for new add to watchlist-->
 
-<div th:fragment="watchBtnRemove (animeId)" id="'watchlist-button-' + ${animeId}" hx-include="this">
+<div th:fragment="watchBtnRemove (animeId)" th:id="'watchlist-button-' + ${animeId}" hx-include="this">
     <input type="hidden" name="animeId" th:value="${animeId}">
     <button type="button" hx-patch="/remove_watch" hx-swap="outerHTML" class="btn btn-success btn-sm rounded-pill">
         <i class="ti ti-heart-off fs-6 me-1"></i><span>Remove from Watchlist</span>
     </button>
 </div> <!--fragment of button for remove from watchlist-->
 
-<div th:fragment="watchBtnReAdd(animeId)" id="'watchlist-button-' + ${animeId}" hx-include="this">
+<div th:fragment="watchBtnReAdd(animeId)" th:id="'watchlist-button-' + ${animeId}" hx-include="this">
     <input type="hidden" name="animeId" th:value="${animeId}">
     <button type="button" hx-patch="/readd_watch" hx-swap="outerHTML" class="btn btn-info btn-sm rounded-pill">
         <i class="ti ti-plus fs-6 me-1"></i>
