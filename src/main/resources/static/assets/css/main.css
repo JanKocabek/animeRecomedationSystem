@@ -47,7 +47,8 @@
     color: #fff;
     font-weight: bold;
     font-size: 0.85rem;
-    min-height: 20px; /* ensures text fits even for tiny values */
+    min-height: 20px;
+    /* ensures text fits even for tiny values */
 }
 
 .table thead th {
@@ -70,11 +71,13 @@
 
 .nav-icon {
     font-size: 1.5rem;
-    vertical-align: middle; /* keeps it aligned nicely with text */
+    vertical-align: middle;
+    /* keeps it aligned nicely with text */
 }
 
 /* Remove Material Kit arrow on dropdowns */
 @media (min-width: 992px) {
+
     .dropdown .dropdown-toggle:after,
     .dropend .dropdown-toggle:after,
     .dropstart .dropdown-toggle:after,
@@ -84,8 +87,11 @@
     }
 }
 
-
-
-
-
-
+.header-bg {
+        background-image: url('../image/ian-valerio-road-header-unsplash.jpg');
+        background-size: cover;
+        background-position: center;
+        filter: brightness(1);
+        /* Adjust brightness to make text pop */
+        z-index: 1;
+    }
