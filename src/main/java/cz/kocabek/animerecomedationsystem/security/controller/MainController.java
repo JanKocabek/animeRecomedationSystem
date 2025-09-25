@@ -61,12 +61,15 @@ public class MainController {
     }
 
     @PostMapping("/changePassword")
-    public String changePassword(@Valid @ModelAttribute("passwordForm") SettingDTO form, BindingResult result) {
+    public String changePassword(@Valid @ModelAttribute("passwordForm") SettingDTO settingForm, BindingResult result) {
         if (result.hasErrors()) {
             return "settings";
         }
-        final var check = passwordService.checkPassword(form);
-        LOGGER.debug("the check was  {}", check);
+        if (!passwordService.checkPassword(settingForm)) {
+            result.rejectValue("oldPass", "error.nonMatchingPassword", "your Current Password don't match. Try again");
+            return "settings";
+        }
+        passwordService.changePassword(settingForm);
         return "redirect:/main";
     }
 
