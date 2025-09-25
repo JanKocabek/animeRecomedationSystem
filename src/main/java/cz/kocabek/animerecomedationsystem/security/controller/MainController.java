@@ -1,9 +1,5 @@
 package cz.kocabek.animerecomedationsystem.security.controller;
 
-
-import cz.kocabek.animerecomedationsystem.security.dto.RegistrationDTO;
-import cz.kocabek.animerecomedationsystem.security.service.RegistrationService;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
