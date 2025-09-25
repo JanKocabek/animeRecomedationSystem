@@ -88,10 +88,14 @@
 }
 
 .header-bg {
-        background-image: url('../image/ian-valerio-road-header-unsplash.jpg');
-        background-size: cover;
-        background-position: center;
-        filter: brightness(1);
-        /* Adjust brightness to make text pop */
-        z-index: 1;
-    }
+    background-image: url('../image/ian-valerio-road-header-unsplash.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(1);
+    /* Adjust brightness to make text pop */
+    z-index: 1;
+}
+
+#main-page {
+    background-image: url('../image/ian-valerio-road-header-unsplash.jpg');
+}

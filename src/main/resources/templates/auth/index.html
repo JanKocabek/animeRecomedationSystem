@@ -23,13 +23,12 @@
     <!-- Header Transparent -->
     <header th:replace="~{auth/fragment/header :: header}"></header>
     <!-- End Header -->
-    <div class="page-header align-items-start min-vh-100"
-        th:style="|background-image: url('@{/assets/image/ian-valerio-road-header-unsplash.jpg}')|">
+    <div id="main-page" class="page-header align-items-start min-vh-100">
         <div class="container my-auto">
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-md-10 col-sm-8 mb-2">
                     <div class="alert alert-success" role="alert" th:if="${successMessage}"
-                        th:utext="'<strong>Great! </strong>' + ${successMessage}">
+                        th:utext=" '<strong> Great! </strong>' + ${successMessage}">
                     </div>
                 </div>
             </div>
@@ -42,7 +41,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form role="form" class="text-start" method="post" th:action="@{/login}">
+                            <form class="text-start" method="post" th:action="@{/login}">
                                 <input type="hidden" sec:csrf="true" />
                                 <div class="input-group input-group-outline my-3">
                                     <label class="form-label" for="username">User Name</label>
@@ -82,8 +81,9 @@
                     </div>
                 </div>
             </div>
-        </div><!--footer-->
+        </div>
     </div>
+    <!--footer-->
     <footer th:replace="~{auth/fragment/footer :: footer}"></footer>
     <!--   Core JS Files   -->
     <th:block th:insert="~{fragments/core :: btScriptInclude}"></th:block>
