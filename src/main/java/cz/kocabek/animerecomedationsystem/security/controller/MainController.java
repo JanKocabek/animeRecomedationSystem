@@ -19,10 +19,11 @@ import jakarta.validation.Valid;
 public class MainController {
 
     private final PasswordService passwordService;
+    private final RegistrationService registration;
 
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(MainController.class);
     private static final String REG_ENDPOINT = "auth/registration";
-    RegistrationService registration;
+    private static final String SETTING_ENDPOINT = "settings";
 
     public MainController(RegistrationService registration, PasswordService passwordService) {
         this.registration = registration;
@@ -57,17 +58,17 @@ public class MainController {
     @GetMapping("/setting")
     public String getSettingPage(Model model) {
         model.addAttribute("passwordForm", new SettingDTO());
-        return "settings";
+        return SETTING_ENDPOINT;
     }
 
     @PostMapping("/changePassword")
     public String changePassword(@Valid @ModelAttribute("passwordForm") SettingDTO settingForm, BindingResult result) {
         if (result.hasErrors()) {
-            return "settings";
+            return SETTING_ENDPOINT;
         }
         if (!passwordService.checkPassword(settingForm)) {
             result.rejectValue("oldPass", "error.nonMatchingPassword", "your Current Password don't match. Try again");
-            return "settings";
+            return SETTING_ENDPOINT;
         }
         passwordService.changePassword(settingForm);
         return "redirect:/main";
