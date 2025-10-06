@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/core :: head(~{::title},_)}">
+    <title>Account Settings</title>
+</head>
+
+<body>
+    <div id="main-page" class="page-header align-items-start min-vh-100">
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4">
+                            <h2 class="text-center mb-4">Account Settings</h2>
+                            <!-- Change Password Form -->
+                            <form class="text-start" th:action="@{/changePassword}" method="post"
+                                th:object="${passwordForm}">
+                                <input type="hidden" sec:csrf="true" />
+                                <div class=" input-group input-group-outline mb-3">
+                                    <label for="oldPass" class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="oldPass" th:field="*{oldPass}">
+                                </div>
+                                <div class=" input-group input-group-outline mb-3">
+                                    <label for="newPass" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="newPass" th:field="*{newPass}">
+                                </div>
+                                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger text-center">
+                                    <span th:errors="*">Password change failed. Please check your inputs.</span>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary w-100">Change Password</button>
+                                </div>
+                            </form>
+                            <!-- Delete Account Button and Modal -->
+                            <hr class="my-4">
+                            <div class="text-center">
+                                <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal"
+                                    data-bs-target="#deleteAccountModal">
+                                    Delete Account
+                                </button>
+                            </div>
+                            <!-- Back Link -->
+<div class="text-center mt-3">
+    <a th:href="@{/main}" class="text-primary">Back to Dashboard</a>
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Confirmation Modal -->
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteAccountModalLabel">Confirm Account Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete your account? This action cannot be undone.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form th:action="@{/account/delete}" method="post">
+                        <button type="submit" class="btn btn-danger">Delete Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="~{auth/fragment/footer :: footer}"></footer>
+    <!--   Core JS Files   -->
+    <th:block th:insert="~{fragments/core :: btScriptInclude}"></th:block>
+</body>
+
+</html>
