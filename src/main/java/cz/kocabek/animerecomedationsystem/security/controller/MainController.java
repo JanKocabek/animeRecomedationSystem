@@ -62,7 +62,7 @@ public class MainController {
     }
 
     @PostMapping("/changePassword")
-    public String changePassword(@Valid @ModelAttribute("passwordForm") SettingDTO settingForm, BindingResult result) {
+    public String changePassword(@Valid @ModelAttribute("passwordForm") SettingDTO settingForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return SETTING_ENDPOINT;
         }
@@ -71,6 +71,7 @@ public class MainController {
             return SETTING_ENDPOINT;
         }
         passwordService.changePassword(settingForm);
+        redirectAttributes.addFlashAttribute("successMessage", "Your password was changed successfully.");
         return "redirect:/main";
     }
 
