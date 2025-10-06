@@ -21,8 +21,8 @@ import cz.kocabek.animerecomedationsystem.account.service.AccService;
 import cz.kocabek.animerecomedationsystem.account.service.WatchListService;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.InputDTO;
 import cz.kocabek.animerecomedationsystem.recommendation.service.DTOResultBuilder;
-import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationService;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
+import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationService;
 import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
@@ -31,6 +31,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Controller
 public class ViewController {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewController.class);
     AccService accService;
     RecommendationService recommendationService;
@@ -52,8 +53,9 @@ public class ViewController {
     @PostMapping("/submit")
     public String postHomePage(@Valid @ModelAttribute(INPUT_ATR_NAME) InputDTO form, BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors())
+        if (bindingResult.hasErrors()) {
             return "main";
+        }
         try {
             Long id = processForm(form);
             redirectAttributes.addAttribute("id", id);
@@ -95,7 +97,7 @@ public class ViewController {
             Long id = processForm(form);
             redirectAttributes.addAttribute("id", id);
             return "redirect:/result";
-        } catch (Exception e) {
+        } catch (ValidationException e) {
             bindingResult.rejectValue("animeName", "error.detail", e.getMessage());
             model.addAttribute("recommendations", previousAnime);
             return "result";
@@ -144,8 +146,9 @@ public class ViewController {
     }
 
     private void checkAnimeId(Long id) throws ValidationException {
-        if (config.getAnimeId() != null && config.getAnimeId().equals(id))
+        if (config.getAnimeId() != null && config.getAnimeId().equals(id)) {
             return;
+        }
         final var name = animeService.getAnimeNameById(id);
         config.setAnimeName(name);
         config.setAnimeId(id);

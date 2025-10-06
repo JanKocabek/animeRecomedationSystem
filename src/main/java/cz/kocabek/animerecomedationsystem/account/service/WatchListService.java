@@ -9,18 +9,15 @@ import cz.kocabek.animerecomedationsystem.account.UserSessionData;
 import cz.kocabek.animerecomedationsystem.account.dto.AccWatchlistDto;
 import cz.kocabek.animerecomedationsystem.account.repository.AccWatchlistRepository;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.RecommendationDTO;
-import jakarta.persistence.EntityManager;
 
 @Service
 public class WatchListService {
 
     AccWatchlistRepository accWatchlistRepository;
-    EntityManager entityManager;
     UserSessionData userSessionData;
 
-    public WatchListService(AccWatchlistRepository accWatchlistRepository, EntityManager entityManager, UserSessionData userSessionData) {
+    public WatchListService(AccWatchlistRepository accWatchlistRepository, UserSessionData userSessionData) {
         this.accWatchlistRepository = accWatchlistRepository;
-        this.entityManager = entityManager;
         this.userSessionData = userSessionData;
     }
 
@@ -33,7 +30,9 @@ public class WatchListService {
         final var watchlist = getUserWatchListMap(userSessionData.getUserId());
         dto.getRecommendedAnime().forEach(anime -> {
             final var entry = watchlist.get(anime.getAnimeId());
-            if (entry != null) anime.setInWatchList(entry.inWatchlist());
+            if (entry != null) {
+                anime.setInWatchList(entry.inWatchlist());
+            }
         });
     }
 
