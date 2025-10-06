@@ -28,7 +28,10 @@ public class PasswordService {
         final var newHash = passwordEncoder.encode(setting.newPass());
         final var rows = appAccRepository.updatePassword(userSessionData.getUserId(), newHash);
         if (rows != 1) {
-            throw new NoTransactionException("");
+            throw new NoTransactionException(
+                "Failed to update password for userId: " + userSessionData.getUserId() +
+                ". Expected 1 row to be updated, but got: " + rows
+            );
         }
     }
 }
