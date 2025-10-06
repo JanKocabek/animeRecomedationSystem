@@ -72,7 +72,7 @@ public class MainController {
         }
         passwordService.changePassword(settingForm);
         redirectAttributes.addFlashAttribute("successMessage", "Your password was changed successfully.");
-        return "redirect:/main";
+        return "redirect:/";
     }
 
 }
