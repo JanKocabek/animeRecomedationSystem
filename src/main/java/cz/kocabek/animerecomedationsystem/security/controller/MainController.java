@@ -55,7 +55,7 @@ public class MainController {
         return "redirect:/";
     }
 
-    @GetMapping("/setting")
+    @GetMapping("/settings")
     public String getSettingPage(Model model) {
         model.addAttribute("passwordForm", new SettingDTO());
         return SETTING_ENDPOINT;
