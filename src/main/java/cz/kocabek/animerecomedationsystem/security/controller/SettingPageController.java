@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Controller
-@RequestMapping("/setting")
+@RequestMapping("/settings")
 public class SettingPageController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingPageController.class);
