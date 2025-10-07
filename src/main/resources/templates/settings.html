@@ -14,7 +14,7 @@
                         <div class="card-body p-4">
                             <h2 class="text-center mb-4">Account Settings</h2>
                             <!-- Change Password Form -->
-                            <form class="text-start" th:action="@{settings/changePassword}" method="post"
+                            <form class="text-start" th:action="@{${changePasswordPoint}}" method="post"
                                 th:object="${passwordForm}">
                                 <input type="hidden" sec:csrf="true" />
                                 <div class=" input-group input-group-outline mb-3">
@@ -42,7 +42,7 @@
                             </div>
                             <!-- Back Link -->
                             <div class="text-center mt-3">
-                                <a th:href="@{/main}" class="text-primary">Back to Dashboard</a>
+                                <a th:href="@{${mainPoint}}" class="text-primary">Back to Dashboard</a>
                             </div>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <form th:action="@{/settings/delete}" method="post">
+                    <form th:action="@{${deleteAccountPoint}}" method="post">
                         <button type="submit" class="btn btn-danger">Delete Account</button>
                     </form>
                 </div>
