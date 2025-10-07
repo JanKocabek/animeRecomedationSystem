@@ -10,23 +10,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cz.kocabek.animerecomedationsystem.security.dto.RegistrationDTO;
-import cz.kocabek.animerecomedationsystem.security.service.PasswordService;
 import cz.kocabek.animerecomedationsystem.security.service.RegistrationService;
 import jakarta.validation.Valid;
 
 @Controller
 public class MainController {
 
-    private final PasswordService passwordService;
     private final RegistrationService registration;
 
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(MainController.class);
     private static final String REG_ENDPOINT = "auth/registration";
-    private static final String SETTING_ENDPOINT = "settings";
 
-    public MainController(RegistrationService registration, PasswordService passwordService) {
+    public MainController(RegistrationService registration) {
         this.registration = registration;
-        this.passwordService = passwordService;
     }
 
     @GetMapping("/")
