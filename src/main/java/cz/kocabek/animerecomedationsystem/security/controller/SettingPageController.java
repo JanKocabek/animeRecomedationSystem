@@ -62,8 +62,8 @@ public class SettingPageController {
             registration.deleteCurrentUser();
             request.getSession().invalidate();
             return "redirect:/logout";
-        } catch (Exception e) {
-            LOGGER.error("Error deleting user account: {}", e.getMessage());
+        } catch (IllegalStateException e) {
+            LOGGER.error("Error deleting user account: {}", e.getMessage(), e);
             model.addAttribute("errorMessage", "Account deletion failed. Please try again.");
             return SETTING_ENDPOINT;
         }
