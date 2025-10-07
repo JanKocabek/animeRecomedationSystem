@@ -14,14 +14,14 @@ import cz.kocabek.animerecomedationsystem.security.service.RegistrationService;
 import jakarta.validation.Valid;
 
 @Controller
-public class MainController {
+public class AuthenticationController {
 
     private final RegistrationService registration;
 
-    private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(MainController.class);
+    private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(AuthenticationController.class);
     private static final String REG_ENDPOINT = "auth/registration";
 
-    public MainController(RegistrationService registration) {
+    public AuthenticationController(RegistrationService registration) {
         this.registration = registration;
     }
 
