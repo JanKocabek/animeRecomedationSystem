@@ -55,13 +55,13 @@ public class MainController {
         return "redirect:/";
     }
 
-    @GetMapping("/settings")
+    @GetMapping("/" + SETTING_ENDPOINT)
     public String getSettingPage(Model model) {
         model.addAttribute("passwordForm", new SettingDTO());
         return SETTING_ENDPOINT;
     }
 
-    @PostMapping("/changePassword")
+    @PostMapping("/" + SETTING_ENDPOINT + "/changePassword")
     public String changePassword(@Valid @ModelAttribute("passwordForm") SettingDTO settingForm, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return SETTING_ENDPOINT;
@@ -73,6 +73,12 @@ public class MainController {
         passwordService.changePassword(settingForm);
         redirectAttributes.addFlashAttribute("successMessage", "Your password was changed successfully.");
         return "redirect:/";
+    }
+
+    @PostMapping("/" + SETTING_ENDPOINT + "/delete")
+    public String deleteAccount() {
+        registration.deleteCurrentUser();
+        return "redirect:/logout";
     }
 
 }
