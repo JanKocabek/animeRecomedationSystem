@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{fragments/core :: head(~{::title},_)}">
+<head th:replace="~{fragments/core :: head(~{::title},~{fragments/core::csrfTokens})}">
     <title>Account Settings</title>
 </head>
 
@@ -19,14 +19,17 @@
                                 <input type="hidden" sec:csrf="true" />
                                 <div class=" input-group input-group-outline mb-3">
                                     <label for="oldPass" class="form-label">Current Password</label>
-                                    <input type="password" class="form-control" id="oldPass" th:field="*{oldPass}">
+                                    <input type="password" class="form-control" th:field="*{oldPass}">
+                                </div>
+                                <div th:if="${#fields.hasErrors('oldPass')}" class="alert alert-danger text-center">
+                                    <span th:errors="*{oldPass}"></span>
                                 </div>
                                 <div class=" input-group input-group-outline mb-3">
                                     <label for="newPass" class="form-label">New Password</label>
-                                    <input type="password" class="form-control" id="newPass" th:field="*{newPass}">
+                                    <input type="password" class="form-control" th:field="*{newPass}">
                                 </div>
-                                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger text-center">
-                                    <span th:errors="*">Password change failed. Please check your inputs.</span>
+                                <div th:if="${#fields.hasErrors('newPass')}" class="alert alert-danger text-center">
+                                    <span th:errors="*{newPass}"></span>
                                 </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary w-100">Change Password</button>
@@ -56,8 +59,8 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form th:action="@{${deleteAccountPoint}}" th:hx-post="@{${deleteAccountPoint}}" method="post"
-                    hx-target="#error" hx-swap="outerHTML" th:object="${deletingCheck}">
+                <form th:hx-post="@{${deleteAccountPoint}}" method="post" hx-target="#error" hx-swap="outerHTML"
+                    th:object="${deletingCheck}">
                     <div class="modal-header">
                         <h5 class="modal-title" id="deleteAccountModalLabel">Confirm Account Deletion</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -85,6 +88,15 @@
     <!--   Core JS Files   -->
     <th:block th:insert="~{fragments/core :: coreScripts}"></th:block>
     <th:block th:insert="~{fragments/htmxFragment}"></th:block>
+    <script>
+        document.getElementById('deleteAccountModal').addEventListener('hidden.bs.modal', () => {
+            const errorBox = document.getElementById('error');
+            if (errorBox) {
+                errorBox.innerHTML = ''; // Clear the error content
+                errorBox.className='';
+            }
+        });
+    </script>
 </body>
 
 </html>
