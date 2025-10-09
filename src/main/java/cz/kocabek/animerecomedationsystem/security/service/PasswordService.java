@@ -18,9 +18,9 @@ public class PasswordService {
     private final UserSessionData userSessionData;
     private final PasswordEncoder passwordEncoder;
 
-    public boolean checkPassword(SettingDTO setting) {
+    public boolean checkPassword(String password) {
         final var oldPass = appAccRepository.findAccountPasswordById(userSessionData.getUserId());
-        return passwordEncoder.matches(setting.oldPass(), oldPass);
+        return passwordEncoder.matches(password, oldPass);
     }
 
     @Transactional

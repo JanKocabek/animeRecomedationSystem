@@ -1,7 +1,7 @@
 <head th:fragment="head (title, meta)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <th:block th:replace="${meta}"/>
+    <th:block th:replace="${meta}" />
     <title th:replace="${title}">Anime Recommendation system</title>
     <!-- Theme CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -20,7 +20,15 @@
 </th:block>
 
 <th:block th:fragment="btScriptInclude">
+    <th:block th:insert="~{fragments/core :: searchUI}"></th:block>
+    <th:block th:insert="~{fragments/core :: coreScripts}"></th:block>
+</th:block>
+
+<th:block th:fragment="searchUI">
     <script th:src="@{/assets/js/formUI.js}"></script>
+</th:block>
+
+<th:block th:fragment="coreScripts">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

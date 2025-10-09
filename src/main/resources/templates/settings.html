@@ -56,25 +56,35 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteAccountModalLabel">Confirm Account Deletion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete your account? This action cannot be undone.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <form th:action="@{${deleteAccountPoint}}" method="post">
+                <form th:action="@{${deleteAccountPoint}}" th:hx-post="@{${deleteAccountPoint}}" method="post"
+                    hx-target="#error" hx-swap="outerHTML" th:object="${deletingCheck}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteAccountModalLabel">Confirm Account Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete your account? This action cannot be undone.
+                        <div class="input-group input-group-outline mb-3">
+                            <label for="password" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" th:field="*{password}">
+                        </div>
+                        <div id="error">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-danger">Delete Account</button>
-                    </form>
-                </div>
+
+                    </div>
+                </form>
             </div>
         </div>
     </div>
     <footer th:replace="~{auth/fragment/footer :: footer}"></footer>
     <!--   Core JS Files   -->
-    <th:block th:insert="~{fragments/core :: btScriptInclude}"></th:block>
+    <th:block th:insert="~{fragments/core :: coreScripts}"></th:block>
+    <th:block th:insert="~{fragments/htmxFragment}"></th:block>
 </body>
 
 </html>
