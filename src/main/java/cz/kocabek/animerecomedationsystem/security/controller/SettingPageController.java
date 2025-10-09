@@ -25,31 +25,41 @@ import lombok.AllArgsConstructor;
 public class SettingPageController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingPageController.class);
+    private static final String SETTING_FORM_ATTR = "passwordForm";
+    private static final String ERROR_DIV = "fragments/errorDiv";
+
     private static final String SETTING_PAGE = "settings";
     private static final String SETTING_ENDPOINT = "/settings";
     private static final String INDEX_ENDPOINT = "/";
     private static final String CHANGEPASS_ENDPOINT = "/changePassword";
     private static final String DELETEACC_ENDPOINT = "/delete";
     private static final String MAIN_ENDPOINT = "/main";
+
     private final PasswordService passwordService;
     private final RegistrationService registration;
 
-    @GetMapping
-    public String getSettingPage(Model model) {
-        model.addAttribute("passwordForm", new SettingDTO());
-        model.addAttribute("deletingCheck", new DeletingCheckDTO());
+    @SuppressWarnings("unused")/*its run by springboot automaticly before each request*/
+    @ModelAttribute
+    private void initializeSettingModel(Model model) {
+        if (!model.containsAttribute(SETTING_FORM_ATTR)) {
+            model.addAttribute(SETTING_FORM_ATTR, new SettingDTO());
+        }
+        if (!model.containsAttribute("deletingCheck")) {
+            model.addAttribute("deletingCheck", new DeletingCheckDTO());
+        }
         model.addAttribute("changePasswordPoint", SETTING_ENDPOINT + CHANGEPASS_ENDPOINT);
         model.addAttribute("deleteAccountPoint", SETTING_ENDPOINT + DELETEACC_ENDPOINT);
         model.addAttribute("mainPoint", MAIN_ENDPOINT);
+    }
+
+    @GetMapping
+    public String getSettingPage(Model model) {
+        model.addAttribute(SETTING_FORM_ATTR, new SettingDTO());
         return SETTING_PAGE;
     }
 
     @PostMapping(CHANGEPASS_ENDPOINT)
-    public String changePassword(@Valid @ModelAttribute("passwordForm") SettingDTO settingForm, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-        model.addAttribute("deletingCheck", new DeletingCheckDTO());
-        model.addAttribute("changePasswordPoint", SETTING_ENDPOINT + CHANGEPASS_ENDPOINT);
-        model.addAttribute("deleteAccountPoint", SETTING_ENDPOINT + DELETEACC_ENDPOINT);
-        model.addAttribute("mainPoint", MAIN_ENDPOINT);
+    public String changePassword(@Valid @ModelAttribute(SETTING_FORM_ATTR) SettingDTO settingForm, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return SETTING_PAGE;
         }
@@ -62,14 +72,15 @@ public class SettingPageController {
         return "redirect:" + INDEX_ENDPOINT;
     }
 
+    /*HTMX method for returning just the error div into page or deleting account and redirecting to the login page */
     @PostMapping(DELETEACC_ENDPOINT)
     public String checkPassword(@Valid @ModelAttribute("deletingCheck") DeletingCheckDTO deletingCheckDTO, BindingResult result, HttpServletRequest request, Model model) {
         if (result.hasErrors()) {
-            return "fragments/errorDiv";
+            return ERROR_DIV;
         }
         if (!passwordService.checkPassword(deletingCheckDTO.password())) {
             result.rejectValue("password", "error.nonMatchingPassword", "you put the wrong password.");
-            return "fragments/errorDiv";
+            return ERROR_DIV;
         }
         try {
             registration.deleteCurrentUser();
@@ -81,4 +92,5 @@ public class SettingPageController {
             return SETTING_PAGE;
         }
     }
+
 }
