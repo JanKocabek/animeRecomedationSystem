@@ -76,7 +76,7 @@ public class SettingPageController {
         return "redirect:" + INDEX_ENDPOINT;
     }
 
-    /*HTMX method for returning just the error div into page or deleting account and redirecting to the login page */
+    /*HTMX method for returning just the error div into page or deleting account and HTMX redirecting to the login page */
     @PostMapping(DELETEACC_ENDPOINT)
     public String deleteAccount(@Valid @ModelAttribute(DELETING_CHECK_ATTR) DeletingCheckDTO deletingCheckDTO, BindingResult result,  Model model,HttpServletRequest request, HttpServletResponse response) {
         if (result.hasErrors()) {
