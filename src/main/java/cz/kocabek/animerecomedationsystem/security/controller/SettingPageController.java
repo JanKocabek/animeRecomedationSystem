@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import cz.kocabek.animerecomedationsystem.security.dto.DeletingCheckDTO;
 import cz.kocabek.animerecomedationsystem.security.dto.SettingDTO;
 import cz.kocabek.animerecomedationsystem.security.service.PasswordService;
 import cz.kocabek.animerecomedationsystem.security.service.RegistrationService;
@@ -29,6 +30,7 @@ public class SettingPageController {
     private static final String CHANGEPASS_ENDPOINT = "/changePassword";
     private static final String DELETEACC_ENDPOINT = "/delete";
     private static final String MAIN_ENDPOINT = "/main";
+    private static final String CHECKPASS_ENDPOINT = "/checkPassword";
 
     private final PasswordService passwordService;
     private final RegistrationService registration;
@@ -36,6 +38,7 @@ public class SettingPageController {
     @GetMapping
     public String getSettingPage(Model model) {
         model.addAttribute("passwordForm", new SettingDTO());
+        model.addAttribute("deletingCheck", new DeletingCheckDTO());
         model.addAttribute("changePasswordPoint", "/" + SETTING_ENDPOINT + CHANGEPASS_ENDPOINT);
         model.addAttribute("deleteAccountPoint", "/" + SETTING_ENDPOINT + DELETEACC_ENDPOINT);
         model.addAttribute("mainPoint", MAIN_ENDPOINT);
@@ -43,11 +46,15 @@ public class SettingPageController {
     }
 
     @PostMapping(CHANGEPASS_ENDPOINT)
-    public String changePassword(@Valid @ModelAttribute("passwordForm") SettingDTO settingForm, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String changePassword(@Valid @ModelAttribute("passwordForm") SettingDTO settingForm, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+        model.addAttribute("deletingCheck", new DeletingCheckDTO());
+        model.addAttribute("changePasswordPoint", "/" + SETTING_ENDPOINT + CHANGEPASS_ENDPOINT);
+        model.addAttribute("deleteAccountPoint", "/" + SETTING_ENDPOINT + DELETEACC_ENDPOINT);
+        model.addAttribute("mainPoint", MAIN_ENDPOINT);
         if (result.hasErrors()) {
             return SETTING_ENDPOINT;
         }
-        if (!passwordService.checkPassword(settingForm)) {
+        if (!passwordService.checkPassword(settingForm.oldPass())) {
             result.rejectValue("oldPass", "error.nonMatchingPassword", "your Current Password don't match. Try again");
             return SETTING_ENDPOINT;
         }
@@ -57,7 +64,14 @@ public class SettingPageController {
     }
 
     @PostMapping(DELETEACC_ENDPOINT)
-    public String deleteAccount(HttpServletRequest request, Model model) {
+    public String checkPassword(@Valid @ModelAttribute("deletingCheck") DeletingCheckDTO deletingCheckDTO, BindingResult result, HttpServletRequest request, Model model) {
+        if (result.hasErrors()) {
+            return "fragments/errorDiv";
+        }
+        if (!passwordService.checkPassword(deletingCheckDTO.password())) {
+            result.rejectValue("password", "error.nonMatchingPassword", "you put the wrong password.");
+            return "fragments/errorDiv";
+        }
         try {
             registration.deleteCurrentUser();
             request.getSession().invalidate();
