@@ -1,3 +1,5 @@
-<div th:object="${deletingCheck}" class="alert alert-danger text-center">
+<div id="error" 
+ th:object="${deletingCheck}"
+ class="alert alert-danger text-center">
     <span th:errors="*{password}"></span>
 </div>

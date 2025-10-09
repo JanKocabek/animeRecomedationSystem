@@ -16,6 +16,7 @@ import cz.kocabek.animerecomedationsystem.security.dto.SettingDTO;
 import cz.kocabek.animerecomedationsystem.security.service.PasswordService;
 import cz.kocabek.animerecomedationsystem.security.service.RegistrationService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -39,8 +40,8 @@ public class SettingPageController {
     private final PasswordService passwordService;
     private final RegistrationService registration;
 
-    @SuppressWarnings("unused")/*its run by springboot automatically before each request*/
-    @ModelAttribute
+    /*   @SuppressWarnings("unused")/*its run by springboot automatically before each request
+    @ModelAttribute     */
     private void initializeSettingModel(Model model) {
         if (!model.containsAttribute(SETTING_FORM_ATTR)) {
             model.addAttribute(SETTING_FORM_ATTR, new SettingDTO());
@@ -55,16 +56,19 @@ public class SettingPageController {
 
     @GetMapping
     public String getSettingPage(Model model) {
+        initializeSettingModel(model);
         return SETTING_PAGE;
     }
 
     @PostMapping(CHANGEPASS_ENDPOINT)
     public String changePassword(@Valid @ModelAttribute(SETTING_FORM_ATTR) SettingDTO settingForm, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
+            model.addAttribute(DELETING_CHECK_ATTR, new DeletingCheckDTO());
             return SETTING_PAGE;
         }
         if (!passwordService.checkPassword(settingForm.oldPass())) {
             result.rejectValue("oldPass", "error.nonMatchingPassword", "your Current Password don't match. Try again");
+            model.addAttribute(DELETING_CHECK_ATTR, new DeletingCheckDTO());
             return SETTING_PAGE;
         }
         passwordService.changePassword(settingForm);
@@ -72,9 +76,9 @@ public class SettingPageController {
         return "redirect:" + INDEX_ENDPOINT;
     }
 
-    /*HTMX method for returning just the error div into page or deleting account and redirecting to the login page */
+    /*HTMX method for returning just the error div into page or deleting account and HTMX redirecting to the login page */
     @PostMapping(DELETEACC_ENDPOINT)
-    public String checkPassword(@Valid @ModelAttribute(DELETING_CHECK_ATTR) DeletingCheckDTO deletingCheckDTO, BindingResult result, HttpServletRequest request, Model model) {
+    public String deleteAccount(@Valid @ModelAttribute(DELETING_CHECK_ATTR) DeletingCheckDTO deletingCheckDTO, BindingResult result,  Model model,HttpServletRequest request, HttpServletResponse response) {
         if (result.hasErrors()) {
             return ERROR_DIV;
         }
@@ -85,10 +89,13 @@ public class SettingPageController {
         try {
             registration.deleteCurrentUser();
             request.getSession().invalidate();
-            return "redirect:/logout";
+            response.setHeader("HX-Redirect", INDEX_ENDPOINT);
+            model.addAttribute("successMessage", "Your account was deleted successfully.");
+            return "";
         } catch (IllegalStateException e) {
             LOGGER.error("Error deleting user account: {}", e.getMessage(), e);
             model.addAttribute("errorMessage", "Account deletion failed. Please try again.");
+            initializeSettingModel(model);
             return SETTING_PAGE;
         }
     }

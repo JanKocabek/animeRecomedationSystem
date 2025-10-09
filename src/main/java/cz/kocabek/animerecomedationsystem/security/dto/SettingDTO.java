@@ -4,7 +4,7 @@ import cz.kocabek.animerecomedationsystem.security.validation.Password;
 import jakarta.validation.constraints.NotBlank;
 
 public record SettingDTO(
-        @NotBlank
+        @NotBlank(message = "Old password must not be empty")
         String oldPass,
         @Password
         String newPass
