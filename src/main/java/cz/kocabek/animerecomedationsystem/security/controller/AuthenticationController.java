@@ -10,24 +10,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cz.kocabek.animerecomedationsystem.security.dto.RegistrationDTO;
-import cz.kocabek.animerecomedationsystem.security.dto.SettingDTO;
-import cz.kocabek.animerecomedationsystem.security.service.PasswordService;
 import cz.kocabek.animerecomedationsystem.security.service.RegistrationService;
 import jakarta.validation.Valid;
 
 @Controller
-public class MainController {
+public class AuthenticationController {
 
-    private final PasswordService passwordService;
     private final RegistrationService registration;
 
-    private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(MainController.class);
+    private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(AuthenticationController.class);
     private static final String REG_ENDPOINT = "auth/registration";
-    private static final String SETTING_ENDPOINT = "settings";
 
-    public MainController(RegistrationService registration, PasswordService passwordService) {
+    public AuthenticationController(RegistrationService registration) {
         this.registration = registration;
-        this.passwordService = passwordService;
     }
 
     @GetMapping("/")
@@ -54,25 +49,4 @@ public class MainController {
         redirectAttributes.addFlashAttribute("successMessage", "Your account was created successfully. You can now sign in.");
         return "redirect:/";
     }
-
-    @GetMapping("/settings")
-    public String getSettingPage(Model model) {
-        model.addAttribute("passwordForm", new SettingDTO());
-        return SETTING_ENDPOINT;
-    }
-
-    @PostMapping("/changePassword")
-    public String changePassword(@Valid @ModelAttribute("passwordForm") SettingDTO settingForm, BindingResult result, RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            return SETTING_ENDPOINT;
-        }
-        if (!passwordService.checkPassword(settingForm)) {
-            result.rejectValue("oldPass", "error.nonMatchingPassword", "your Current Password don't match. Try again");
-            return SETTING_ENDPOINT;
-        }
-        passwordService.changePassword(settingForm);
-        redirectAttributes.addFlashAttribute("successMessage", "Your password was changed successfully.");
-        return "redirect:/";
-    }
-
 }
