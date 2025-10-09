@@ -39,7 +39,7 @@ public class SettingPageController {
     private final PasswordService passwordService;
     private final RegistrationService registration;
 
-    @SuppressWarnings("unused")/*its run by springboot automaticly before each request*/
+    @SuppressWarnings("unused")/*its run by springboot automatically before each request*/
     @ModelAttribute
     private void initializeSettingModel(Model model) {
         if (!model.containsAttribute(SETTING_FORM_ATTR)) {
@@ -55,7 +55,6 @@ public class SettingPageController {
 
     @GetMapping
     public String getSettingPage(Model model) {
-        model.addAttribute(SETTING_FORM_ATTR, new SettingDTO());
         return SETTING_PAGE;
     }
 

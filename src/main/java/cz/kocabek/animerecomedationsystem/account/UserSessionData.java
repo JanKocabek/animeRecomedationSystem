@@ -10,6 +10,4 @@ import lombok.Data;
 @Data
 public class UserSessionData {
     private Integer userId;
-
-
 }
