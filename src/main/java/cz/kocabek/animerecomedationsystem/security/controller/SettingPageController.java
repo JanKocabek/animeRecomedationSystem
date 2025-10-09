@@ -25,13 +25,12 @@ import lombok.AllArgsConstructor;
 public class SettingPageController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingPageController.class);
-    private static final String SETTING_ENDPOINT = "settings";
+    private static final String SETTING_PAGE = "settings";
+    private static final String SETTING_ENDPOINT = "/settings";
     private static final String INDEX_ENDPOINT = "/";
     private static final String CHANGEPASS_ENDPOINT = "/changePassword";
     private static final String DELETEACC_ENDPOINT = "/delete";
     private static final String MAIN_ENDPOINT = "/main";
-    private static final String CHECKPASS_ENDPOINT = "/checkPassword";
-
     private final PasswordService passwordService;
     private final RegistrationService registration;
 
@@ -39,24 +38,24 @@ public class SettingPageController {
     public String getSettingPage(Model model) {
         model.addAttribute("passwordForm", new SettingDTO());
         model.addAttribute("deletingCheck", new DeletingCheckDTO());
-        model.addAttribute("changePasswordPoint", "/" + SETTING_ENDPOINT + CHANGEPASS_ENDPOINT);
-        model.addAttribute("deleteAccountPoint", "/" + SETTING_ENDPOINT + DELETEACC_ENDPOINT);
+        model.addAttribute("changePasswordPoint", SETTING_ENDPOINT + CHANGEPASS_ENDPOINT);
+        model.addAttribute("deleteAccountPoint", SETTING_ENDPOINT + DELETEACC_ENDPOINT);
         model.addAttribute("mainPoint", MAIN_ENDPOINT);
-        return SETTING_ENDPOINT;
+        return SETTING_PAGE;
     }
 
     @PostMapping(CHANGEPASS_ENDPOINT)
     public String changePassword(@Valid @ModelAttribute("passwordForm") SettingDTO settingForm, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         model.addAttribute("deletingCheck", new DeletingCheckDTO());
-        model.addAttribute("changePasswordPoint", "/" + SETTING_ENDPOINT + CHANGEPASS_ENDPOINT);
-        model.addAttribute("deleteAccountPoint", "/" + SETTING_ENDPOINT + DELETEACC_ENDPOINT);
+        model.addAttribute("changePasswordPoint", SETTING_ENDPOINT + CHANGEPASS_ENDPOINT);
+        model.addAttribute("deleteAccountPoint", SETTING_ENDPOINT + DELETEACC_ENDPOINT);
         model.addAttribute("mainPoint", MAIN_ENDPOINT);
         if (result.hasErrors()) {
-            return SETTING_ENDPOINT;
+            return SETTING_PAGE;
         }
         if (!passwordService.checkPassword(settingForm.oldPass())) {
             result.rejectValue("oldPass", "error.nonMatchingPassword", "your Current Password don't match. Try again");
-            return SETTING_ENDPOINT;
+            return SETTING_PAGE;
         }
         passwordService.changePassword(settingForm);
         redirectAttributes.addFlashAttribute("successMessage", "Your password was changed successfully.");
@@ -79,7 +78,7 @@ public class SettingPageController {
         } catch (IllegalStateException e) {
             LOGGER.error("Error deleting user account: {}", e.getMessage(), e);
             model.addAttribute("errorMessage", "Account deletion failed. Please try again.");
-            return SETTING_ENDPOINT;
+            return SETTING_PAGE;
         }
     }
 }
