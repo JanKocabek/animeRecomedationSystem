@@ -40,8 +40,6 @@ public class SettingPageController {
     private final PasswordService passwordService;
     private final RegistrationService registration;
 
-    /*   @SuppressWarnings("unused")/*its run by springboot automatically before each request
-    @ModelAttribute     */
     private void initializeSettingModel(Model model) {
         if (!model.containsAttribute(SETTING_FORM_ATTR)) {
             model.addAttribute(SETTING_FORM_ATTR, new SettingDTO());
@@ -78,7 +76,7 @@ public class SettingPageController {
 
     /*HTMX method for returning just the error div into page or deleting account and HTMX redirecting to the login page */
     @PostMapping(DELETEACC_ENDPOINT)
-    public String deleteAccount(@Valid @ModelAttribute(DELETING_CHECK_ATTR) DeletingCheckDTO deletingCheckDTO, BindingResult result,  Model model,HttpServletRequest request, HttpServletResponse response) {
+    public String deleteAccount(@Valid @ModelAttribute(DELETING_CHECK_ATTR) DeletingCheckDTO deletingCheckDTO, BindingResult result, Model model, HttpServletRequest request, HttpServletResponse response) {
         if (result.hasErrors()) {
             return ERROR_DIV;
         }
