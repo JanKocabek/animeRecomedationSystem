@@ -89,13 +89,16 @@
     <th:block th:insert="~{fragments/core :: coreScripts}"></th:block>
     <th:block th:insert="~{fragments/htmxFragment}"></th:block>
     <script>
-        document.getElementById('deleteAccountModal').addEventListener('hidden.bs.modal', () => {
-            const errorBox = document.getElementById('error');
-            if (errorBox) {
-                errorBox.innerHTML = ''; // Clear the error content
-                errorBox.className='';
-            }
-        });
+        const deleteAccountModal = document.getElementById('deleteAccountModal');
+        if (deleteAccountModal) {
+            deleteAccountModal.addEventListener('hidden.bs.modal', () => {
+                const errorBox = document.getElementById('error');
+                if (errorBox) {
+                    errorBox.innerHTML = ''; // Clear the error content
+                    errorBox.className='';
+                }
+            });
+        }
     </script>
 </body>
 
