@@ -26,6 +26,7 @@ public class SettingPageController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingPageController.class);
     private static final String SETTING_FORM_ATTR = "passwordForm";
+    private static final String DELETING_CHECK_ATTR = "deletingCheck";
     private static final String ERROR_DIV = "fragments/errorDiv";
 
     private static final String SETTING_PAGE = "settings";
@@ -44,8 +45,8 @@ public class SettingPageController {
         if (!model.containsAttribute(SETTING_FORM_ATTR)) {
             model.addAttribute(SETTING_FORM_ATTR, new SettingDTO());
         }
-        if (!model.containsAttribute("deletingCheck")) {
-            model.addAttribute("deletingCheck", new DeletingCheckDTO());
+        if (!model.containsAttribute(DELETING_CHECK_ATTR)) {
+            model.addAttribute(DELETING_CHECK_ATTR, new DeletingCheckDTO());
         }
         model.addAttribute("changePasswordPoint", SETTING_ENDPOINT + CHANGEPASS_ENDPOINT);
         model.addAttribute("deleteAccountPoint", SETTING_ENDPOINT + DELETEACC_ENDPOINT);
@@ -74,7 +75,7 @@ public class SettingPageController {
 
     /*HTMX method for returning just the error div into page or deleting account and redirecting to the login page */
     @PostMapping(DELETEACC_ENDPOINT)
-    public String checkPassword(@Valid @ModelAttribute("deletingCheck") DeletingCheckDTO deletingCheckDTO, BindingResult result, HttpServletRequest request, Model model) {
+    public String checkPassword(@Valid @ModelAttribute(DELETING_CHECK_ATTR) DeletingCheckDTO deletingCheckDTO, BindingResult result, HttpServletRequest request, Model model) {
         if (result.hasErrors()) {
             return ERROR_DIV;
         }
