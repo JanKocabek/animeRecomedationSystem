@@ -12,7 +12,6 @@ import cz.kocabek.animerecomedationsystem.account.service.WatchListService;
 @Controller
 class WatchlistBtnController {
 
-
     WatchListService watchListService;
     AccService accService;
 
@@ -23,7 +22,6 @@ class WatchlistBtnController {
         this.watchListService = watchListService;
         this.accService = accService;
     }
-
 
     @PostMapping("/add_watch")
     public String postWatchlistPage(@RequestParam long animeId, Model model) {
