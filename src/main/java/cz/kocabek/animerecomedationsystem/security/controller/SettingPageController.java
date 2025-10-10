@@ -76,7 +76,7 @@ public class SettingPageController {
 
     /*HTMX method for returning just the error div into page or deleting account and HTMX redirecting to the login page */
     @PostMapping(DELETEACC_ENDPOINT)
-    public String deleteAccount(@Valid @ModelAttribute(DELETING_CHECK_ATTR) DeletingCheckDTO deletingCheckDTO, BindingResult result, Model model, HttpServletRequest request, HttpServletResponse response) {
+    public String deleteAccount(@Valid @ModelAttribute(DELETING_CHECK_ATTR) DeletingCheckDTO deletingCheckDTO, BindingResult result, Model model, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return ERROR_DIV;
         }
@@ -88,7 +88,6 @@ public class SettingPageController {
             registration.deleteCurrentUser();
             request.getSession().invalidate();
             response.setHeader("HX-Redirect", "/logout");
-            model.addAttribute("successMessage", "Your account was deleted successfully.");
             response.setStatus(HttpServletResponse.SC_NO_CONTENT); // 204 No Content
             return null;
         } catch (IllegalStateException e) {
