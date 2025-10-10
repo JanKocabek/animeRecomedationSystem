@@ -9,7 +9,6 @@ import lombok.Data;
 @SessionScope
 @Data
 public class UserSessionData {
+
     private Integer userId;
-
-
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{fragments/core :: head(~{::title},_)}">
+<head th:replace="~{fragments/core :: head(~{::title},~{fragments/core::csrfTokens})}">
     <title>Account Settings</title>
 </head>
 
@@ -14,19 +14,22 @@
                         <div class="card-body p-4">
                             <h2 class="text-center mb-4">Account Settings</h2>
                             <!-- Change Password Form -->
-                            <form class="text-start" th:action="@{/changePassword}" method="post"
+                            <form class="text-start" th:action="@{${changePasswordPoint}}" method="post"
                                 th:object="${passwordForm}">
                                 <input type="hidden" sec:csrf="true" />
                                 <div class=" input-group input-group-outline mb-3">
                                     <label for="oldPass" class="form-label">Current Password</label>
-                                    <input type="password" class="form-control" id="oldPass" th:field="*{oldPass}">
+                                    <input type="password" class="form-control" th:field="*{oldPass}">
+                                </div>
+                                <div th:if="${#fields.hasErrors('oldPass')}" class="alert alert-danger text-center">
+                                    <span th:errors="*{oldPass}"></span>
                                 </div>
                                 <div class=" input-group input-group-outline mb-3">
                                     <label for="newPass" class="form-label">New Password</label>
-                                    <input type="password" class="form-control" id="newPass" th:field="*{newPass}">
+                                    <input type="password" class="form-control" th:field="*{newPass}">
                                 </div>
-                                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger text-center">
-                                    <span th:errors="*">Password change failed. Please check your inputs.</span>
+                                <div th:if="${#fields.hasErrors('newPass')}" class="alert alert-danger text-center">
+                                    <span th:errors="*{newPass}"></span>
                                 </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary w-100">Change Password</button>
@@ -41,9 +44,9 @@
                                 </button>
                             </div>
                             <!-- Back Link -->
-<div class="text-center mt-3">
-    <a th:href="@{/main}" class="text-primary">Back to Dashboard</a>
-</div>
+                            <div class="text-center mt-3">
+                                <a th:href="@{${mainPoint}}" class="text-primary">Back to Dashboard</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -56,25 +59,47 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteAccountModalLabel">Confirm Account Deletion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete your account? This action cannot be undone.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <form th:action="@{/account/delete}" method="post">
+                <form th:hx-post="@{${deleteAccountPoint}}" method="post" hx-target="#error" hx-swap="outerHTML"
+                    th:object="${deletingCheck}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteAccountModalLabel">Confirm Account Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete your account? This action cannot be undone.
+                        <div class="input-group input-group-outline mb-3">
+                            <label for="password" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" th:field="*{password}">
+                        </div>
+                        <div id="error">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-danger">Delete Account</button>
-                    </form>
-                </div>
+
+                    </div>
+                </form>
             </div>
         </div>
     </div>
     <footer th:replace="~{auth/fragment/footer :: footer}"></footer>
     <!--   Core JS Files   -->
-    <th:block th:insert="~{fragments/core :: btScriptInclude}"></th:block>
+    <th:block th:insert="~{fragments/core :: coreScripts}"></th:block>
+    <th:block th:insert="~{fragments/htmxFragment}"></th:block>
+    <script>
+        const deleteAccountModal = document.getElementById('deleteAccountModal');
+        if (deleteAccountModal) {
+            deleteAccountModal.addEventListener('hidden.bs.modal', () => {
+                const errorBox = document.getElementById('error');
+                if (errorBox) {
+                    errorBox.innerHTML = ''; // Clear the error content
+                    errorBox.className='';
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
