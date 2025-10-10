@@ -87,9 +87,10 @@ public class SettingPageController {
         try {
             registration.deleteCurrentUser();
             request.getSession().invalidate();
-            response.setHeader("HX-Redirect", INDEX_ENDPOINT);
+            response.setHeader("HX-Redirect", "/logout");
             model.addAttribute("successMessage", "Your account was deleted successfully.");
-            return "";
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT); // 204 No Content
+            return null;
         } catch (IllegalStateException e) {
             LOGGER.error("Error deleting user account: {}", e.getMessage(), e);
             model.addAttribute("errorMessage", "Account deletion failed. Please try again.");
