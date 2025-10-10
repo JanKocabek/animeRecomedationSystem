@@ -58,7 +58,7 @@ public class AppAccount {
     @Column(name = "role", nullable = false, length = 200)
     private RoleType role;
 
-    @OneToMany(mappedBy = "acc", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "acc", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<AccWatchlist> watchlist = new HashSet<>();
 
     public AppAccount(String username, String passwordHash, RoleType role) {
