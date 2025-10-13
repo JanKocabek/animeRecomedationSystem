@@ -1,21 +1,32 @@
 services:
   anime-recommend-app-db:
-    image: 'mysql:lts'
+    image: "mysql:lts"
     environment:
-      - 'MYSQL_DATABASE=animerecoapp'
-      - 'MYSQL_PASSWORD=${DB_PASSWORD}'
-      - 'MYSQL_ROOT_PASSWORD=${DB_ROOT_PS}'
-      - 'MYSQL_USER=${DB_USERNAME}'
+      - "MYSQL_DATABASE=animerecoapp"
+      - "MYSQL_PASSWORD=${DB_PASSWORD}"
+      - "MYSQL_ROOT_PASSWORD=${DB_ROOT_PS}"
+      - "MYSQL_USER=${DB_USERNAME}"
     ports:
-      - '3307:3306'
+      - "3307:3306"
     volumes:
       - database:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+      interval: 10s
   anime-recommend-app:
     build: .
+    profiles: ["prod"]
     container_name: anime_Recommendation_App
-    depends_on: 
+    depends_on:
       anime-recommend-app-db:
         condition: service_healthy
-
+    environment:
+      - "SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-prod}"
+      - "DB_USERNAME=${DB_USERNAME}"
+      - "DB_PASSWORD=${DB_PASSWORD}"
+    ports:
+      - "8080:8080"
 volumes:
   database:
