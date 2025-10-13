@@ -10,6 +10,12 @@ services:
       - '3307:3306'
     volumes:
       - database:/var/lib/mysql
+  anime-recommend-app:
+    build: .
+    container_name: anime_Recommendation_App
+    depends_on: 
+      anime-recommend-app-db:
+        condition: service_healthy
 
 volumes:
   database:
