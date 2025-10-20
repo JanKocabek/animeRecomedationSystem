@@ -34,6 +34,7 @@ public class CacheableAnimeDataProvider {
     }
 
     @Cacheable(value = "usersListRatedAnime")
+     //fetching detail ranking records from a given userIdList and detail ID
     public Slice<UsersAnimeScoreDto> fetchRatedAnimeByUsers(List<Long> usersId, ConfigCacheKey config) {
         final var ratedAnimeData = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, config.animeId(), Pageable.unpaged());
         logger.debug("size of fetch data:  {}", ratedAnimeData.getContent().size());

@@ -6,14 +6,12 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import cz.kocabek.animerecomedationsystem.recommendation.dto.ConfigCacheKey;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.UserAnimeList;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto;
-import cz.kocabek.animerecomedationsystem.recommendation.repository.UsersAnimeScoreRepository;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
 import lombok.AllArgsConstructor;
 
@@ -23,7 +21,6 @@ public class UserAnimeScoreService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserAnimeScoreService.class);
 
-    private final UsersAnimeScoreRepository usersAnimeScoreRepository;
     private final RecommendationConfig config;
     private final CacheableAnimeDataProvider cacheableAnimeDataProvider;
 
@@ -40,14 +37,6 @@ public class UserAnimeScoreService {
         long step1_2Duration = (System.nanoTime() - step1_2Start) / 1_000_000;
         logger.warn("Step 1.2 (fetch user ratings) took: {} ms", step1_2Duration);
         return groupUserByID(userRatingsData);
-    }
-
-    //fetching detail ranking records from a given userIdList and detail ID
-    private Slice<UsersAnimeScoreDto> fetchRatedAnimeByUsers(List<Long> usersId, Long animeId, Pageable pageable) {
-        final var ratedAnimeData = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, animeId, pageable);
-        logger.debug("size of fetch data:  {}", ratedAnimeData.getContent().size());
-        //logger.debug("size of fetch Animedata: {} vs asked: {}", ratedAnimeData.getNumberOfElements(), limit);
-        return ratedAnimeData;
     }
 
     /**
