@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
+import cz.kocabek.animerecomedationsystem.recommendation.dto.ConfigCacheKey;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.UserAnimeList;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto;
 import cz.kocabek.animerecomedationsystem.recommendation.repository.UsersAnimeScoreRepository;
@@ -27,8 +28,9 @@ public class UserAnimeScoreService {
     private final CacheableAnimeDataProvider cacheableAnimeDataProvider;
 
     public List<UserAnimeList> getUsersAnimeLists(Long animeId) {
+        final ConfigCacheKey cacheKey = config.createCacheKey();
         long step1_1Start = System.nanoTime();
-        final var usersId = cacheableAnimeDataProvider.getUsersIdWhoRatedGivenAnime(animeId, config);
+        final var usersId = cacheableAnimeDataProvider.getUsersIdWhoRatedGivenAnime(cacheKey);
         long step1_1Duration = (System.nanoTime() - step1_1Start) / 1_000_000;
         logger.warn("Step 1.1 (collect users with detail) took: {} ms", step1_1Duration);
         logger.info("Users with detail after service: {}", usersId.size());
