@@ -38,7 +38,6 @@ public class CacheableAnimeDataProvider {
     public Slice<UsersAnimeScoreDto> fetchRatedAnimeByUsers(List<Long> usersId, ConfigCacheKey config) {
         final var ratedAnimeData = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, config.animeId(), Pageable.unpaged());
         logger.debug("size of fetch data:  {}", ratedAnimeData.getContent().size());
-        //logger.debug("size of fetch Animedata: {} vs asked: {}", ratedAnimeData.getNumberOfElements(), limit);
         return ratedAnimeData;
     }
 
