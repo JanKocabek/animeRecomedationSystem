@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -14,24 +13,22 @@ import org.springframework.stereotype.Service;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.UserAnimeList;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto;
 import cz.kocabek.animerecomedationsystem.recommendation.repository.UsersAnimeScoreRepository;
-import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.ConfigConstant;
 import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class UserAnimeScoreService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserAnimeScoreService.class);
-    UsersAnimeScoreRepository usersAnimeScoreRepository;
-    RecommendationConfig config;
 
-    public UserAnimeScoreService(UsersAnimeScoreRepository usersAnimeScoreRepository, RecommendationConfig config) {
-        this.usersAnimeScoreRepository = usersAnimeScoreRepository;
-        this.config = config;
-    }
+    private final UsersAnimeScoreRepository usersAnimeScoreRepository;
+    private final RecommendationConfig config;
+    private final CacheableAnimeDataProvider cacheableAnimeDataProvider;
 
     public List<UserAnimeList> getUsersAnimeLists(Long animeId) {
         long step1_1Start = System.nanoTime();
-        final var usersId = getUsersIdWhoRatedGivenAnime(animeId, config.getMinScore(), config.getMaxUsers());
+        final var usersId = cacheableAnimeDataProvider.getUsersIdWhoRatedGivenAnime(animeId, config);
         long step1_1Duration = (System.nanoTime() - step1_1Start) / 1_000_000;
         logger.warn("Step 1.1 (collect users with detail) took: {} ms", step1_1Duration);
         logger.info("Users with detail after service: {}", usersId.size());
@@ -41,13 +38,6 @@ public class UserAnimeScoreService {
         long step1_2Duration = (System.nanoTime() - step1_2Start) / 1_000_000;
         logger.warn("Step 1.2 (fetch user ratings) took: {} ms", step1_2Duration);
         return groupUserByID(userRatingsData);
-    }
-
-    @org.springframework.cache.annotation.Cacheable(value = "usersWithAnimeScore", key = "#aniId+':'+#minScore+':'+#limitUsers")
-    private List<Long> getUsersIdWhoRatedGivenAnime(Long aniId, int minScore, int limitUsers) {
-        return usersAnimeScoreRepository.findUsersIdByAnimeIdAndRatingRange(aniId, minScore,
-                ConfigConstant.MAX_INPUT_SCORE,
-                PageRequest.of(0, limitUsers)).getContent();
     }
 
     //fetching detail ranking records from a given userIdList and detail ID
