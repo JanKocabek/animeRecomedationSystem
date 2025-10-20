@@ -1,10 +1,9 @@
 package cz.kocabek.animerecomedationsystem.recommendation.service.db;
 
-import cz.kocabek.animerecomedationsystem.recommendation.dto.UserAnimeList;
-import cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto;
-import cz.kocabek.animerecomedationsystem.recommendation.repository.UsersAnimeScoreRepository;
-import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
-import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.ConfigConstant;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -12,12 +11,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import cz.kocabek.animerecomedationsystem.recommendation.dto.UserAnimeList;
+import cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto;
+import cz.kocabek.animerecomedationsystem.recommendation.repository.UsersAnimeScoreRepository;
+import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.ConfigConstant;
+import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
 
 @Service
 public class UserAnimeScoreService {
+
     private static final Logger logger = LoggerFactory.getLogger(UserAnimeScoreService.class);
     UsersAnimeScoreRepository usersAnimeScoreRepository;
     RecommendationConfig config;
@@ -29,7 +31,7 @@ public class UserAnimeScoreService {
 
     public List<UserAnimeList> getUsersAnimeLists(Long animeId) {
         long step1_1Start = System.nanoTime();
-        final var usersId = getUsersIdWhoRatedGivenAnime(animeId);
+        final var usersId = getUsersIdWhoRatedGivenAnime(animeId, config.getMinScore(), config.getMaxUsers());
         long step1_1Duration = (System.nanoTime() - step1_1Start) / 1_000_000;
         logger.warn("Step 1.1 (collect users with detail) took: {} ms", step1_1Duration);
         logger.info("Users with detail after service: {}", usersId.size());
@@ -41,10 +43,11 @@ public class UserAnimeScoreService {
         return groupUserByID(userRatingsData);
     }
 
-    private List<Long> getUsersIdWhoRatedGivenAnime(Long aniId) {
-        return usersAnimeScoreRepository.findUsersIdByAnimeIdAndRatingRange(aniId, config.getMinScore(),
+    @org.springframework.cache.annotation.Cacheable(value = "usersWithAnimeScore", key = "#aniId+':'+#minScore+':'+#limitUsers")
+    private List<Long> getUsersIdWhoRatedGivenAnime(Long aniId, int minScore, int limitUsers) {
+        return usersAnimeScoreRepository.findUsersIdByAnimeIdAndRatingRange(aniId, minScore,
                 ConfigConstant.MAX_INPUT_SCORE,
-                PageRequest.of(0, config.getMaxUsers())).getContent();
+                PageRequest.of(0, limitUsers)).getContent();
     }
 
     //fetching detail ranking records from a given userIdList and detail ID
@@ -56,11 +59,14 @@ public class UserAnimeScoreService {
     }
 
     /**
-     * Groups the provided data of detail scores by user ID and constructs a list of {@link UserAnimeList}
-     * objects containing user IDs and their respective detail ratings.
+     * Groups the provided data of detail scores by user ID and constructs a
+     * list of {@link UserAnimeList} objects containing user IDs and their
+     * respective detail ratings.
      *
-     * @param data a {@link Slice} of {@link UsersAnimeScoreDto} objects representing user ratings for various detail
-     * @return a {@link List} of {@link UserAnimeList} containing user IDs and their mapped detail scores
+     * @param data a {@link Slice} of {@link UsersAnimeScoreDto} objects
+     * representing user ratings for various detail
+     * @return a {@link List} of {@link UserAnimeList} containing user IDs and
+     * their mapped detail scores
      */
     private List<UserAnimeList> groupUserByID(Slice<UsersAnimeScoreDto> data) {
         // grouping records based UserID Map<Long, List<UsersAnimeScoreDto>>
