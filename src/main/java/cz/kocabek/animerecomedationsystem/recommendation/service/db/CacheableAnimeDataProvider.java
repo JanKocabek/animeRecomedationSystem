@@ -18,7 +18,6 @@ import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationC
 import lombok.AllArgsConstructor;
 
 @Service
-@Transactional
 @AllArgsConstructor
 public class CacheableAnimeDataProvider {
 
