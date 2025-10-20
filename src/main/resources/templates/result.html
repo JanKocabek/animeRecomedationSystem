@@ -71,17 +71,17 @@
                                     <th:block sec:authorize="isAuthenticated()" th:switch="${recommend.inWatchList}">
                                         <th:block th:case="null">
                                             <div
-                                                th:replace="fragments/watchBtn :: watchBtnNew(${recommend.getAnimeId()})">
+                                                th:replace="~{fragments/watchBtn :: watchBtnNew(${recommend.getAnimeId()})}">
                                             </div>
                                         </th:block>
                                         <th:block th:case="true">
                                             <div
-                                                th:replace="fragments/watchBtn :: watchBtnRemove(${recommend.getAnimeId()})">
+                                                th:replace="~{fragments/watchBtn :: watchBtnRemove(${recommend.getAnimeId()})}">
                                             </div>
                                         </th:block>
                                         <th:block th:case="false">
                                             <div
-                                                th:replace="fragments/watchBtn :: watchBtnReAdd(${recommend.getAnimeId()})">
+                                                th:replace="~{fragments/watchBtn :: watchBtnReAdd(${recommend.getAnimeId()})}">
                                             </div>
                                         </th:block>
                                     </th:block><!--end of selection-->
@@ -110,7 +110,7 @@
     <!--footer-->
     <footer th:replace="~{fragments/footer :: footer}"></footer>
     <th:block th:insert="~{fragments/core :: btScriptInclude}" />
-    <th:block th:insert="fragments/htmxFragment :: htmxFragment" />
+    <th:block th:insert="~{fragments/htmxFragment :: htmxFragment}" />
 </body>
 
 </html>
