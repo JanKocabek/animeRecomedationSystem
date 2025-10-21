@@ -31,7 +31,8 @@ public class CacheableAnimeDataProvider {
                 PageRequest.of(0, config.maxUsers())).getContent();
     }
 
-    @Cacheable(value = "usersListRatedAnime")
+    //using Spring SpEL to create unique cache key based on config and sorted userId list
+    @Cacheable(value = "usersListRatedAnime", key = "T(java.util.Objects).hash(#config, T(java.util.List).copyOf(#usersId).stream().sorted().toList())")
     //fetching detail ranking records from a given userIdList and detail ID
     public Slice<UsersAnimeScoreDto> fetchRatedAnimeByUsers(List<Long> usersId, ConfigCacheKey config) {
         final var ratedAnimeData = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, config.animeId(), Pageable.unpaged());
