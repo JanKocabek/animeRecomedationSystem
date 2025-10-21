@@ -1,5 +1,13 @@
 package cz.kocabek.animerecomedationsystem.recommendation.service;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeDto;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeOutDTO;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.RecommendationDTO;
@@ -7,26 +15,22 @@ import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeGenreSe
 import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
 import cz.kocabek.animerecomedationsystem.recommendation.service.db.UserAnimeScoreService;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
- * A service for generating detail recommendations based on user preferences and interactions.
- * This service leverages user rating data, user-detail associations, and recommendation algorithms
- * to provide personalized detail suggestions.
- * The service interacts with multiple components to retrieve and process data:
- * - {@link AnimeService} for detail-related operations such as retrieving detail details and IDs.
- * - {@link UserAnimeScoreService} for fetching user-detail relationship data and ratings.
- * - {@link RecommendationEngine} to execute the recommendation algorithm and derive detail suggestions.
+ * A service for generating detail recommendations based on user preferences and
+ * interactions. This service leverages user rating data, user-detail
+ * associations, and recommendation algorithms to provide personalized detail
+ * suggestions. The service interacts with multiple components to retrieve and
+ * process data: - {@link AnimeService} for detail-related operations such as
+ * retrieving detail details and IDs. - {@link UserAnimeScoreService} for
+ * fetching user-detail relationship data and ratings. -
+ * {@link RecommendationEngine} to execute the recommendation algorithm and
+ * derive detail suggestions.
  */
 @AllArgsConstructor
 @Service
 public class RecommendationService {
+
     private static final Logger logger = LoggerFactory.getLogger(RecommendationService.class);
 
     /* db services */
@@ -47,15 +51,18 @@ public class RecommendationService {
     public RecommendationDTO getAnimeRecommendation(Long animeId) {
         return generateAnimeRecommendations(animeId);
     }
+
     /*---*/
 
     /**
-     * Generates anime recommendations for a given anime ID using an intersection weight algorithm
-     * along with various processing and analysis steps to refine the recommendations.
+     * Generates anime recommendations for a given anime ID using an
+     * intersection weight algorithm along with various processing and analysis
+     * steps to refine the recommendations.
      *
-     * @param animeId the ID of the anime for which recommendations are generated
-     * @return a {@link RecommendationDTO} object containing the input anime names
-     *         and a list of recommended anime's
+     * @param animeId the ID of the anime for which recommendations are
+     * generated
+     * @return a {@link RecommendationDTO} object containing the input anime
+     * names and a list of recommended anime's
      */
     private RecommendationDTO generateAnimeRecommendations(Long animeId) {
         //collecting and grouping data from the database into a list of users Anime lists
@@ -119,4 +126,3 @@ public class RecommendationService {
 //        return details;
     }
 }
-
