@@ -24,7 +24,7 @@ public class UserAnimeScoreService {
     private final RecommendationConfig config;
     private final CacheableAnimeDataProvider cacheableAnimeDataProvider;
 
-    public List<UserAnimeList> getUsersAnimeLists(Long animeId) {
+    public List<UserAnimeList> getUsersAnimeLists() {
         final ConfigCacheKey cacheKey = config.createCacheKey();
         long step1_1Start = System.nanoTime();
         final var usersId = cacheableAnimeDataProvider.getUsersIdWhoRatedGivenAnime(cacheKey);
