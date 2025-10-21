@@ -84,7 +84,7 @@ public class ViewController {
         return "result";
     }
 
-    @PostMapping("/result/submit")
+    @PostMapping(RESULT_ENDPOINT + "/submit")
     public String postResultPage(@Valid @ModelAttribute("anime") InputDTO form, BindingResult bindingResult,
             RedirectAttributes redirectAttributes, Model model) {
         // todo:move this line in the if statement
