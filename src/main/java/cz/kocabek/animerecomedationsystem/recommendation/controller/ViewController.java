@@ -73,10 +73,10 @@ public class ViewController {
         try {
             checkAnimeId(animeId);
         } catch (ValidationException e) {
-            // TODO: add proper return to the view by
+            // TODO: add proper return to the view and show error message
             return "redirect:/";
         }
-        final var recommendations = recommendationService.getAnimeRecommendation(animeId);
+        final var recommendations = recommendationService.getAnimeRecommendation();
         if (auth != null) {
             watchListService.setWatchlistButtons(recommendations);
         }

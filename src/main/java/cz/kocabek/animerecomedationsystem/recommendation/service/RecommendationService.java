@@ -42,18 +42,18 @@ public class RecommendationService {
     //service for building output DTO
     DTOResultBuilder resultBuilder;
 
+
     /* public endpoints*/
     public RecommendationDTO getAnimeRecommendation(String name) {
-        final var animeId = animeService.getAnimeIdByName(name); //one detail id
-        return generateAnimeRecommendations(animeId);
+        resultBuilder.init(name);
+        return generateAnimeRecommendations();
     }
 
-    public RecommendationDTO getAnimeRecommendation(Long animeId) {
-        return generateAnimeRecommendations(animeId);
+    public RecommendationDTO getAnimeRecommendation() {
+        return generateAnimeRecommendations();
     }
 
     /*---*/
-
     /**
      * Generates anime recommendations for a given anime ID using an
      * intersection weight algorithm along with various processing and analysis
@@ -64,10 +64,10 @@ public class RecommendationService {
      * @return a {@link RecommendationDTO} object containing the input anime
      * names and a list of recommended anime's
      */
-    private RecommendationDTO generateAnimeRecommendations(Long animeId) {
+    private RecommendationDTO generateAnimeRecommendations() {
         //collecting and grouping data from the database into a list of users Anime lists
         long step1Start = System.nanoTime();
-        final var usersAnimeLists = userAnimeScoreService.getUsersAnimeLists(animeId);
+        final var usersAnimeLists = userAnimeScoreService.getUsersAnimeLists();
         long step1Duration = (System.nanoTime() - step1Start) / 1_000_000;
         logger.warn("Step 1 (collect users data) took: {} ms", step1Duration);
         logger.info("size of data after grouping: {}", usersAnimeLists.size());

@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import cz.kocabek.animerecomedationsystem.recommendation.dto.ConfigCacheKey;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto;
@@ -33,7 +32,7 @@ public class CacheableAnimeDataProvider {
     }
 
     @Cacheable(value = "usersListRatedAnime")
-     //fetching detail ranking records from a given userIdList and detail ID
+    //fetching detail ranking records from a given userIdList and detail ID
     public Slice<UsersAnimeScoreDto> fetchRatedAnimeByUsers(List<Long> usersId, ConfigCacheKey config) {
         final var ratedAnimeData = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, config.animeId(), Pageable.unpaged());
         logger.debug("size of fetch data:  {}", ratedAnimeData.getContent().size());
