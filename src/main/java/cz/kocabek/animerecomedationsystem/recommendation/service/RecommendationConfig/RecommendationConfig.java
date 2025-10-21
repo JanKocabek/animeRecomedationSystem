@@ -19,7 +19,6 @@ public class RecommendationConfig {
     private boolean onlyInAnimeGenres = false;
     private InputDTO configForm = new InputDTO(this.animeName, this.minScore, this.maxUsers, this.onlyInAnimeGenres);
 
-
     public void updateConfig(InputDTO formData) {
         this.configForm = formData;
         this.animeName = formData.animeName();
@@ -33,7 +32,7 @@ public class RecommendationConfig {
     }
 
     public ConfigCacheKey createCacheKey() {
-        return new ConfigCacheKey(this.animeName,
+        return new ConfigCacheKey(
                 this.animeId,
                 this.minScore,
                 this.maxUsers,

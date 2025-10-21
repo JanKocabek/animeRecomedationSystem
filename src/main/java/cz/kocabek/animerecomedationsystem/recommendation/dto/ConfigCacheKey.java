@@ -1,6 +1,6 @@
 package cz.kocabek.animerecomedationsystem.recommendation.dto;
 
-public record ConfigCacheKey(String animeName,
+public record ConfigCacheKey(
         Long animeId,
         int minScore,
         int maxUsers,
