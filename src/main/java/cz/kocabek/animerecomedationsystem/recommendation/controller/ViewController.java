@@ -33,15 +33,17 @@ import lombok.AllArgsConstructor;
 public class ViewController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewController.class);
-    AccService accService;
-    RecommendationService recommendationService;
-    AnimeService animeService;
-    DTOResultBuilder resultBuilder;
-    RecommendationConfig config;
-    WatchListService watchListService;
-
     private static final String INPUT_ATR_NAME = "anime";
     private static final String ATR_ACTION = "action";
+    private static final String RESULT_PAGE = "result";
+    private static final String RESULT_ENDPOINT = "/" + RESULT_PAGE;
+
+    private final AccService accService;
+    private final RecommendationService recommendationService;
+    private final AnimeService animeService;
+    private final DTOResultBuilder resultBuilder;
+    private final RecommendationConfig config;
+    private final WatchListService watchListService;
 
     @GetMapping("/main")
     public String getHomePage(Model model) {
@@ -59,48 +61,46 @@ public class ViewController {
         try {
             Long id = processForm(form);
             redirectAttributes.addAttribute("id", id);
-            return "redirect:/result";
+            return "redirect:" + RESULT_ENDPOINT;
         } catch (ValidationException e) {
             bindingResult.rejectValue("animeName", "error.detail", e.getMessage());
             return "main";
         }
     }
 
-    @GetMapping("/result")
+    @GetMapping(RESULT_ENDPOINT)
     public String getResultPage(@RequestParam("id") Long animeId, Model model, Authentication auth) {
         try {
             checkAnimeId(animeId);
         } catch (ValidationException e) {
-            // TODO: add proper return to the view by
+            // TODO: add proper return to the view and show error message
             return "redirect:/";
         }
-        final var recommendations = recommendationService.getAnimeRecommendation(animeId);
+        final var recommendations = recommendationService.getAnimeRecommendation();
         if (auth != null) {
             watchListService.setWatchlistButtons(recommendations);
         }
         model.addAttribute("recommendations", recommendations);
         model.addAttribute(INPUT_ATR_NAME, config.getConfigForm());
         model.addAttribute(ATR_ACTION, "/result/submit");
-        return "result";
+        return RESULT_PAGE;
     }
 
-    @PostMapping("/result/submit")
+    @PostMapping(RESULT_ENDPOINT + "/submit")
     public String postResultPage(@Valid @ModelAttribute("anime") InputDTO form, BindingResult bindingResult,
             RedirectAttributes redirectAttributes, Model model) {
-        // todo:move this line in the if statement
-        final var previousAnime = resultBuilder.getResultDto();
         if (bindingResult.hasErrors()) {
-            model.addAttribute("recommendations", previousAnime);
-            return "result";
+            model.addAttribute("recommendations", resultBuilder.getResultDto());
+            return RESULT_PAGE;
         }
         try {
             Long id = processForm(form);
             redirectAttributes.addAttribute("id", id);
-            return "redirect:/result";
+            return "redirect:" + RESULT_ENDPOINT;
         } catch (ValidationException e) {
             bindingResult.rejectValue("animeName", "error.detail", e.getMessage());
-            model.addAttribute("recommendations", previousAnime);
-            return "result";
+            model.addAttribute("recommendations", resultBuilder.getResultDto());
+            return RESULT_PAGE;
         }
     }
 
