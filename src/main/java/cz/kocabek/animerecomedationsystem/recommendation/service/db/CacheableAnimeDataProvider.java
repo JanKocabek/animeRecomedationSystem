@@ -1,6 +1,6 @@
 package cz.kocabek.animerecomedationsystem.recommendation.service.db;
 
-import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,16 +25,15 @@ public class CacheableAnimeDataProvider {
     private final UsersAnimeScoreRepository usersAnimeScoreRepository;
 
     @Cacheable(value = "usersWithAnimeScore")
-    public List<Long> getUsersIdWhoRatedGivenAnime(ConfigCacheKey config) {
+    public Set<Long> getUsersIdWhoRatedGivenAnime(ConfigCacheKey config) {
         return usersAnimeScoreRepository.findUsersIdByAnimeIdAndRatingRange(config.animeId(), config.minScore(),
                 ConfigConstant.MAX_INPUT_SCORE,
-                PageRequest.of(0, config.maxUsers())).getContent();
+                PageRequest.of(0, config.maxUsers())).toSet();
     }
 
-    //using Spring SpEL to create unique cache key based on config and sorted userId list
-    @Cacheable(value = "usersListRatedAnime", key = "T(java.util.Objects).hash(#config, T(java.util.List).copyOf(#usersId).stream().sorted().toList())")
     //fetching detail ranking records from a given userIdList and detail ID
-    public Slice<UsersAnimeScoreDto> fetchRatedAnimeByUsers(List<Long> usersId, ConfigCacheKey config) {
+    @Cacheable(value = "usersListRatedAnime", key = "T(java.util.Objects).hash(#usersId, #config.animeId())")
+    public Slice<UsersAnimeScoreDto> fetchRatedAnimeByUsers(Set<Long> usersId, ConfigCacheKey config) {
         final var ratedAnimeData = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, config.animeId(), Pageable.unpaged());
         logger.debug("size of fetch data:  {}", ratedAnimeData.getContent().size());
         return ratedAnimeData;

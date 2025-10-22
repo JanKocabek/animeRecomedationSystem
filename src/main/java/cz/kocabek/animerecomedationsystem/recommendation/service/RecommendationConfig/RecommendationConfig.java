@@ -35,8 +35,8 @@ public class RecommendationConfig {
         return new ConfigCacheKey(
                 this.animeId,
                 this.minScore,
-                this.maxUsers,
-                this.onlyInAnimeGenres);
+                this.maxUsers
+                );
     }
 
 }
