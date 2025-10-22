@@ -32,7 +32,7 @@ public class CacheableAnimeDataProvider {
     }
 
     //fetching detail ranking records from a given userIdList and detail ID
-    @Cacheable(value = "usersListRatedAnime")
+    @Cacheable(value = "usersListRatedAnime", key = "T(java.util.Objects).hash(#usersId, #config.animeId())")
     public Slice<UsersAnimeScoreDto> fetchRatedAnimeByUsers(Set<Long> usersId, ConfigCacheKey config) {
         final var ratedAnimeData = usersAnimeScoreRepository.getUsersListRatedAnime(usersId, config.animeId(), Pageable.unpaged());
         logger.debug("size of fetch data:  {}", ratedAnimeData.getContent().size());
