@@ -1,12 +1,12 @@
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: local
   application:
     name: animeRecommendationSystem
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql:///${DB_NAME}?cloudSqlInstance=${CLOUD_SQL_CONNECTION_NAME}&socketFactory=com.google.cloud.sql.mysql.SocketFactory&serverTimezone=UTC&useLegacyDatetimeCode=false
+    url: jdbc:mysql://anime-recommend-app-db:3306/${DB_NAME}?serverTimezone=UTC&useLegacyDatetimeCode=false
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     hikari:
