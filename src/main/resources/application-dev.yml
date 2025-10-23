@@ -6,7 +6,7 @@ spring:
     name: animeRecommendationSystem
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/animerecoapp
+    url: jdbc:mysql://localhost:3307/${DB_NAME}?serverTimezone=UTC&useLegacyDatetimeCode=false
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   jpa:

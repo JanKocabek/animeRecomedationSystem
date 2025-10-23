@@ -18,13 +18,12 @@ services:
       start_period: 30s
   anime-recommend-app:
     build: .
-    profiles: ["prod"]
     container_name: anime_Recommendation_App
     depends_on:
       anime-recommend-app-db:
         condition: service_healthy
     environment:
-      - "SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-prod}"
+      - "SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-local}"
       - "DB_USERNAME=${DB_USERNAME}"
       - "DB_PASSWORD=${DB_PASSWORD}"
     ports:
