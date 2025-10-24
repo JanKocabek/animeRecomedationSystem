@@ -14,7 +14,7 @@ RUN mvn dependency:go-offline -B
 COPY src/ ./src/
 
 # Build the application (FORCE the 'prod' profile for Cloud Run)
-RUN mvn clean package -DskipTests -Pprod  # <-- HARDCODED 'prod' profile
+RUN mvn clean package -DskipTests -Pprod,container-build-base  # <-- HARDCODED 'prod' profile
 
 # Stage 2: Runtime
 FROM eclipse-temurin:25-jre-alpine

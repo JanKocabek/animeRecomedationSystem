@@ -13,7 +13,7 @@ COPY src/ ./src/
 
 # Build the application (use build arg to select profile)
 ARG BUILD_PROFILE=local
-RUN mvn clean package -DskipTests -P${BUILD_PROFILE}
+RUN mvn clean package -DskipTests -P${BUILD_PROFILE},container-build-base
 
 # Stage 2: Runtime
 FROM eclipse-temurin:25-jre-alpine
