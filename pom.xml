@@ -229,16 +229,17 @@
 					<optional>true</optional>
 				</dependency>
 			</dependencies>
-		</profile>
 
-		<!-- Local Docker Profile (Docker Compose) -->
+		</profile>
+		<!-- 1. BASE PROFILE: Contains the common exclusion configuration for the final JAR. -->
+
+		<!-- This profile will be activated alongside 'local' or 'prod' builds. -->
+
 		<profile>
-			<id>local</id>
-			<properties>
-				<spring.profiles.active>local</spring.profiles.active>
-			</properties>
+			<id>container-build-base</id>
 			<build>
 				<plugins>
+					<!-- Spring Boot Plugin: Excludes dev dependencies from the JAR -->
 					<plugin>
 						<groupId>org.springframework.boot</groupId>
 						<artifactId>spring-boot-maven-plugin</artifactId>
@@ -263,7 +264,18 @@
 			</build>
 		</profile>
 
-		<!-- Production Profile (Google Cloud) -->
+		<!-- 2. Local Docker Profile (Docker Compose) -->
+
+		<profile>
+			<id>local</id>
+			<properties>
+				<spring.profiles.active>local</spring.profiles.active>
+			</properties>
+			<!-- The final JAR cleanup is provided by 'container-build-base' -->
+		</profile>
+
+		<!-- 3. Production Profile (Google Cloud) - Now contains only unique dependencies -->
+
 		<profile>
 			<id>prod</id>
 			<properties>
@@ -279,27 +291,17 @@
 			</dependencies>
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-maven-plugin</artifactId>
-						<configuration>
-							<excludes>
-								<exclude>
-									<groupId>org.projectlombok</groupId>
-									<artifactId>lombok</artifactId>
-								</exclude>
-								<exclude>
-									<groupId>org.springframework.boot</groupId>
-									<artifactId>spring-boot-devtools</artifactId>
-								</exclude>
-								<exclude>
-									<groupId>org.springframework.boot</groupId>
-									<artifactId>spring-boot-docker-compose</artifactId>
-								</exclude>
-							</excludes>
-						</configuration>
-					</plugin>
-					<!-- Dependency Analysis for Production -->
+					<!-- No unique plugins are needed here. -->
+				</plugins>
+			</build>
+		</profile>
+
+		<!-- This profile is NOT active by default. It must be run manually: mvn verify
+	-Pdependency-check -->
+		<profile>
+			<id>dependency-check</id>
+			<build>
+				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-dependency-plugin</artifactId>
@@ -321,6 +323,7 @@
 				</plugins>
 			</build>
 		</profile>
+
 	</profiles>
 
 </project>
