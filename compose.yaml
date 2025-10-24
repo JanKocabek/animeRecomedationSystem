@@ -1,6 +1,7 @@
 services:
   anime-recommend-app-db:
     image: "mysql:lts"
+    container_name: anime_db
     environment:
       - "MYSQL_DATABASE=animerecoapp"
       - "MYSQL_PASSWORD=${DB_PASSWORD}"
@@ -11,13 +12,31 @@ services:
     volumes:
       - database:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${DB_ROOT_PS}",
+        ]
       timeout: 5s
       retries: 10
       interval: 10s
       start_period: 30s
+    networks:
+      - anime-network
+    restart: unless-stopped
+
   anime-recommend-app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_PROFILE: ${BUILD_PROFILE:-local} # Default to local profile
     container_name: anime_Recommendation_App
     depends_on:
       anime-recommend-app-db:
@@ -26,7 +45,32 @@ services:
       - "SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-local}"
       - "DB_USERNAME=${DB_USERNAME}"
       - "DB_PASSWORD=${DB_PASSWORD}"
+      - "DB_NAME=${DB_NAME}"
+      - "JAVA_OPTS=-Xms512m -Xmx1024m"
     ports:
       - "8080:8080"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8080/actuator/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - anime-network
+    restart: unless-stopped
+
 volumes:
   database:
+    driver: local
+
+networks:
+  anime-network:
+    driver: bridge
