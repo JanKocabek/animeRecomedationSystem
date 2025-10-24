@@ -20,7 +20,7 @@ FROM eclipse-temurin:25-jre-alpine
 WORKDIR /opt/app
 
 # Copy the built jar from builder stage
-COPY --from=builder /build/target/AnimeRecommendationApp.jar app.jar
+COPY --from=builder /build/target/*.jar app.jar
 
 # Create non-root user for security
 RUN addgroup -S spring && adduser -S spring -G spring && \
