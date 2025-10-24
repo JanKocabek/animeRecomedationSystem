@@ -12,17 +12,7 @@ services:
     volumes:
       - database:/var/lib/mysql
     healthcheck:
-      test:
-        [
-          "CMD",
-          "mysqladmin",
-          "ping",
-          "-h",
-          "localhost",
-          "-u",
-          "root",
-          "-p${DB_ROOT_PS}",
-        ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 5s
       retries: 10
       interval: 10s
@@ -32,6 +22,7 @@ services:
     restart: unless-stopped
 
   anime-recommend-app:
+    profiles: ["container"]
     build:
       context: .
       dockerfile: Dockerfile
