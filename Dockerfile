@@ -37,8 +37,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
 
 # Copy entrypoint script
-COPY docker-entrypoint.sh /opt/app/
-RUN chmod +x /opt/app/docker-entrypoint.sh
+COPY --chmod=a+x docker-entrypoint.sh /opt/app/
 
 # Run the application with optimized JVM settings
 ENTRYPOINT ["/opt/app/docker-entrypoint.sh"]
