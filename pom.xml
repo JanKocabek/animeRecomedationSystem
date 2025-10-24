@@ -229,6 +229,7 @@
 					<optional>true</optional>
 				</dependency>
 			</dependencies>
+<<<<<<< HEAD
 
 		</profile>
 		<!-- 1. BASE PROFILE: Contains the common exclusion configuration for the final JAR. -->
@@ -240,6 +241,18 @@
 			<build>
 				<plugins>
 					<!-- Spring Boot Plugin: Excludes dev dependencies from the JAR -->
+=======
+		</profile>
+
+		<!-- Local Docker Profile (Docker Compose) -->
+		<profile>
+			<id>local</id>
+			<properties>
+				<spring.profiles.active>local</spring.profiles.active>
+			</properties>
+			<build>
+				<plugins>
+>>>>>>> 95c8dc924266b8c6f7926e3d6bcc58bd4ed25506
 					<plugin>
 						<groupId>org.springframework.boot</groupId>
 						<artifactId>spring-boot-maven-plugin</artifactId>
@@ -264,6 +277,7 @@
 			</build>
 		</profile>
 
+<<<<<<< HEAD
 		<!-- 2. Local Docker Profile (Docker Compose) -->
 
 		<profile>
@@ -276,6 +290,9 @@
 
 		<!-- 3. Production Profile (Google Cloud) - Now contains only unique dependencies -->
 
+=======
+		<!-- Production Profile (Google Cloud) -->
+>>>>>>> 95c8dc924266b8c6f7926e3d6bcc58bd4ed25506
 		<profile>
 			<id>prod</id>
 			<properties>
@@ -303,6 +320,27 @@
 			<build>
 				<plugins>
 					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<excludes>
+								<exclude>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok</artifactId>
+								</exclude>
+								<exclude>
+									<groupId>org.springframework.boot</groupId>
+									<artifactId>spring-boot-devtools</artifactId>
+								</exclude>
+								<exclude>
+									<groupId>org.springframework.boot</groupId>
+									<artifactId>spring-boot-docker-compose</artifactId>
+								</exclude>
+							</excludes>
+						</configuration>
+					</plugin>
+					<!-- Dependency Analysis for Production -->
+					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-dependency-plugin</artifactId>
 						<version>3.9.0</version>
@@ -323,7 +361,10 @@
 				</plugins>
 			</build>
 		</profile>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 95c8dc924266b8c6f7926e3d6bcc58bd4ed25506
 	</profiles>
 
 </project>
