@@ -12,9 +12,6 @@ RUN mvn dependency:go-offline -B
 
 # Copy source code
 COPY src/ ./src/
-# --- FIX: Clean up the local Maven repository before packaging ---
-# This ensures that no cached SNAPSHOT or locally built artifacts interfere with the final JAR structure.
-RUN rm -rf /root/.m2/repository/cz/kocabek/animerecomedationsystem
 
 # Build the application (FORCE the 'prod' profile for Cloud Run)
 RUN mvn clean package -DskipTests -Pprod,container-build-base  # <-- HARDCODED 'prod' profile
