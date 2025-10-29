@@ -109,6 +109,7 @@ public class ViewController {
         final var detail = animeService.getAnimeById(id);
         model.addAttribute("detail", detail);
         model.addAttribute(INPUT_ATR_NAME, config.getConfigForm());
+        model.addAttribute(ATR_ACTION, "/result/submit");
         return "detail";
     }
 
