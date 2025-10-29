@@ -19,8 +19,8 @@ public class AnimeService {
         this.animeRepository = animeRepository;
     }
 
-    public Anime getAnimeById(Long id) throws IllegalArgumentException {
-        return animeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Anime not found"));
+    public Anime getAnimeByIdWithGenres(Long id) throws IllegalArgumentException {
+        return animeRepository.fetchAnimeByIdWithGenres(id).orElseThrow(() -> new IllegalArgumentException("Anime not found"));
     }
 
     public Iterable<Anime> getAnimeByGenre(String genre) {
