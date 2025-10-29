@@ -34,4 +34,10 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
 
     @Query("select a.name from Anime a where a.id =:animeId")
     String getAnimeNameById(@Param("animeId") Long id);
+
+    @Query("""
+            select a from Anime a
+            JOIN FETCH a.genres
+            where a.id =:animeId""")
+    Optional<Anime> fetchByIdWithGenres(@Param("animeId") Long id);
 }
