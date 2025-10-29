@@ -33,12 +33,16 @@ import lombok.AllArgsConstructor;
 public class ViewController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewController.class);
+
     private static final String INPUT_ATR_NAME = "anime";
     private static final String ATR_ACTION = "action";
+
+    private static final String MAIN_PAGE = "main";
     private static final String RESULT_PAGE = "result";
     private static final String RESULT_ENDPOINT = "/" + RESULT_PAGE;
     private static final String POST_SUBMIT = "/submit";
     private static final String POST_RESULT_SUBMIT = RESULT_ENDPOINT + POST_SUBMIT;
+    private static final String RECOMMENDATION_ATR = "recommendations";
 
     private final AccService accService;
     private final RecommendationService recommendationService;
@@ -47,18 +51,18 @@ public class ViewController {
     private final RecommendationConfig config;
     private final WatchListService watchListService;
 
-    @GetMapping("/main")
+    @GetMapping("/" + MAIN_PAGE)
     public String getHomePage(Model model) {
         model.addAttribute(INPUT_ATR_NAME, config.getConfigForm());
         model.addAttribute(ATR_ACTION, POST_SUBMIT);
-        return "main";
+        return MAIN_PAGE;
     }
 
     @PostMapping(POST_SUBMIT)
     public String postHomePage(@Valid @ModelAttribute(INPUT_ATR_NAME) InputDTO form, BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            return "main";
+            return MAIN_PAGE;
         }
         try {
             Long id = processForm(form);
@@ -66,7 +70,7 @@ public class ViewController {
             return "redirect:" + RESULT_ENDPOINT;
         } catch (ValidationException e) {
             bindingResult.rejectValue("animeName", "error.detail", e.getMessage());
-            return "main";
+            return MAIN_PAGE;
         }
     }
 
@@ -82,7 +86,7 @@ public class ViewController {
         if (auth != null) {
             watchListService.setWatchlistButtons(recommendations);
         }
-        model.addAttribute("recommendations", recommendations);
+        model.addAttribute(RECOMMENDATION_ATR, recommendations);
         model.addAttribute(INPUT_ATR_NAME, config.getConfigForm());
         model.addAttribute(ATR_ACTION, POST_RESULT_SUBMIT);
         return RESULT_PAGE;
@@ -92,7 +96,7 @@ public class ViewController {
     public String postResultPage(@Valid @ModelAttribute("anime") InputDTO form, BindingResult bindingResult,
             RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("recommendations", resultBuilder.getResultDto());
+            model.addAttribute(RECOMMENDATION_ATR, resultBuilder.getResultDto());
             return RESULT_PAGE;
         }
         try {
@@ -101,7 +105,7 @@ public class ViewController {
             return "redirect:" + RESULT_ENDPOINT;
         } catch (ValidationException e) {
             bindingResult.rejectValue("animeName", "error.detail", e.getMessage());
-            model.addAttribute("recommendations", resultBuilder.getResultDto());
+            model.addAttribute(RECOMMENDATION_ATR, resultBuilder.getResultDto());
             return RESULT_PAGE;
         }
     }
