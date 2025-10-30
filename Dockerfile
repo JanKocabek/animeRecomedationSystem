@@ -26,9 +26,6 @@ COPY --from=builder /build/target/*.jar app.jar
 RUN addgroup -S spring && adduser -S spring -G spring && \
     chown -R spring:spring /opt/app
 
-# Switch to non-root user
-USER spring:spring
-
 # Expose application port
 EXPOSE 8080
 
@@ -37,8 +34,12 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
 
 # Copy entrypoint script
+# 1. Copy the file without changing permissions
 COPY docker-entrypoint.sh /opt/app/
-RUN chmod +x /opt/app/docker-entrypoint.sh
 
+# 2. Change the permissions using a separate RUN command
+RUN chmod a+x /opt/app/docker-entrypoint.sh
+# Switch to non-root user
+USER spring:spring
 # Run the application with optimized JVM settings
 ENTRYPOINT ["/opt/app/docker-entrypoint.sh"]
