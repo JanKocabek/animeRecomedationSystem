@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.6</version>
+		<version>3.5.7</version>
 		<relativePath /> <!-- lookup parent from a repository -->
 	</parent>
 
@@ -206,6 +206,7 @@
 
 	<profiles>
 		<!-- Development Profile (IDE/Local Machine) -->
+
 		<profile>
 			<id>dev</id>
 			<activation>
@@ -229,7 +230,6 @@
 					<optional>true</optional>
 				</dependency>
 			</dependencies>
-
 		</profile>
 		<!-- 1. BASE PROFILE: Contains the common exclusion configuration for the final JAR. -->
 
