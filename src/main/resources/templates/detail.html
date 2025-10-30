@@ -6,7 +6,7 @@
 </head>
 
 <body class="bg-light d-flex flex-column min-vh-100">
-    <header th:insert="fragments/header :: header"></header>
+    <header th:insert="~{fragments/header :: header}"></header>
     <main class="flex-grow-1">
         <div class="container-fluid">
             <h2 class="mb-4">Anime Detail:</h2>
@@ -90,7 +90,7 @@
     </main>
     <!--footer-->
     <footer th:replace="~{fragments/footer :: footer}"></footer>
-     <th:block th:insert="~{fragments/core :: btScriptInclude}"></th:block>
+    <th:block th:insert="~{fragments/core :: btScriptInclude}"></th:block>
 </body>
 
 </html>
