@@ -212,6 +212,7 @@
 
 	<profiles>
 		<!-- Development Profile (IDE/Local Machine) -->
+
 		<profile>
 			<id>dev</id>
 			<activation>
@@ -235,7 +236,6 @@
 					<optional>true</optional>
 				</dependency>
 			</dependencies>
-
 		</profile>
 		<!-- 1. BASE PROFILE: Contains the common exclusion configuration for the final JAR. -->
 
