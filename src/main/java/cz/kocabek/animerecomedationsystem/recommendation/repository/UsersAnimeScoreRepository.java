@@ -14,6 +14,7 @@ import cz.kocabek.animerecomedationsystem.recommendation.entity.UsersAnimeScore;
 import cz.kocabek.animerecomedationsystem.recommendation.entity.UsersAnimeScoreId;
 
 public interface UsersAnimeScoreRepository extends JpaRepository<UsersAnimeScore, UsersAnimeScoreId> {
+
     @Query("""
             select new cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto(u.id.userId,u.id.animeId,u.rating)  from UsersAnimeScore u
             where u.id.userId in :userIds and u.id.animeId != :animeId
@@ -23,7 +24,7 @@ public interface UsersAnimeScoreRepository extends JpaRepository<UsersAnimeScore
     @Query("""
             select uas.id.userId from UsersAnimeScore uas
                     where uas.id.animeId =:animeid
-                                AND uas.rating between :minrating and :maxrating
+                    AND uas.rating between :minrating and :maxrating
             """)
     Slice<Long> findUsersIdByAnimeIdAndRatingRange(@NonNull @Param("animeid") Long animeId, @Param("minrating") int minrating, @Param("maxrating") int maxrating, Pageable pageable);
 }
