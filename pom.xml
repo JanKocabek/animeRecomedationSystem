@@ -11,7 +11,7 @@
 	</parent>
 
 	<groupId>cz.kocabek</groupId>
-	<artifactId>animeRecomedationSystem</artifactId>
+	<artifactId>anime-recomedation-system</artifactId>
 	<version>0.0.1</version>
 	<name>animeRecommendationSystem</name>
 	<description>animeRecommendationSystem</description>
