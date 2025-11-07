@@ -1,6 +1,6 @@
 # LIVE CURRENT ALPHA VERSION https://anime-recommendation-system-379818472403.europe-west1.run.app/
 # THIS README is under development; the current information here is outdated.
-# The informationi here will be made accurate and precise as soon as possible.
+# The information here will be made accurate and precise as soon as possible.
 ## Table of Contents
 1. [Anime Recommendation System](#anime-recommendation-system)
 2. [Technology Stack](#technology-stack)
