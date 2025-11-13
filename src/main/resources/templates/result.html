@@ -19,11 +19,13 @@
                     <div th:each="recommend : ${recommendations.getRecommendedAnime()}"
                         class="col-sm-6 col-md-4 col-lg-3">
                         <div class="card shadow-sm h-100">
-                            <!-- Image -->
-                            <a th:href="@{'https://myanimelist.net/anime/' + ${recommend.animeId} + '/'}">
-                                <img th:src="${recommend.animeInfo.imageURL}" th:alt="${recommend.animeInfo.name}"
-                                    class="card-img-top img-fluid">
-                            </a>
+                            <!-- Image and MAL LINK  -->
+
+                                <a th:href="@{'https://myanimelist.net/anime/' + ${recommend.animeId} + '/'}"
+                                    target="_blank" rel="noopener noreferrer" class="text-decoration-none mal-link ">
+                                    <img alt="template" th:src="${recommend.animeInfo.imageURL}" th:alt="${recommend.animeInfo.name}"
+                                        class="card-img-top img-fluid">
+                                </a>
 
                             <!-- Card Body -->
                             <div class="card-body d-flex flex-column flex-grow-1 ">
