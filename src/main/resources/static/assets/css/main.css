@@ -99,3 +99,9 @@
 #main-page {
     background-image: url('../image/ian-valerio-road-header-unsplash.jpg');
 }
+
+a.mal-link {
+    display: block;
+    aspect-ratio: 2/3;
+    
+}
