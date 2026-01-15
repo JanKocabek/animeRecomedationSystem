@@ -2,8 +2,6 @@ spring:
   config:
     activate:
       on-profile: prod
-    import:
-      - "optional:file:/etc/secrets/MainSecret"
   application:
     name: animeRecommendationSystem
   datasource:

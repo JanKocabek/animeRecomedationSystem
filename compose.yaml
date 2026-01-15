@@ -3,9 +3,11 @@ services:
     image: "mysql:lts"
     container_name: anime_db
     environment:
-      - "MYSQL_DATABASE=animerecoapp"
-      - "MYSQL_PASSWORD=${DB_PASSWORD}"
-      - "MYSQL_USER=${DB_USERNAME}"
+      - MYSQL_DATABASE:{DB_NAME}
+      - MYSQL_USER:${DB_USERNAME}
+      - MYSQL_PASSWORD_FILE:/run/secrets/db_password
+    secrets:
+      - db_password
     ports:
       - "3307:3306"
     volumes:
@@ -19,7 +21,6 @@ services:
     networks:
       - anime-network
     restart: unless-stopped
-
   anime-recommend-app:
     profiles: ["container"]
     build:
@@ -32,11 +33,14 @@ services:
       anime-recommend-app-db:
         condition: service_healthy
     environment:
-      - "SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-local}"
-      - "DB_USERNAME=${DB_USERNAME}"
-      - "DB_PASSWORD=${DB_PASSWORD}"
-      - "DB_NAME=${DB_NAME}"
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-local}
+      - DB_URL=${DB_URL}
+      - DB_NAME=${DB_NAME}
+      - DB_USERNAME=${DB_USERNAME}
       - "JAVA_OPTS=-Xms512m -Xmx1024m"
+    secrets:
+      - db_password
+
     ports:
       - "8080:8080"
     healthcheck:
@@ -64,3 +68,7 @@ volumes:
 networks:
   anime-network:
     driver: bridge
+
+secrets:
+  db_password:
+    file: ./secrets/db_pass.txt

@@ -11,3 +11,4 @@ exec java \
     $JAVA_OPTS \
     -Dserver.port=${PORT:-8080} \
     -jar app.jar
+    

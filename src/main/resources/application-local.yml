@@ -2,13 +2,15 @@ spring:
   config:
     activate:
       on-profile: local
+    import:
+    - optional:configtree:/run/secrets/  
   application:
     name: animeRecommendationSystem
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://anime-recommend-app-db:3306/${DB_NAME}?serverTimezone=UTC&useLegacyDatetimeCode=false
+    url: ${DB_URL}
     username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    password: ${db_password}
     hikari:
       maximum-pool-size: 5
       minimum-idle: 1
