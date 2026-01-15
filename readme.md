@@ -1,4 +1,4 @@
-# LIVE CURRENT ALPHA VERSION https://anime-recommendation-system-379818472403.europe-west1.run.app/
+# LIVE CURRENT ALPHA VERSION new server soon
 # THIS README is under development; the current information here is outdated.
 # The information here will be made accurate and precise as soon as possible.
 ## Table of Contents
