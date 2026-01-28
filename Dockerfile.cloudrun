@@ -13,19 +13,20 @@ RUN mvn dependency:go-offline -B
 # Copy source code
 COPY src/ ./src/
 
+
 # Build the application (FORCE the 'prod' profile for Cloud Run)
-RUN mvn clean package -DskipTests -Pprod,container-build-base  # <-- HARDCODED 'prod' profile
+ARG BUILD_PROFILE=prod 
+RUN mvn clean package -DskipTests -P${BUILD_PROFILE},container-build-base  
 
 # Stage 2: Runtime
-FROM eclipse-temurin:25-jre-alpine
+FROM eclipse-temurin:25-jre-alpine AS runtime
 WORKDIR /opt/app
 
-# Copy the built jar from builder stage
-COPY --from=builder /build/target/AnimeRecommendationApp.jar app.jar
-
 # Create non-root user for security
-RUN addgroup -S spring && adduser -S spring -G spring && \
-  chown -R spring:spring /opt/app
+RUN addgroup -S spring && adduser -S spring -G spring
+
+# Copy the built jar from builder stage
+COPY --from=builder --chown=spring:spring /build/target/AnimeRecommendationApp.jar app.jar
 
 # Expose application port
 EXPOSE 8080
@@ -35,11 +36,8 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
 
 # Copy entrypoint script
-# 1. Copy the file without changing permissions
-COPY docker-entrypoint.sh /opt/app/
-
-# 2. Change the permissions using a separate RUN command
-RUN chmod a+x /opt/app/docker-entrypoint.sh
+# 3. Copy script and set permissions in ONE step
+COPY --chown=spring:spring --chmod=755 docker-entrypoint.sh /opt/app/
 # Switch to non-root user
 USER spring:spring
 

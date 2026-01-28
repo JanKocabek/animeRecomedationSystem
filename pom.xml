@@ -38,7 +38,6 @@
 	</scm>
 	<properties>
 		<java.version>25</java.version>
-		<google-cloud-sql.version>1.26.1</google-cloud-sql.version>
 	</properties>
 
 	<dependencies>
@@ -90,13 +89,6 @@
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
-		</dependency>
-
-		<!-- Google Cloud SQL (Production only) -->
-		<dependency>
-			<groupId>com.google.cloud.sql</groupId>
-			<artifactId>mysql-socket-factory-connector-j-8</artifactId>
-			<version>${google-cloud-sql.version}</version>
 			<optional>true</optional>
 		</dependency>
 
@@ -147,6 +139,8 @@
 			<artifactId>spring-restdocs-mockmvc</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+
 	</dependencies>
 
 	<build>
@@ -280,7 +274,7 @@
 			<!-- The final JAR cleanup is provided by 'container-build-base' -->
 		</profile>
 
-		<!-- 3. Production Profile (Google Cloud) - Now contains only unique dependencies -->
+		<!-- 3. Production Profile  - Now contains only unique dependencies mariaDB -->
 
 		<profile>
 			<id>prod</id>
@@ -288,16 +282,27 @@
 				<spring.profiles.active>prod</spring.profiles.active>
 			</properties>
 			<dependencies>
-				<!-- Google Cloud SQL required for production -->
 				<dependency>
-					<groupId>com.google.cloud.sql</groupId>
-					<artifactId>mysql-socket-factory-connector-j-8</artifactId>
-					<version>${google-cloud-sql.version}</version>
+					<groupId>org.mariadb.jdbc</groupId>
+					<artifactId>mariadb-java-client</artifactId>
+					<scope>runtime</scope>
+					<optional>true</optional>
 				</dependency>
 			</dependencies>
 			<build>
 				<plugins>
-					<!-- No unique plugins are needed here. -->
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<excludes combine.children="append">
+								<exclude>
+									<groupId>com.mysql</groupId>
+									<artifactId>mysql-connector-j</artifactId>
+								</exclude>
+							</excludes>
+						</configuration>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>

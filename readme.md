@@ -108,6 +108,7 @@ The application uses a containerized MySQL database with anime data from Kaggle 
 
 ### Configuration
 Key configuration options in `application.properties`:
+
 - Database connection: `spring.datasource.url=jdbc:mysql://localhost:3306/mydatabase`
 - Security settings: Password encoding, session management
 - JPA settings: SQL logging, hibernate configuration

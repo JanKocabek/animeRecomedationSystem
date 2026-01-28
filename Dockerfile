@@ -16,7 +16,7 @@ ARG BUILD_PROFILE=local
 RUN mvn clean package -DskipTests -P${BUILD_PROFILE},container-build-base
 
 # Stage 2: Runtime
-FROM eclipse-temurin:25-jre-alpine
+FROM eclipse-temurin:25-jre-alpine AS runtime
 WORKDIR /opt/app
 
 # Copy the built jar from builder stage
