@@ -1,0 +1,44 @@
+services:
+  anime-recommend-app:
+    image: anime-recommend-app:latest
+    container_name: anime_Recommendation_App
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-prod}
+      - DB_URL=${DB_URL}
+      - DB_NAME=${DB_NAME}
+      - DB_USERNAME=${DB_USERNAME}
+      - "JAVA_OPTS=-Xms512m -Xmx1024m"
+    secrets:
+      - db_password
+
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8080/actuator/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - anime-network
+    restart: unless-stopped
+
+volumes:
+  database:
+    driver: local
+
+networks:
+  anime-network:
+    driver: bridge
+
+secrets:
+  db_password:
+    file: ./secrets/db_pass.txt
