@@ -3,7 +3,6 @@ services:
     image: "mysql:lts"
     container_name: anime_db
     environment:
-      - MYSQL_DATABASE:{DB_NAME}
       - MYSQL_USER:${DB_USERNAME}
       - MYSQL_PASSWORD_FILE:/run/secrets/db_password
     secrets:
