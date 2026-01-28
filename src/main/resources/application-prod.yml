@@ -2,10 +2,12 @@ spring:
   config:
     activate:
       on-profile: prod
+    import:
+      - optional:configtree:/run/secrets/
   application:
     name: animeRecommendationSystem
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
@@ -13,8 +15,9 @@ spring:
       maximum-pool-size: 5
       minimum-idle: 1
       connection-timeout: 30000
-      idle-timeout: 600000
-      max-lifetime: 1800000
+      idle-timeout: 540000      # 9 minut
+      max-lifetime: 600000     #  limit is 30min 
+      keepalive-time: 30000               
   jpa:
     hibernate:
       ddl-auto: none
@@ -41,6 +44,9 @@ logging:
         web: WARN
         security: WARN
       hibernate: WARN
+    com:
+      zaxxer:
+        hikari: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

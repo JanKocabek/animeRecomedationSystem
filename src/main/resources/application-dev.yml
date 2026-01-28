@@ -1,7 +1,11 @@
 spring:
+  docker:
+    compose:
+      enabled: false
   config:
     activate:
       on-profile: dev
+    import: "optional:file:./secrets/secrets.properties"
   application:
     name: animeRecommendationSystem
   datasource:
@@ -11,9 +15,7 @@ spring:
     password: ${DB_PASSWORD}
   jpa:
     hibernate:
-
       ddl-auto: validate
-
     show-sql: true
     properties:
       hibernate:
