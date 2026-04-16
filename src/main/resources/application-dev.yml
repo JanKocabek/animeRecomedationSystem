@@ -3,16 +3,14 @@ spring:
     compose:
       enabled: false
   config:
-    activate:
-      on-profile: dev
-    import: "optional:file:./secrets/secrets.properties"
+    import: "optional:configtree:./secrets/"
   application:
     name: animeRecommendationSystem
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3307/${DB_NAME}?serverTimezone=UTC&useLegacyDatetimeCode=false
     username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    password: ${db_password}
   jpa:
     hibernate:
       ddl-auto: validate
