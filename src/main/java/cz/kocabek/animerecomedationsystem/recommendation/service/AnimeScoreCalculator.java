@@ -1,7 +1,7 @@
 package cz.kocabek.animerecomedationsystem.recommendation.service;
 
 import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeOutDTO;
-import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.ConfigConstant;
+import cz.kocabek.animerecomedationsystem.recommendation.service.recommendationconfig.ConfigConstant;
 
 import java.util.function.ToDoubleFunction;
 

@@ -1,8 +1,9 @@
 package cz.kocabek.animerecomedationsystem.recommendation.service;
 
 import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeOutDTO;
-import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
 import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeGenreService;
+import cz.kocabek.animerecomedationsystem.recommendation.service.recommendationconfig.RecommendationConfig;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

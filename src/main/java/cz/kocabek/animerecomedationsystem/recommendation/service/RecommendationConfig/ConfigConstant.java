@@ -1,4 +1,4 @@
-package cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig;
+package cz.kocabek.animerecomedationsystem.recommendation.service.recommendationconfig;
 
 public final class ConfigConstant {
     //    basic db values
@@ -21,5 +21,6 @@ public final class ConfigConstant {
     //final size of detail list for the recommendation in the UI
     public static final int FINAL_ANIME_LIST_SIZE = 50;
 
-
+    private ConfigConstant() {
+    }
 }

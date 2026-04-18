@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.ConfigCacheKey;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.UserAnimeList;
 import cz.kocabek.animerecomedationsystem.recommendation.dto.UsersAnimeScoreDto;
-import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
+import cz.kocabek.animerecomedationsystem.recommendation.service.recommendationconfig.RecommendationConfig;
 import lombok.AllArgsConstructor;
 
 @Service

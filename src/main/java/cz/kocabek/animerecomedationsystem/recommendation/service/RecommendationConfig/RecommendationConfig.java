@@ -1,4 +1,4 @@
-package cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig;
+package cz.kocabek.animerecomedationsystem.recommendation.service.recommendationconfig;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;

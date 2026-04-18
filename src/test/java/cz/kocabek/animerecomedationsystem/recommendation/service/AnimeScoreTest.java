@@ -1,7 +1,8 @@
 package cz.kocabek.animerecomedationsystem.recommendation.service;
 
 import cz.kocabek.animerecomedationsystem.recommendation.dto.AnimeOutDTO;
-import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.ConfigConstant;
+import cz.kocabek.animerecomedationsystem.recommendation.service.recommendationconfig.ConfigConstant;
+
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -70,8 +70,12 @@ public class AppAccount {
     public AppAccount() {
     }
 
+    /**
+     * Set the createdAt timestamp to the current time if it is null.
+     * This method is called before the entity is persisted.
+     */
     @PrePersist
-    public void setCreatedAt() {
+    public void prePersist() {
         if (this.createdAt == null) {
             this.createdAt = Instant.now();
         }

@@ -59,8 +59,7 @@ public class RecommendationService {
      * intersection weight algorithm along with various processing and analysis
      * steps to refine the recommendations.
      *
-     * @param animeId the ID of the anime for which recommendations are
-     * generated
+     *
      * @return a {@link RecommendationDTO} object containing the input anime
      * names and a list of recommended anime's
      */
