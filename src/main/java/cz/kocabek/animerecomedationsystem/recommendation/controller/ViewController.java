@@ -1,5 +1,15 @@
 package cz.kocabek.animerecomedationsystem.recommendation.controller;
 
+import cz.kocabek.animerecomedationsystem.account.service.AccService;
+import cz.kocabek.animerecomedationsystem.account.service.WatchListService;
+import cz.kocabek.animerecomedationsystem.recommendation.dto.InputDTO;
+import cz.kocabek.animerecomedationsystem.recommendation.service.DTOResultBuilder;
+import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationService;
+import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
+import cz.kocabek.animerecomedationsystem.recommendation.service.recommendationconfig.RecommendationConfig;
+import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,17 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import cz.kocabek.animerecomedationsystem.account.service.AccService;
-import cz.kocabek.animerecomedationsystem.account.service.WatchListService;
-import cz.kocabek.animerecomedationsystem.recommendation.dto.InputDTO;
-import cz.kocabek.animerecomedationsystem.recommendation.service.DTOResultBuilder;
-import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationConfig.RecommendationConfig;
-import cz.kocabek.animerecomedationsystem.recommendation.service.RecommendationService;
-import cz.kocabek.animerecomedationsystem.recommendation.service.db.AnimeService;
-import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
-import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Controller
@@ -60,7 +59,7 @@ public class ViewController {
 
     @PostMapping(POST_SUBMIT_ENDPOINT)
     public String postHomePage(@Valid @ModelAttribute(INPUT_ATR_NAME) InputDTO form, BindingResult bindingResult,
-            RedirectAttributes redirectAttributes) {
+                               RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return MAIN_PAGE;
         }
@@ -94,7 +93,7 @@ public class ViewController {
 
     @PostMapping(POST_RESULT_SUBMIT)
     public String postResultPage(@Valid @ModelAttribute("anime") InputDTO form, BindingResult bindingResult,
-            RedirectAttributes redirectAttributes, Model model) {
+                                 RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute(RECOMMENDATION_ATR, resultBuilder.getResultDto());
             return RESULT_PAGE;
@@ -133,7 +132,7 @@ public class ViewController {
         return "watchlist";
     }
 
-    /*htmx mapping */
+    /*HTMX mapping */
     @DeleteMapping("/remove_uiitem")
     @ResponseBody
     public ResponseEntity<String> removeFromWatchListPage(@RequestParam long animeId) {
